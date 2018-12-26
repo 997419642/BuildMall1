@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="58" id="KGk-i7-Jjw" customClass="TitleChoosePersonCell">
+            <rect key="frame" x="0.0" y="0.0" width="336" height="58"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="336" height="57.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconcheck" translatesAutoresizingMaskIntoConstraints="NO" id="PIz-RO-vWd">
+                        <rect key="frame" x="26" y="18" width="22" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="22" id="bho-dl-QqJ"/>
+                            <constraint firstAttribute="height" constant="22" id="juO-mo-wEg"/>
+                        </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconcontact" translatesAutoresizingMaskIntoConstraints="NO" id="qnS-eE-38q">
+                        <rect key="frame" x="58" y="11" width="36" height="36"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="36" id="mxF-Sw-uai"/>
+                            <constraint firstAttribute="height" constant="36" id="yOc-IW-tvJ"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="鑫达木业-金" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILi-bn-Qot">
+                        <rect key="frame" x="104" y="21" width="78" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YJF-m1-vfh">
+                        <rect key="frame" x="20" y="56.5" width="296" height="1"/>
+                        <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="qJQ-t5-Uzk"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="YJF-m1-vfh" secondAttribute="bottom" id="3RO-Pl-56T"/>
+                    <constraint firstItem="qnS-eE-38q" firstAttribute="leading" secondItem="PIz-RO-vWd" secondAttribute="trailing" constant="10" id="5nf-Nl-dOt"/>
+                    <constraint firstItem="qnS-eE-38q" firstAttribute="centerY" secondItem="PIz-RO-vWd" secondAttribute="centerY" id="UrG-6F-lIE"/>
+                    <constraint firstItem="YJF-m1-vfh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="cRu-cM-wdU"/>
+                    <constraint firstItem="PIz-RO-vWd" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="cdv-o9-7na"/>
+                    <constraint firstItem="PIz-RO-vWd" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="10" id="fvw-9t-cy8"/>
+                    <constraint firstItem="ILi-bn-Qot" firstAttribute="leading" secondItem="qnS-eE-38q" secondAttribute="trailing" constant="10" id="gLw-HR-9Wo"/>
+                    <constraint firstItem="ILi-bn-Qot" firstAttribute="centerY" secondItem="qnS-eE-38q" secondAttribute="centerY" id="mee-wY-Yk1"/>
+                    <constraint firstAttribute="trailing" secondItem="YJF-m1-vfh" secondAttribute="trailing" constant="20" id="tYc-WY-snl"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="nameLable" destination="ILi-bn-Qot" id="rqO-A0-sef"/>
+            </connections>
+            <point key="canvasLocation" x="43" y="118"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="iconcheck" width="16" height="16"/>
+        <image name="iconcontact" width="36" height="36"/>
+    </resources>
+</document>

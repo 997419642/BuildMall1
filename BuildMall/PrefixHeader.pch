@@ -1,0 +1,74 @@
+//
+//  PrefixHeader.pch
+//  HelpWanted
+//
+//  Created by xiaomei on 2018/1/2.
+//  Copyright © 2018年 xiaomei. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+#import "UIColor+Hex.h"
+
+#import "UIView+TimeExtension.h"
+#import <Masonry.h>
+#import "WebClient.h"
+
+//坐标
+#define applicatonWidth       [[UIScreen mainScreen] applicationFrame].size.width
+#define applicatonHeight      [[UIScreen mainScreen] applicationFrame].size.height
+
+
+//主题色
+#define MINE_Color [UIColor colorWithHexString:@"52C9C5"]
+
+
+#import "AAGlobalMacro.h"
+
+/*分割线颜色*/
+#define SPLIT_LINE [UIColor colorWithRed:230/250.0f green:230/250.0f blue:230/250.0f alpha:1]
+
+////友盟统计&广告位
+//#define MOBCLICK_KEY @"5abc9ca2f43e4803b50000ce"
+
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#import "AMUserAccountInfo.h"
+
+#define twowebUrlOld  @"http://192.168.0.141:8010"
+
+
+#define onewebUrlOld  @"http://192.168.0.128:8099"
+
+#define webUrlOld  @"http://www.immks.com/"
+
+#define isPad (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+
+#define  EnterForeground @"UIApplicationDidBecomeActiveNotification"
+
+#define RED_COLOR [UIColor colorWithRed:255/255.0 green:90/255.0 blue:56/255.0 alpha:1]
+
+#define pink_COLOR [UIColor colorWithRed:244/255.0 green:202/255.0 blue:208/255.0 alpha:1]
+#define blue_COLOR [UIColor colorWithRed:66/255.0 green:85/255.0 blue:206/255.0 alpha:1]
+
+#define screenW [UIScreen mainScreen].bounds.size.width
+
+#define IS_IPHONE5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
+#define screenH [UIScreen mainScreen].bounds.size.height
+#define IsHasValueNSString(str) (str && ![str isEqual:[NSNull null]] && ![str isEqualToString:@""])
+#define IsNSStringHasData(str)  (str == nil || [str isEqualToString:@""])
+
+#define IsHasValueNSDictionarty(dic,key) ([dic objectForKey:key] && ![[dic objectForKey:key] isEqual:[NSNull null]])
+#define IsNSStringNoData(str)  (str == nil || [str isEqualToString:@""])
+
+#define kDevice_Is_iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
+
+
+#define  startAngleValue (90 - (fullAngleValue - fanShowCount*angleForFan)/2)                                         //圆周起始角度
+
+//#else //发布阶段
+//#define NSLog(...)
+
+#endif /* PrefixHeader_pch */

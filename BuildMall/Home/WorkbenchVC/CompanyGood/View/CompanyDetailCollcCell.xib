@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="CompanyDetailCollcCell">
+            <rect key="frame" x="0.0" y="0.0" width="200" height="265"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="200" height="265"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3iJ-xM-gVj">
+                        <rect key="frame" x="0.0" y="0.0" width="200" height="265"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" image="木" translatesAutoresizingMaskIntoConstraints="NO" id="PNj-Zl-Fm8">
+                        <rect key="frame" x="6" y="0.0" width="188" height="189"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="俄罗斯大牌品质，MM特价促销" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bdm-b1-LRg">
+                        <rect key="frame" x="7" y="199" width="168.5" height="14.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="俄罗斯SF级云杉 44*100" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SqC-4n-K67">
+                        <rect key="frame" x="7" y="215.5" width="123" height="13.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" red="0.72156862745098038" green="0.72156862745098038" blue="0.72156862745098038" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="¥ 1680" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6X6-Zh-Y2b">
+                        <rect key="frame" x="7" y="239" width="45.5" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.90980392156862744" green="0.14117647058823529" blue="0.20392156862745098" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="PNj-Zl-Fm8" secondAttribute="trailing" constant="6" id="0iU-I5-Prv"/>
+                <constraint firstItem="6X6-Zh-Y2b" firstAttribute="top" secondItem="SqC-4n-K67" secondAttribute="bottom" constant="10" id="EFa-WF-ONF"/>
+                <constraint firstItem="6X6-Zh-Y2b" firstAttribute="leading" secondItem="bdm-b1-LRg" secondAttribute="leading" id="Hea-ji-feY"/>
+                <constraint firstItem="bdm-b1-LRg" firstAttribute="top" secondItem="PNj-Zl-Fm8" secondAttribute="bottom" constant="10" id="Ifk-f6-zDZ"/>
+                <constraint firstItem="SqC-4n-K67" firstAttribute="leading" secondItem="bdm-b1-LRg" secondAttribute="leading" id="JF8-e0-PBl"/>
+                <constraint firstItem="SqC-4n-K67" firstAttribute="top" secondItem="bdm-b1-LRg" secondAttribute="bottom" constant="2" id="LWV-Kq-3lh"/>
+                <constraint firstItem="PNj-Zl-Fm8" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="6" id="P3g-L1-QJ0"/>
+                <constraint firstItem="bdm-b1-LRg" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="7" id="Pa8-w9-MGx"/>
+                <constraint firstAttribute="bottom" secondItem="6X6-Zh-Y2b" secondAttribute="bottom" constant="9" id="Qkl-U5-wJ8"/>
+                <constraint firstAttribute="trailing" secondItem="3iJ-xM-gVj" secondAttribute="trailing" id="RSR-IX-e5P"/>
+                <constraint firstAttribute="bottom" secondItem="3iJ-xM-gVj" secondAttribute="bottom" id="Y0T-KP-NJu"/>
+                <constraint firstItem="3iJ-xM-gVj" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="bT8-fE-xF5"/>
+                <constraint firstItem="PNj-Zl-Fm8" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="fls-uD-fKJ"/>
+                <constraint firstItem="3iJ-xM-gVj" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="uNz-Y2-Ln7"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
+            <connections>
+                <outlet property="detailLable" destination="SqC-4n-K67" id="0Y2-Sd-eDk"/>
+                <outlet property="imgView" destination="PNj-Zl-Fm8" id="IFG-Ka-Zbp"/>
+                <outlet property="nameLable" destination="bdm-b1-LRg" id="Ozt-Ls-f8x"/>
+                <outlet property="priceLable" destination="6X6-Zh-Y2b" id="ZN0-y3-Fst"/>
+            </connections>
+            <point key="canvasLocation" x="137.59999999999999" y="113.79310344827587"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="木" width="42" height="42"/>
+    </resources>
+</document>

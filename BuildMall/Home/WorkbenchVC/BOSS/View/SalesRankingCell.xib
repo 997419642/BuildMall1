@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="SalesRankingCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="89.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="40" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WW9-LT-5Ds">
+                        <rect key="frame" x="26" y="34.5" width="22.5" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar" translatesAutoresizingMaskIntoConstraints="NO" id="Chu-ho-Gsl">
+                        <rect key="frame" x="70.5" y="23" width="44" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="CsH-DF-vPq"/>
+                            <constraint firstAttribute="width" constant="44" id="ppc-tf-n5R"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="周经理" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ryf-TO-XLA">
+                        <rect key="frame" x="124.5" y="35" width="49" height="19.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="58" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vcu-cN-Mh3">
+                        <rect key="frame" x="260" y="28" width="34" height="33.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                        <color key="textColor" red="0.32156862749999998" green="0.78823529410000004" blue="0.7725490196" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Ryf-TO-XLA" firstAttribute="centerY" secondItem="Chu-ho-Gsl" secondAttribute="centerY" id="1Dr-I8-nFo"/>
+                    <constraint firstItem="WW9-LT-5Ds" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="10" id="67b-8P-Tu5"/>
+                    <constraint firstItem="Chu-ho-Gsl" firstAttribute="leading" secondItem="WW9-LT-5Ds" secondAttribute="trailing" constant="22" id="FpU-hM-HQR"/>
+                    <constraint firstItem="Ryf-TO-XLA" firstAttribute="leading" secondItem="Chu-ho-Gsl" secondAttribute="trailing" constant="10" id="Inr-Wf-Hxt"/>
+                    <constraint firstItem="vcu-cN-Mh3" firstAttribute="centerY" secondItem="Chu-ho-Gsl" secondAttribute="centerY" id="VfZ-N3-3fY"/>
+                    <constraint firstItem="Chu-ho-Gsl" firstAttribute="centerY" secondItem="WW9-LT-5Ds" secondAttribute="centerY" id="f8i-La-SJc"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="vcu-cN-Mh3" secondAttribute="trailing" constant="10" id="gPT-bG-3Y4"/>
+                    <constraint firstItem="WW9-LT-5Ds" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="xvh-uJ-XNp"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <point key="canvasLocation" x="140.80000000000001" y="127.736131934033"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="avatar" width="44" height="44"/>
+    </resources>
+</document>

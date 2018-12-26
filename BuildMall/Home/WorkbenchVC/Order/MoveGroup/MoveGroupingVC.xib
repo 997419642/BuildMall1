@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MoveGroupingVC">
+            <connections>
+                <outlet property="cancelBtn" destination="WrF-CP-ZFg" id="I7h-e4-Ona"/>
+                <outlet property="sureBtn" destination="SuQ-kP-3AI" id="aQD-uT-NrV"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WrF-CP-ZFg">
+                    <rect key="frame" x="20" y="574" width="85.5" height="43"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="43" id="eE3-2Q-6Md"/>
+                    </constraints>
+                    <state key="normal" title="取消">
+                        <color key="titleColor" red="0.32156862749999998" green="0.78823529410000004" blue="0.7725490196" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="cancelAction:" destination="-1" eventType="touchUpInside" id="QKk-es-IBN"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SuQ-kP-3AI">
+                    <rect key="frame" x="115.5" y="574" width="239.5" height="43"/>
+                    <color key="backgroundColor" red="0.32156862749999998" green="0.78823529410000004" blue="0.7725490196" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="43" id="OWa-c6-EA3"/>
+                    </constraints>
+                    <state key="normal" title="确定">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="sureAction:" destination="-1" eventType="touchUpInside" id="C92-TC-ugi"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="SuQ-kP-3AI" firstAttribute="centerY" secondItem="WrF-CP-ZFg" secondAttribute="centerY" id="AhI-A4-tbp"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="WrF-CP-ZFg" secondAttribute="bottom" constant="50" id="F7i-5Z-iH2"/>
+                <constraint firstItem="WrF-CP-ZFg" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="LID-k7-eHL"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="SuQ-kP-3AI" secondAttribute="trailing" constant="20" id="b73-8u-9GO"/>
+                <constraint firstItem="SuQ-kP-3AI" firstAttribute="leading" secondItem="WrF-CP-ZFg" secondAttribute="trailing" constant="10" id="glg-C0-xyw"/>
+                <constraint firstItem="SuQ-kP-3AI" firstAttribute="width" secondItem="WrF-CP-ZFg" secondAttribute="width" multiplier="2.8" id="vQ2-59-KLb"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+        </view>
+    </objects>
+</document>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="EachOtherCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="79.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2018-10-23 14:45" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YBH-AE-KiW">
+                        <rect key="frame" x="90" y="21" width="103" height="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="正在查看商品“SF级云杉板材，44*100”，尽快把握商机" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dhO-BI-A4g">
+                        <rect key="frame" x="90" y="41" width="194" height="33"/>
+                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="12"/>
+                        <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iEo-qu-SOM">
+                        <rect key="frame" x="56" y="21.5" width="14" height="14"/>
+                        <color key="backgroundColor" red="0.54117647058823526" green="0.81568627450980391" blue="0.80784313725490198" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="RD4-9A-hiF"/>
+                            <constraint firstAttribute="width" constant="14" id="Xmo-qq-kJ1"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NVc-oK-Z3g">
+                        <rect key="frame" x="62.5" y="35.5" width="1" height="44"/>
+                        <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="1" id="A3t-bO-0PQ"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="NVc-oK-Z3g" secondAttribute="bottom" id="DGt-y0-k0e"/>
+                    <constraint firstItem="YBH-AE-KiW" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="74" id="KHF-Dj-Hoa"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="dhO-BI-A4g" secondAttribute="trailing" constant="20" id="Lhv-eK-oTI"/>
+                    <constraint firstItem="dhO-BI-A4g" firstAttribute="leading" secondItem="YBH-AE-KiW" secondAttribute="leading" id="NxV-vA-LBv"/>
+                    <constraint firstItem="NVc-oK-Z3g" firstAttribute="top" secondItem="iEo-qu-SOM" secondAttribute="bottom" id="SfT-hO-D3o"/>
+                    <constraint firstItem="dhO-BI-A4g" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" constant="5" id="TUM-sN-dgk"/>
+                    <constraint firstItem="dhO-BI-A4g" firstAttribute="top" secondItem="YBH-AE-KiW" secondAttribute="bottom" constant="5" id="Vl7-aJ-yK4"/>
+                    <constraint firstItem="YBH-AE-KiW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="10" id="gsY-bx-k7h"/>
+                    <constraint firstItem="NVc-oK-Z3g" firstAttribute="centerX" secondItem="iEo-qu-SOM" secondAttribute="centerX" id="l1S-YD-92T"/>
+                    <constraint firstItem="iEo-qu-SOM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="40" id="xDy-tp-5OT"/>
+                    <constraint firstItem="iEo-qu-SOM" firstAttribute="centerY" secondItem="YBH-AE-KiW" secondAttribute="centerY" id="z2u-VF-vRF"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="blueView" destination="iEo-qu-SOM" id="6lX-o3-2t7"/>
+                <outlet property="contentLable" destination="dhO-BI-A4g" id="jxT-Tn-yeU"/>
+                <outlet property="lineView" destination="NVc-oK-Z3g" id="hWy-y0-PdK"/>
+                <outlet property="timeLable" destination="YBH-AE-KiW" id="8N3-CH-A55"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

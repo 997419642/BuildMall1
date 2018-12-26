@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="71" id="KGk-i7-Jjw" customClass="ChoosePersonCell">
+            <rect key="frame" x="0.0" y="0.0" width="350" height="71"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="350" height="70.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bitmap" translatesAutoresizingMaskIntoConstraints="NO" id="A4A-ZZ-hVC">
+                        <rect key="frame" x="53" y="13" width="46" height="46"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="46" id="9GW-sV-6tV"/>
+                            <constraint firstAttribute="height" constant="46" id="wvp-oB-4qe"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="雪" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jsu-g7-ff9">
+                        <rect key="frame" x="109" y="28" width="15" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="暂无跟进" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XgA-Bk-7T8">
+                        <rect key="frame" x="266" y="28" width="58" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.62745098039215685" green="0.62745098039215685" blue="0.62745098039215685" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconcheck" translatesAutoresizingMaskIntoConstraints="NO" id="aTm-qi-Nza">
+                        <rect key="frame" x="20" y="24" width="24" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="24" id="BbY-BV-RY3"/>
+                            <constraint firstAttribute="width" constant="24" id="JuE-tp-qFC"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="aTm-qi-Nza" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Mcn-lp-HbH"/>
+                    <constraint firstItem="XgA-Bk-7T8" firstAttribute="centerY" secondItem="A4A-ZZ-hVC" secondAttribute="centerY" id="MoE-PG-lkt"/>
+                    <constraint firstItem="A4A-ZZ-hVC" firstAttribute="leading" secondItem="aTm-qi-Nza" secondAttribute="trailing" constant="9" id="OY9-OV-hlE"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="XgA-Bk-7T8" secondAttribute="trailing" constant="10" id="VAX-Be-jvY"/>
+                    <constraint firstItem="jsu-g7-ff9" firstAttribute="centerY" secondItem="A4A-ZZ-hVC" secondAttribute="centerY" id="cMo-UC-pgl"/>
+                    <constraint firstItem="jsu-g7-ff9" firstAttribute="leading" secondItem="A4A-ZZ-hVC" secondAttribute="trailing" constant="10" id="cO1-6N-aWT"/>
+                    <constraint firstItem="A4A-ZZ-hVC" firstAttribute="centerY" secondItem="aTm-qi-Nza" secondAttribute="centerY" id="dAP-d3-QDk"/>
+                    <constraint firstItem="aTm-qi-Nza" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="kN5-cQ-ZG4"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="headImg" destination="A4A-ZZ-hVC" id="far-GX-c3w"/>
+                <outlet property="nameLable" destination="jsu-g7-ff9" id="V32-BL-b3O"/>
+                <outlet property="selcImg" destination="aTm-qi-Nza" id="S1K-Oj-nhb"/>
+                <outlet property="stateLable" destination="XgA-Bk-7T8" id="YJ3-uz-rMo"/>
+            </connections>
+            <point key="canvasLocation" x="49" y="139.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="bitmap" width="46" height="47"/>
+        <image name="iconcheck" width="16" height="16"/>
+    </resources>
+</document>

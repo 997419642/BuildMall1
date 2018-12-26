@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="MoveGroupingCell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="113"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="112.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="un-Check" translatesAutoresizingMaskIntoConstraints="NO" id="rFr-ta-Xg0">
+                        <rect key="frame" x="26" y="19" width="16" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="4Oh-y2-1o5"/>
+                            <constraint firstAttribute="width" constant="16" id="tUT-qm-dK4"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="中国银行上海祁连山路支行" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vty-iv-12r">
+                        <rect key="frame" x="52" y="16" width="172" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="账户：437766844376" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KLd-rB-4Ow">
+                        <rect key="frame" x="52" y="58" width="126" height="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="行号：104290040083" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l3t-1s-Wl4">
+                        <rect key="frame" x="52" y="78" width="126" height="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="户名：上海鸿树木业电子商务股份有限公司" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QsA-04-j5m">
+                        <rect key="frame" x="52" y="38" width="233" height="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="vty-iv-12r" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="5" id="1r0-1P-3hR"/>
+                    <constraint firstItem="QsA-04-j5m" firstAttribute="leading" secondItem="vty-iv-12r" secondAttribute="leading" id="DwA-C1-AdS"/>
+                    <constraint firstItem="KLd-rB-4Ow" firstAttribute="top" secondItem="QsA-04-j5m" secondAttribute="bottom" constant="5" id="Rc5-hs-ohu"/>
+                    <constraint firstItem="vty-iv-12r" firstAttribute="leading" secondItem="rFr-ta-Xg0" secondAttribute="trailing" constant="10" id="VDm-xc-Kxu"/>
+                    <constraint firstItem="KLd-rB-4Ow" firstAttribute="leading" secondItem="QsA-04-j5m" secondAttribute="leading" id="cpn-8v-0JJ"/>
+                    <constraint firstItem="rFr-ta-Xg0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="8" id="czU-Wy-6nK"/>
+                    <constraint firstItem="QsA-04-j5m" firstAttribute="top" secondItem="vty-iv-12r" secondAttribute="bottom" constant="5" id="dnv-6E-mL7"/>
+                    <constraint firstItem="rFr-ta-Xg0" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="10" id="g3g-Ya-Dg2"/>
+                    <constraint firstItem="l3t-1s-Wl4" firstAttribute="top" secondItem="KLd-rB-4Ow" secondAttribute="bottom" constant="5" id="jqe-gQ-2x7"/>
+                    <constraint firstItem="l3t-1s-Wl4" firstAttribute="leading" secondItem="KLd-rB-4Ow" secondAttribute="leading" id="sIO-vJ-c7W"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="countLable" destination="KLd-rB-4Ow" id="9cC-AZ-n4a"/>
+                <outlet property="hanghaoLable" destination="l3t-1s-Wl4" id="KZe-fa-G3o"/>
+                <outlet property="imgView" destination="rFr-ta-Xg0" id="AD2-sW-96J"/>
+                <outlet property="nameLable" destination="vty-iv-12r" id="tEU-gq-zuf"/>
+                <outlet property="userLable" destination="QsA-04-j5m" id="DkR-bi-MDN"/>
+            </connections>
+            <point key="canvasLocation" x="136.80000000000001" y="111.0944527736132"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="un-Check" width="16" height="16"/>
+    </resources>
+</document>
