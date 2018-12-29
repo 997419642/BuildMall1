@@ -26,30 +26,18 @@
 {
     _dict = dict;
     
-    
-    
-    if ([dict[@"packages"] isEqual:[NSNull null]]) {
+    if ([dict[@"goodsId"] intValue] != 0) {
 
         //库存商品
         NSMutableArray* lengthList = dict[@"lengthList"];
         NSMutableDictionary* lengthDict = lengthList[0];
-        
         NSMutableArray* numberList = dict[@"numberList"];
-        
         NSMutableDictionary* numDict = numberList[0];
-        
-        
         NSMutableArray* productTableList = dict[@"productTableList"];
-        
         NSMutableDictionary* productTableDict = productTableList[0];
-        
-        
         NSMutableArray* productAttributeList = productTableList[0][@"productAttributeList"];
-        
         NSMutableDictionary* modelDict = [NSMutableDictionary dictionary];
-        
         for (NSMutableDictionary* dict in productAttributeList) {
-            
             
             if ([dict[@"attrName"] isEqualToString:@"树种"]) {
                 
@@ -68,7 +56,6 @@
             
             if ([dict[@"attrName"] isEqualToString:@"口径"] || [dict[@"attrName"] isEqualToString:@"宽度"]) {
                 [modelDict setObject:dict[@"attrValue"] forKey:@"koujin"];
-                
             }
             
             if ([dict[@"attrName"] isEqualToString:@"产地"]) {
@@ -83,7 +70,6 @@
         NSString* str = [NSString stringWithFormat:@"%@",dict[@"buyPrice"]];
         _priceTF.text = str;
         _priceLable.text = [NSString stringWithFormat:@"￥%@/%@",str,dict[@"goodsNuit"]];
-        
         _nameLable.text = modelDict[@"shuzhong"];
         
         if ([dict[@"categoryId"] intValue] == 1) {

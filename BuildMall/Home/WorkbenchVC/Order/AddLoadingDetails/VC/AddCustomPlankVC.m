@@ -93,7 +93,13 @@
     }
     
     
-    _nameLable.text = tableDic[@"title"];
+    if ([_categoryId isEqualToString:@"1"]) {
+        _nameLable.text = @"原木";
+    }else
+    {
+        _nameLable.text = @"实木板材";
+        
+    }
     _shuzhongLable.text = modelDict[@"shuzhong"];
     
     _brandlable.text = [NSString stringWithFormat:@"%@， %@， %@*%@",tableDic[@"brandName"],modelDict[@"dengji"],modelDict[@"koujin"],lengthAttributesList[0][@"specValue"]];
@@ -108,6 +114,34 @@
     NSMutableDictionary* dict = arr[0];
     _adressLable.text = [NSString stringWithFormat:@"%@  地址:%@",dict[@"name"],dict[@"address"]];
     
+    //如果数据是自定义添加的商品，进行赋值
+    if (_detailModel.packages != nil) {
+        
+        NSMutableDictionary* dict = [_detailModel.packages mj_JSONObject];
+        _pricelable.text = [NSString stringWithFormat:@"￥%@/%@",_detailModel.buyPrice,@"m³"];
+        _numbleLable.text = [NSString stringWithFormat:@"数量：%@%@*%@件",dict[@"lifangshu"],@"m³",_detailModel.buyNumber];
+        
+
+        if ([_categoryId isEqualToString:@"1"]) {
+            _nameLable.text = @"原木";
+        }else
+        {
+            _nameLable.text = @"实木板材";
+
+        }
+        _shuzhongLable.text = dict[@"shuzhong"];
+        
+        _brandlable.text = [NSString stringWithFormat:@"%@， %@， %@*%@",tableDic[@"brandName"],modelDict[@"dengji"],modelDict[@"koujin"],lengthAttributesList[0][@"specValue"]];
+        
+        if (!dict[@"houdu"]) {
+            _brandlable.text = [NSString stringWithFormat:@"%@，%@，%@*%@",dict[@"pinpai"],dict[@"dengji"],dict[@"kuandu"],dict[@"changdu"]];
+        }else
+        {
+            _brandlable.text = [NSString stringWithFormat:@"%@,%@,%@*%@*%@",dict[@"pinpai"],dict[@"dengji"],dict[@"houdu"],dict[@"kuandu"],dict[@"changdu"]];
+        }
+        
+        _adressLable.text = [NSString stringWithFormat:@"%@",dict[@"cangku"]];
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -129,28 +163,55 @@
     }
     
     NSMutableArray* array = [NSMutableArray array];
+    if (_detailModel.packages) {
+        
+        NSMutableDictionary* dictCus = [_detailModel.packages mj_JSONObject];
+        SWGOrderAbroadPackBean* bean = [SWGOrderAbroadPackBean new];
+        bean.buyPrice = _detailModel.buyPrice;
+        NSNumber *goodsId = [NSNumber numberWithInt:[_detailModel.goodsId intValue]];
+        bean.goodsId = goodsId;
+        NSNumber *orderId = [NSNumber numberWithInt:[_model.orderId intValue]];
+        bean.orderId = orderId;
+        NSNumber *buyNumber = [NSNumber numberWithInt:[_priceTF.text intValue]];
+        bean.buyNumber = buyNumber;
+        NSNumber *categoryId = [NSNumber numberWithInt:[_categoryId intValue]];
+        bean.categoryId = categoryId;
+        bean.orderDetailId = [NSNumber numberWithInt:[_detailModel.orderDetailId intValue]];
+        NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+
+        [dict addEntriesFromDictionary:dictCus];
+        bean.packages = [dict mj_JSONString];
+        [array addObject:bean];
+    }else
+    {
     
-    SWGOrderAbroadPackBean* bean = [SWGOrderAbroadPackBean new];
-    bean.buyPrice = _detailModel.buyPrice;
-    NSNumber *cubicNumber = [NSNumber numberWithInt:[_detailModel.unitNum intValue]];
-    bean.cubicNumber = cubicNumber;
-    NSNumber *goodsId = [NSNumber numberWithInt:[_detailModel.goodsId intValue]];
-    bean.goodsId = goodsId;
-    NSNumber *orderId = [NSNumber numberWithInt:[_model.orderId intValue]];
-    bean.orderId = orderId;
-//    NSNumber *Number = [NSNumber numberWithInt:[_detailModel.buyNumber intValue]];
-//    bean.number = Number;
-    NSNumber *buyNumber = [NSNumber numberWithInt:[_priceTF.text intValue]];
-    bean.buyNumber = buyNumber;
-    NSNumber *categoryId = [NSNumber numberWithInt:[_detailModel.categoryId intValue]];
-    bean.categoryId = categoryId;
-    NSNumber *stockNum = [NSNumber numberWithInt:[_detailModel.stockNum intValue]];
-    bean.stockNum = stockNum;
-    int num = [_detailModel.stockNum intValue] - [_detailModel.lockNum intValue];
-    NSNumber *lockNum = [NSNumber numberWithInt:num];
-    bean.lockNum = lockNum;
     
-    [array addObject:bean];
+        SWGOrderAbroadPackBean* bean = [SWGOrderAbroadPackBean new];
+   
+        bean.buyPrice = _detailModel.buyPrice;
+    
+        NSNumber *goodsId = [NSNumber numberWithInt:[_detailModel.goodsId intValue]];
+    
+        bean.goodsId = goodsId;
+    
+        NSNumber *orderId = [NSNumber numberWithInt:[_model.orderId intValue]];
+    
+        bean.orderId = orderId;
+    
+        NSNumber *buyNumber = [NSNumber numberWithInt:[_priceTF.text intValue]];
+    
+        bean.buyNumber = buyNumber;
+    
+        NSNumber *categoryId = [NSNumber numberWithInt:[_detailModel.categoryId intValue]];
+    
+        bean.categoryId = categoryId;
+    
+        bean.orderDetailId = [NSNumber numberWithInt:[_detailModel.orderDetailId intValue]];
+    
+        [array addObject:bean];
+   
+    }
+    
 
     _packBeanArray = array;
     

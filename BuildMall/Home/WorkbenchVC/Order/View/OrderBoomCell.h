@@ -23,6 +23,7 @@
 
 -(void)lookAction:(NSString* )str;
 
+-(void)imgAction:(UIImageView *)imgUrl;
 
 
 @end
@@ -77,6 +78,20 @@
 @property (weak, nonatomic) IBOutlet UILabel *threenameLable;
 @property (weak, nonatomic) IBOutlet UIView *shouView;
 @property (weak, nonatomic) IBOutlet UILabel *weiKuanLable;
+@property (weak, nonatomic) IBOutlet UIImageView *imgView;
+@property (weak, nonatomic) IBOutlet UIImageView *dingjinImg;
+@property (weak, nonatomic) IBOutlet UIButton *dingjinBtn;
+@property (weak, nonatomic) IBOutlet UILabel *youhuiTwoLable;
+@property (weak, nonatomic) IBOutlet UITextField *huiyouTwoTF;
+@property (weak, nonatomic) IBOutlet UIView *youhuiTwoView;
+@property (weak, nonatomic) IBOutlet UIView *daifuView;
+@property (weak, nonatomic) IBOutlet UILabel *daifuleftLable;
+@property (weak, nonatomic) IBOutlet UILabel *daifuLable;
+@property (weak, nonatomic) IBOutlet UIImageView *imgTwo;
+@property (weak, nonatomic) IBOutlet UIImageView *imgThree;
+@property (weak, nonatomic) IBOutlet UIImageView *imgFour;
+@property (weak, nonatomic) IBOutlet UIImageView *imgFive;
+@property (weak, nonatomic) IBOutlet UIImageView *Imgsix;
 
 @end
 

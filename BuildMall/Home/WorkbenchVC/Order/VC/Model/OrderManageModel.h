@@ -45,6 +45,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic,copy)NSString *isPicker;
 
+@property(nonatomic,copy)NSString *discountPrice;//优惠金额 状态等于8时
+
+@property(nonatomic,copy)NSString *realityPrice;//出货单总价
+
+@property(nonatomic,copy)NSString *ishaveArrears;//有欠款
+
 @end
 
 NS_ASSUME_NONNULL_END

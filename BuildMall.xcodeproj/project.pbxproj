@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		163484343EF2A5A3272F5342 /* libPods-BuildMall.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8055373A7F44EA0B9810DE5 /* libPods-BuildMall.a */; };
+		5A00659621D4A96700269379 /* ZWHImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A00659221D4A96700269379 /* ZWHImageView.m */; };
+		5A00659721D4A96700269379 /* ZWHScanImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A00659321D4A96700269379 /* ZWHScanImage.m */; };
 		5A03184621A91D7C0065432F /* OrderManagementVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A03184421A91D7C0065432F /* OrderManagementVC.m */; };
 		5A03184721A91D7C0065432F /* OrderManagementVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A03184521A91D7C0065432F /* OrderManagementVC.xib */; };
 		5A03184D21A91EA40065432F /* OrderManagemenCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A03184B21A91EA40065432F /* OrderManagemenCell.m */; };
@@ -502,6 +504,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5A00659121D4A96700269379 /* ZWHScanImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZWHScanImage.h; sourceTree = "<group>"; };
+		5A00659221D4A96700269379 /* ZWHImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZWHImageView.m; sourceTree = "<group>"; };
+		5A00659321D4A96700269379 /* ZWHScanImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZWHScanImage.m; sourceTree = "<group>"; };
+		5A00659421D4A96700269379 /* ZWHImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZWHImageView.h; sourceTree = "<group>"; };
 		5A03184321A91D7C0065432F /* OrderManagementVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderManagementVC.h; sourceTree = "<group>"; };
 		5A03184421A91D7C0065432F /* OrderManagementVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderManagementVC.m; sourceTree = "<group>"; };
 		5A03184521A91D7C0065432F /* OrderManagementVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OrderManagementVC.xib; sourceTree = "<group>"; };
@@ -1252,6 +1258,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		5A00659021D4A96700269379 /* ZWHImgView */ = {
+			isa = PBXGroup;
+			children = (
+				5A00659121D4A96700269379 /* ZWHScanImage.h */,
+				5A00659221D4A96700269379 /* ZWHImageView.m */,
+				5A00659321D4A96700269379 /* ZWHScanImage.m */,
+				5A00659421D4A96700269379 /* ZWHImageView.h */,
+			);
+			path = ZWHImgView;
+			sourceTree = "<group>";
+		};
 		5A03184121A91D560065432F /* Order */ = {
 			isa = PBXGroup;
 			children = (
@@ -1288,6 +1305,7 @@
 		5A03184921A91E840065432F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				5A00659021D4A96700269379 /* ZWHImgView */,
 				5AD0B6BC21AE970200228AE7 /* HQPickerView.h */,
 				5AD0B6BB21AE970200228AE7 /* HQPickerView.m */,
 				5A03184A21A91EA40065432F /* OrderManagemenCell.h */,
@@ -3149,6 +3167,7 @@
 				B0D51A0F2192D14000FD91B5 /* UIView+TimeExtension.m in Sources */,
 				5A03F10E21CCDD2700972B51 /* SWGConfirmLoadingBean.m in Sources */,
 				5A6ED7A921BA533A0098FF1F /* AddTopScrollView.m in Sources */,
+				5A00659621D4A96700269379 /* ZWHImageView.m in Sources */,
 				5A979DB521B0E52B00A12203 /* CompanyGoodDetailVC.m in Sources */,
 				5AF52FC921BE585500DC188A /* SWGWarestoreTable.m in Sources */,
 				B0639F2E219E93720098878A /* TitlePersonVC.m in Sources */,
@@ -3198,6 +3217,7 @@
 				5A75E4B821B515120009EF5B /* AALabels.m in Sources */,
 				B061FB2D219C255F0056EE28 /* TitleCell.m in Sources */,
 				B09032D421A0046600A52A7A /* CityModel.m in Sources */,
+				5A00659721D4A96700269379 /* ZWHScanImage.m in Sources */,
 				5A8C51B421BA18A400207084 /* AddOrderGoodsCell.m in Sources */,
 				5A750BB721AB93EF00D8CF1F /* AddGoodCell.m in Sources */,
 				5A8BEEF821A7D4DD00ECE389 /* FollowTaskDetailVC.m in Sources */,

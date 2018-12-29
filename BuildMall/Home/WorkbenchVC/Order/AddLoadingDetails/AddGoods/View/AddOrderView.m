@@ -142,6 +142,7 @@
     _lenthLable.text = [NSString stringWithFormat:@"*%@",dict[@"specValue"]];
 }
 
+//添加库存商品
 -(void)setBeanModel:(GoodsBeansListModel *)beanModel
 {
     _beanModel = beanModel;
@@ -197,6 +198,7 @@
     
 }
 
+//修改数量和价格
 - (void)setDetailModel:(OrderDetailModel *)detailModel
 {
     _detailModel = detailModel;
@@ -243,7 +245,6 @@
         
     }
 
-//    _nameLable.text = detailModel.goodsName;;
     _specifLable.text = [NSString stringWithFormat:@"%@，%@，%@，",tableDic[@"brandName"],modelDict[@"shuzhong"],modelDict[@"dengji"]];
     [_numBtn setTitle:_detailModel.buyNumber forState:UIControlStateNormal];
     
@@ -270,17 +271,17 @@
     
     if (detailModel.packages) {
 
+        //自定义商品
         NSMutableDictionary* dict = [detailModel.packages mj_JSONObject];
-        if (!dict[@"thickness"]) {
-            _houLable.text = [NSString stringWithFormat:@"%@",dict[@"width"]];
+        if (!dict[@"houdu"]) {
+            _houLable.text = [NSString stringWithFormat:@"%@",dict[@"kuandu"]];
         }else
         {
-            _houLable.text = [NSString stringWithFormat:@"     %@*%@",dict[@"thickness"],dict[@"width"]];
+            _houLable.text = [NSString stringWithFormat:@"     %@*%@",dict[@"houdu"],dict[@"kuandu"]];
         }
-        
-        _specifLable.text = [NSString stringWithFormat:@"%@，%@，%@，",dict[@"species"],dict[@"brandName"],dict[@"grade"]];
-        _lenthLable.text = [NSString stringWithFormat:@"*%@",dict[@"length"]];
-        _unitLable.text = [NSString stringWithFormat:@"%@%@",dict[@"cubicNum"],@"m³"];
+        _specifLable.text = [NSString stringWithFormat:@"%@，%@，%@，",dict[@"shuzhong"],dict[@"pinpai"],dict[@"dengji"]];
+        _lenthLable.text = [NSString stringWithFormat:@"*%@",dict[@"changdu"]];
+        _unitLable.text = [NSString stringWithFormat:@"%@%@",dict[@"lifangshu"],@"m³"];
         _keshouLable.hidden = YES;
     }
 }
@@ -392,17 +393,20 @@
     [dict setObject:keshouStr forKey:@"lockNum"];
         
     if (!_detailModel.goodsId) {
-            
+        //自定义商品
         NSMutableDictionary* dictdata = [_detailModel.packages mj_JSONObject];
-        NSString* cubicNum = [NSString stringWithFormat:@"%@",dictdata[@"cubicNum"]];
+        NSString* cubicNum = [NSString stringWithFormat:@"%@",dictdata[@"lifangshu"]];
         [dict setObject:cubicNum forKey:@"cubicNumber"];
         [dict setObject:@"0" forKey:@"goodsId"];
     }else
     {
-    [dict setObject:_detailModel.goodsId forKey:@"goodsId"];
-    [dict setObject:_detailModel.unitNum forKey:@"cubicNumber"];
+    
+        [dict setObject:_detailModel.goodsId forKey:@"goodsId"];
+    
+        [dict setObject:_detailModel.unitNum forKey:@"cubicNumber"];
     }
-    [_delegate sureAction:dict];
+    
+        [_delegate sureAction:dict];
         
     }
 }

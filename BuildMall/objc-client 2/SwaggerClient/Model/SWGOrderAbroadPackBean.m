@@ -17,7 +17,7 @@
  * This method is used by `JSONModel`.
  */
 + (JSONKeyMapper *)keyMapper {
-    return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"buyNumber": @"buyNumber", @"buyPrice": @"buyPrice", @"categoryId": @"categoryId", @"cubicNumber": @"cubicNumber", @"goodsId": @"goodsId", @"lockNum": @"lockNum", @"orderId": @"orderId", @"packages": @"packages", @"stockNum": @"stockNum" ,@"orderPackId":@"orderPackId"}];
+    return [[JSONKeyMapper alloc] initWithModelToJSONDictionary:@{ @"buyNumber": @"buyNumber", @"buyPrice": @"buyPrice", @"categoryId": @"categoryId", @"cubicNumber": @"cubicNumber", @"goodsId": @"goodsId", @"lockNum": @"lockNum", @"orderId": @"orderId", @"packages": @"packages", @"stockNum": @"stockNum" ,@"orderPackId":@"orderPackId",@"orderDetailId":@"orderDetailId",@"packagesStr":@"packagesStr"}];
 }
 
 /**
@@ -27,7 +27,7 @@
  */
 + (BOOL)propertyIsOptional:(NSString *)propertyName {
 
-  NSArray *optionalProperties = @[@"buyNumber", @"buyPrice", @"categoryId", @"cubicNumber", @"goodsId", @"lockNum", @"orderId", @"packages", @"stockNum",@"orderPackId"];
+  NSArray *optionalProperties = @[@"buyNumber", @"buyPrice", @"categoryId", @"cubicNumber", @"goodsId", @"lockNum", @"orderId", @"packages", @"stockNum",@"orderPackId",@"orderDetailId",@"packagesStr"];
   return [optionalProperties containsObject:propertyName];
 }
 

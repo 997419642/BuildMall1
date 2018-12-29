@@ -119,6 +119,11 @@
         _addBtn.hidden = YES;
         _customBtn.hidden = YES;
         _meddleView.hidden = YES;
+    }else if ([model.orderStatus isEqualToString:@"10"])
+    {
+        _addBtn.hidden = YES;
+        _customBtn.hidden = YES;
+        _meddleView.hidden = YES;
     }
     
     NSMutableArray* numArray = [NSMutableArray array];

@@ -39,8 +39,13 @@
 
 @property(nonatomic) NSString* packages;
 
+@property(nonatomic) NSString* packagesStr;
+
+
 @property(nonatomic) NSNumber* orderPackId;
 
 @property(nonatomic) NSNumber* stockNum;
+
+@property(nonatomic) NSNumber* orderDetailId;
 
 @end

@@ -162,7 +162,7 @@
 
     for (NSMutableDictionary* dict in self.deliveryOrderArray) {
         SWGConfirmLoadingBean* bean;
-        if ([dict[@"packages"] isEqual:[NSNull null]]) {
+        if ([dict[@"goodsId"] intValue] != 0) {
             
             bean = [SWGConfirmLoadingBean new];
             bean.buyNumber = [NSNumber numberWithInt:[dict[@"buyNumber"] intValue]];
@@ -199,7 +199,16 @@
                 SubmittedSuccessfullyView *photoView = [SubmittedSuccessfullyView addSubmittedView];
                 photoView.delegate = self;
                 [photoView show];
-                [weakSelf.navigationController popViewControllerAnimated:YES];
+                OrderManageModel* model = _dataArray[0];
+                NSLog(@"---%@",weakSelf.navigationController.childViewControllers);
+
+                if ([model.orderStatus isEqualToString:@"4"]) {
+                    [weakSelf.navigationController popToViewController:weakSelf.navigationController.childViewControllers[1] animated:YES];
+
+                }else
+                {
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
+                }
             }
         }else
         {

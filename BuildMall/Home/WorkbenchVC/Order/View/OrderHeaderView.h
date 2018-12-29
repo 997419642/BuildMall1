@@ -33,6 +33,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *stateLable;
 @property (weak, nonatomic) IBOutlet UILabel *stateDetail;
 
+@property (weak, nonatomic) IBOutlet UILabel *guanbiLable;
 @property(nonatomic,strong)OrderManageModel* model;
 
 @property (strong, nonatomic)NSTimer* timer;

@@ -8,6 +8,11 @@
 
 #import "OrderBoomCell.h"
 #import <UIButton+WebCache.h>
+#import <UIImageView+WebCache.h>
+
+@interface OrderBoomCell ()<UITextFieldDelegate>
+
+@end
 
 @implementation OrderBoomCell
 
@@ -40,6 +45,12 @@
     _remarkLable.text = @"";
     _threenameLable.hidden = YES;
     _weiKuanLable.hidden = YES;
+    _youhuiTwoLable.hidden = YES;
+    _huiyouTwoTF.hidden = YES;
+    _youhuiTwoView.hidden = YES;
+    _daifuleftLable.hidden = YES;
+    _daifuLable.hidden = YES;
+    _daifuView.hidden = YES;
 
 }
 
@@ -47,15 +58,134 @@
 {
     
     _model = model;
-    if (model.actualMoney) {
+    if ([model.orderStatus isEqualToString:@"3"]) {
+        if (model.actualMoney) {
+            NSMutableArray* arr = (NSMutableArray *)model.actualMoney;
+            if (arr.count) {
+                NSMutableDictionary* actualDict = arr[0];
+                NSLog(@"--%@",actualDict[@"payImage"]);
+                NSString *strUrl = [actualDict[@"payImage"] stringByReplacingOccurrencesOfString:@"," withString:@""];
+                NSString* imageUrl = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",strUrl];
+                if (![actualDict[@"payImage"] isEqual:[NSNull null]]) {
+
+                    [_imgView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                }
+            }
+        }
+    }
+    
+    
+    //转账凭证
+    if ([model.orderStatus isEqualToString:@"6"] || [model.orderStatus isEqualToString:@"7"] ||[model.orderStatus isEqualToString:@"8"] || [model.orderStatus isEqualToString:@"9"]) {
+        
         NSMutableArray* arr = (NSMutableArray *)model.actualMoney;
         if (arr.count) {
             NSMutableDictionary* actualDict = arr[0];
             if (![actualDict[@"payImage"] isEqual:[NSNull null]]) {
-                [_imgBtn sd_setImageWithURL:[NSURL URLWithString:actualDict[@"payImage"]] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"xxx"]];
+                NSLog(@"--%@",actualDict[@"payImage"]);
+                NSString *strUrl = [actualDict[@"payImage"] stringByReplacingOccurrencesOfString:@"," withString:@""];
+                NSString* imageUrl = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",strUrl];
+                [_dingjinImg sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"xxx"]];
             }
+            
+            if (arr.count > 1) {
+                
+                NSMutableDictionary* actualDict0 = arr[1];
+                NSArray* array = [actualDict0[@"payImage"] componentsSeparatedByString:@","];
+            
+                NSMutableArray* imgArr = [NSMutableArray arrayWithArray:array];
+                [imgArr removeObject:[imgArr lastObject]];
+                
+                //状态8.9时候把所有转账凭证显示在一起
+                if ([model.orderStatus isEqualToString:@"8"] || [model.orderStatus isEqualToString:@"9"]) {
+                    if (![actualDict[@"payImage"] isEqual:[NSNull null]]) {
+                        NSString *strUrl = [actualDict[@"payImage"] stringByReplacingOccurrencesOfString:@"," withString:@""];
+                        [imgArr addObject:strUrl];
+                    }
+                }
+                
+                NSLog(@"--%@",imgArr);
+                if (imgArr.count == 1) {
+                    NSString* imageUrl0 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[0]];
+                    [_imgView sd_setImageWithURL:[NSURL URLWithString:imageUrl0] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                   
+                }else if (imgArr.count == 2)
+                {
+                    NSString* imageUrl0 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[0]];
+                    [_imgView sd_setImageWithURL:[NSURL URLWithString:imageUrl0] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                    
+                    
+                    NSString* imageUrl1 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[1]];
+                    [_imgTwo sd_setImageWithURL:[NSURL URLWithString:imageUrl1] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                }else if (imgArr.count == 3)
+                {
+                    NSString* imageUrl0 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[0]];
+                    [_imgView sd_setImageWithURL:[NSURL URLWithString:imageUrl0] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                    
+                    
+                    NSString* imageUrl1 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[1]];
+                    [_imgTwo sd_setImageWithURL:[NSURL URLWithString:imageUrl1] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                    
+                    NSString* imageUrl2 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[2]];
+                    [_imgThree sd_setImageWithURL:[NSURL URLWithString:imageUrl2] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                }else if (imgArr.count == 4)
+                {
+                    NSString* imageUrl0 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[0]];
+                    [_imgView sd_setImageWithURL:[NSURL URLWithString:imageUrl0] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                    
+                    
+                    NSString* imageUrl1 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[1]];
+                    [_imgTwo sd_setImageWithURL:[NSURL URLWithString:imageUrl1] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                    
+                    NSString* imageUrl2 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[2]];
+                    [_imgThree sd_setImageWithURL:[NSURL URLWithString:imageUrl2] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                    
+                    NSString* imageUrl3 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[3]];
+                    [_imgFour sd_setImageWithURL:[NSURL URLWithString:imageUrl3] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                }else if (imgArr.count == 5)
+                {
+                    NSString* imageUrl0 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[0]];
+                    [_imgView sd_setImageWithURL:[NSURL URLWithString:imageUrl0] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                    
+                    
+                    NSString* imageUrl1 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[1]];
+                    [_imgTwo sd_setImageWithURL:[NSURL URLWithString:imageUrl1] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                    
+                    NSString* imageUrl2 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[2]];
+                    [_imgThree sd_setImageWithURL:[NSURL URLWithString:imageUrl2] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                    
+                    NSString* imageUrl3 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[3]];
+                    [_imgFour sd_setImageWithURL:[NSURL URLWithString:imageUrl3] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                    
+                    NSString* imageUrl4 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[4]];
+                    [_imgFive sd_setImageWithURL:[NSURL URLWithString:imageUrl4] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                }else if (imgArr.count == 6)
+                {
+                    NSString* imageUrl0 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[0]];
+                    [_imgView sd_setImageWithURL:[NSURL URLWithString:imageUrl0] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                    
+                    
+                    NSString* imageUrl1 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[1]];
+                    [_imgView sd_setImageWithURL:[NSURL URLWithString:imageUrl1] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                    
+                    NSString* imageUrl2 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[2]];
+                    [_imgTwo sd_setImageWithURL:[NSURL URLWithString:imageUrl2] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                    
+                    NSString* imageUrl3 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[3]];
+                    [_imgThree sd_setImageWithURL:[NSURL URLWithString:imageUrl3] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                    
+                    NSString* imageUrl4 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[4]];
+                    [_imgFive sd_setImageWithURL:[NSURL URLWithString:imageUrl4] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                    
+                    NSString* imageUrl5 = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",imgArr[5]];
+                    [_Imgsix sd_setImageWithURL:[NSURL URLWithString:imageUrl5] placeholderImage:[UIImage imageNamed:@"xxx"]];
+                }
+          
+            }
+           
         }
     }
+    
     
     if ([model.orderStatus isEqualToString:@"0"]) {
         
@@ -128,11 +258,13 @@
         
         _addLoadingDetails.backgroundColor = [UIColor colorWithHexString:@"D8D8D8"];
         
-        
         if ([model.payType isEqualToString:@"1"]) {
+            //定金金额
+            
             [_twoRightBtn setTitle:@"定金加尾款" forState:UIControlStateNormal];
             NSMutableArray* array = (NSMutableArray *)model.actualMoney;
             NSMutableDictionary* dicActual = array[0];
+            NSLog(@"--%@",dicActual[@"payAmount"]);
             _threeLable.text = [NSString stringWithFormat:@"￥%@",dicActual[@"payAmount"]];
             
         }else if ([model.payType isEqualToString:@"2"])
@@ -200,6 +332,7 @@
             [_oneRightBtn setTitle:@"含税" forState:UIControlStateNormal];
         }
         
+        
     }else if ([model.orderStatus isEqualToString:@"4"])
     {
         //卖家到款后卖家待装货
@@ -233,22 +366,6 @@
         _threenameLable.hidden = NO;
         [_addLoadingDetails setTitle:@"添加装车明细" forState:UIControlStateNormal];
         
-        if ([model.isPicker isEqualToString:@"1"]) {
-            [_oneRightBtn setTitle:@"未确认" forState:UIControlStateNormal];
-            [_twoRightBtn setTitle:@"未确认" forState:UIControlStateNormal];
-            [_fourRightBtn setTitle:@"未确认" forState:UIControlStateNormal];
-            _threenameLable.text = @"未确认";
-            [_fiveRightBtn setTitle:@"未确认" forState:UIControlStateNormal];
-            _addLoadingDetails.backgroundColor = [UIColor colorWithHexString:@"D8D8D8"];
-            _addLoadingDetails.userInteractionEnabled = NO;
-            
-        }else if([model.isPicker isEqualToString:@"0"])
-        {
-            _addLoadingDetails.userInteractionEnabled = YES;
-            _addLoadingDetails.backgroundColor = MINE_Color;
-            
-        }
-        
         
     }else if ([model.orderStatus isEqualToString:@"5"])
     {
@@ -257,8 +374,7 @@
     {
         
         //买家装货确认后买家待结算
-        [_threeBtn setTitle:@"已支付定金" forState:UIControlStateNormal];
-        _youhuiLable.text = @"需支付尾款";
+        _youhuiLable.text = @"尾款金额";
         _youhuiTF.hidden = YES;
         _weiKuanLable.hidden = NO;
         _closeBtn.hidden = YES;
@@ -271,32 +387,33 @@
         _addLoadingDetails.hidden = NO;
         [_addLoadingDetails setTitle:@"确认到款" forState:UIControlStateNormal];
         [_lookBtn setTitle:@"修改装货单" forState:UIControlStateNormal];
+        _youhuiTwoLable.hidden = NO;
+        _huiyouTwoTF.hidden = NO;
+        _youhuiTwoView.hidden = NO;
 
         [_addLoadingDetails setBackgroundColor:[UIColor colorWithHexString:@"D8D8D8"]];
         _addLoadingDetails.userInteractionEnabled = NO;
         
-        NSMutableDictionary* dict = model.actualMoney[0];
-        _threeLable.text = [NSString stringWithFormat:@"￥%@",dict[@"actualMoney"]];
-        
-        float priceNum = [model.totalPrice floatValue] - [dict[@"actualMoney"] floatValue];
-        
-        _weiKuanLable.text = [NSString stringWithFormat:@"￥%.2f",priceNum];
-        
+        _daifuView.hidden = NO;
+        _daifuLable.hidden = NO;
+        _daifuleftLable.hidden = NO;
         
         if ([model.payType isEqualToString:@"1"]) {
+            [_threeBtn setTitle:@"已支付定金" forState:UIControlStateNormal];
+
             [_twoRightBtn setTitle:@"定金加尾款" forState:UIControlStateNormal];
-            NSMutableArray* array = (NSMutableArray *)model.actualMoney;
-            NSMutableDictionary* dicActual = array[0];
-            _threeLable.text = [NSString stringWithFormat:@"￥%@",dicActual[@"payAmount"]];
-            
+
         }else if ([model.payType isEqualToString:@"2"])
         {
+            [_threeBtn setTitle:@"已支付金额" forState:UIControlStateNormal];
+
             [_twoRightBtn setTitle:@"先装车后全款" forState:UIControlStateNormal];
-            _threeLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];
+            
         }else
         {
+            [_threeBtn setTitle:@"已支付金额" forState:UIControlStateNormal];
+
             [_twoRightBtn setTitle:@"先全款后装车" forState:UIControlStateNormal];
-            _threeLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];
         }
         
         if ([model.invoiceType isEqualToString:@"0"]) {
@@ -307,13 +424,14 @@
         {
             [_oneRightBtn setTitle:@"含税" forState:UIControlStateNormal];
         }
+
         
         
+ 
     }else if ([model.orderStatus isEqualToString:@"7"])
     {
         //买家结算之后待卖家确认结算
-        [_threeBtn setTitle:@"已支付定金" forState:UIControlStateNormal];
-        _youhuiLable.text = @"需支付尾款";
+        _youhuiLable.text = @"尾款金额";
         _youhuiTF.hidden = YES;
         _weiKuanLable.hidden = NO;
         _closeBtn.hidden = YES;
@@ -326,20 +444,34 @@
         _addLoadingDetails.hidden = NO;
         [_addLoadingDetails setTitle:@"确认到款" forState:UIControlStateNormal];
         [_lookBtn setTitle:@"修改装货单" forState:UIControlStateNormal];
+        _youhuiTwoLable.hidden = NO;
+        _huiyouTwoTF.hidden = NO;
+        _youhuiTwoView.hidden = NO;
+        _daifuView.hidden = NO;
+        _daifuLable.hidden = NO;
+        _daifuleftLable.hidden = NO;
+        
+        [_lookBtn setBackgroundColor:[UIColor colorWithHexString:@"D8D8D8"]];
+        _lookBtn.userInteractionEnabled = NO;
+        [_lookBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _lookBtn.layer.borderColor = [UIColor colorWithHexString:@"D8D8D8"].CGColor;
         
         if ([model.payType isEqualToString:@"1"]) {
+            [_threeBtn setTitle:@"已支付定金" forState:UIControlStateNormal];
+
             [_twoRightBtn setTitle:@"定金加尾款" forState:UIControlStateNormal];
-            //需要在改改
-            NSMutableDictionary* dict = model.actualMoney[0];
-            _threeLable.text = [NSString stringWithFormat:@"￥%@",dict[@"actualMoney"]];
         }else if ([model.payType isEqualToString:@"2"])
         {
+            [_threeBtn setTitle:@"已支付金额" forState:UIControlStateNormal];
+
             [_twoRightBtn setTitle:@"先装车后全款" forState:UIControlStateNormal];
             _threeLable.text = [NSString stringWithFormat:@"￥%@",@"0"];
         }else
         {
+            [_threeBtn setTitle:@"已支付金额" forState:UIControlStateNormal];
+
             [_twoRightBtn setTitle:@"先全款后装车" forState:UIControlStateNormal];
-            _threeLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];
+//            _threeLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];
         }
         
         if ([model.invoiceType isEqualToString:@"0"]) {
@@ -348,11 +480,7 @@
         {
             [_oneRightBtn setTitle:@"含税" forState:UIControlStateNormal];
         }
-        
-        //需要在改改
-        NSMutableDictionary* dict = model.actualMoney[0];
-        float priceNum = [model.totalPrice floatValue] - [dict[@"actualMoney"] floatValue];
-        _weiKuanLable.text = [NSString stringWithFormat:@"￥%.2f",priceNum];
+
         
     }else if ([model.orderStatus isEqualToString:@"8"])
     {
@@ -375,20 +503,32 @@
         _zheView.hidden = YES;
         [_shenheBtn setTitle:@"确认发货" forState:UIControlStateNormal];
         
+        
+        NSMutableArray* array = (NSMutableArray *)model.actualMoney;
+        
+        NSMutableArray* priceArr = [NSMutableArray array];
+        
+        for (NSMutableDictionary* dict in array) {
+            
+            [priceArr addObject:dict[@"actualMoney"]];
+        }
+        
+        CGFloat allPrice = [[priceArr valueForKeyPath:@"@sum.floatValue"] floatValue];
+        _threeLable.text = [NSString stringWithFormat:@"￥%.2f",allPrice];
+        _dingjinImg.hidden = YES;
+        
+        //优惠金额
+        _weiKuanLable.text = [NSString stringWithFormat:@"￥%@",model.discountPrice];
+        
         if ([model.payType isEqualToString:@"1"]) {
             [_twoRightBtn setTitle:@"定金加尾款" forState:UIControlStateNormal];
-            //需要在改改
-
-            _threeLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];
             
         }else if ([model.payType isEqualToString:@"2"])
         {
             [_twoRightBtn setTitle:@"先装车后全款" forState:UIControlStateNormal];
-            _threeLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];
         }else
         {
             [_twoRightBtn setTitle:@"先全款后装车" forState:UIControlStateNormal];
-            _threeLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];
         }
         
         if ([model.invoiceType isEqualToString:@"0"]) {
@@ -423,19 +563,31 @@
         [_shenheBtn setBackgroundColor:[UIColor colorWithHexString:@"D8D8D8"]];
         _shenheBtn.userInteractionEnabled = NO;
         
+        NSMutableArray* array = (NSMutableArray *)model.actualMoney;
+        
+        NSMutableArray* priceArr = [NSMutableArray array];
+        
+        for (NSMutableDictionary* dict in array) {
+            
+            [priceArr addObject:dict[@"actualMoney"]];
+        }
+        
+        CGFloat allPrice = [[priceArr valueForKeyPath:@"@sum.floatValue"] floatValue];
+        _threeLable.text = [NSString stringWithFormat:@"￥%.2f",allPrice];
+        _dingjinImg.hidden = YES;
+        
+        //优惠金额
+        _weiKuanLable.text = [NSString stringWithFormat:@"￥%@",model.discountPrice];
+        
         if ([model.payType isEqualToString:@"1"]) {
             [_twoRightBtn setTitle:@"定金加尾款" forState:UIControlStateNormal];
-            //需要在改改
-            _threeLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];
             
         }else if ([model.payType isEqualToString:@"2"])
         {
             [_twoRightBtn setTitle:@"先装车后全款" forState:UIControlStateNormal];
-            _threeLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];
         }else
         {
             [_twoRightBtn setTitle:@"先全款后装车" forState:UIControlStateNormal];
-            _threeLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];
         }
         
         if ([model.invoiceType isEqualToString:@"0"]) {
@@ -468,39 +620,134 @@
         _shenheBtn.backgroundColor = [UIColor colorWithHexString:@"D8D8D8"];
         _shenheBtn.userInteractionEnabled = NO;
         _closeBtn.hidden = YES;
+        
+    }else if ([model.orderStatus isEqualToString:@"10"])
+    {
+        
+        if ([model.ishaveArrears isEqualToString:@"1"]) {
+            
+            //有欠款
+            _top.constant = 256;
+            [_threeBtn setTitle:@"已支付定金" forState:UIControlStateNormal];
+            _youhuiLable.text = @"尾款金额";
+            _youhuiTF.hidden = YES;
+            _weiKuanLable.hidden = NO;
+            _closeBtn.hidden = YES;
+            _shneheOne.hidden = YES;
+            _shenheTwo.hidden = YES;
+            _shneheThree.hidden = YES;
+            _sureLable.hidden = YES;
+            _shenheBtn.hidden = YES;
+            _lookBtn.hidden = NO;
+            _addLoadingDetails.hidden = NO;
+            _actualTF.hidden = NO;
+            _trueLable.hidden = NO;
+            _zheView.hidden = YES;
+            [_lookBtn setTitle:@"交易完成" forState:UIControlStateNormal];
+            [_lookBtn setBackgroundColor:[UIColor colorWithHexString:@"D8D8D8"]];
+            [_lookBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            _lookBtn.layer.borderColor = [UIColor colorWithHexString:@"D8D8D8"].CGColor;
+            [_addLoadingDetails setTitle:@"确认到款" forState:UIControlStateNormal];
+            
+            _youhuiTwoLable.hidden = NO;
+            _huiyouTwoTF.hidden = NO;
+            _youhuiTwoView.hidden = NO;
+            _daifuView.hidden = NO;
+            _daifuLable.hidden = NO;
+            _daifuleftLable.hidden = NO;
+            
+            _lookBtn.userInteractionEnabled = NO;
+            _addLoadingDetails.userInteractionEnabled = YES;
+            
+            NSMutableArray* array = (NSMutableArray *)model.actualMoney;
+            
+            NSMutableArray* priceArr = [NSMutableArray array];
+            
+            for (NSMutableDictionary* dict in array) {
+                
+                [priceArr addObject:dict[@"actualMoney"]];
+            }
+
+            _dingjinImg.hidden = YES;
+            
+            if ([model.payType isEqualToString:@"1"]) {
+                [_twoRightBtn setTitle:@"定金加尾款" forState:UIControlStateNormal];
+                
+            }else if ([model.payType isEqualToString:@"2"])
+            {
+                [_twoRightBtn setTitle:@"先装车后全款" forState:UIControlStateNormal];
+            }else
+            {
+                [_twoRightBtn setTitle:@"先全款后装车" forState:UIControlStateNormal];
+            }
+            
+            if ([model.invoiceType isEqualToString:@"0"]) {
+                [_oneRightBtn setTitle:@"不含税" forState:UIControlStateNormal];
+            }else
+            {
+                [_oneRightBtn setTitle:@"含税" forState:UIControlStateNormal];
+            }
+            
+        }else
+        {
+        
+        //没有欠款
+        _top.constant = 106.5;
+        [_threeBtn setTitle:@"支付金额合计" forState:UIControlStateNormal];
+        _youhuiLable.text = @"优惠金额";
+        _youhuiTF.hidden = YES;
+        _weiKuanLable.hidden = NO;
+        _closeBtn.hidden = YES;
+        _shneheOne.hidden = YES;
+        _shenheTwo.hidden = YES;
+        _shneheThree.hidden = YES;
+        _sureLable.hidden = YES;
+        _shenheBtn.hidden = NO;
+        _lookBtn.hidden = YES;
+        _addLoadingDetails.hidden = YES;
+        _actualTF.hidden = YES;
+        _trueLable.hidden = YES;
+        _zheView.hidden = YES;
+        [_shenheBtn setTitle:@"交易完成" forState:UIControlStateNormal];
+        [_shenheBtn setBackgroundColor:[UIColor colorWithHexString:@"D8D8D8"]];
+        _shenheBtn.userInteractionEnabled = NO;
+        
+        NSMutableArray* array = (NSMutableArray *)model.actualMoney;
+        
+        NSMutableArray* priceArr = [NSMutableArray array];
+        
+        for (NSMutableDictionary* dict in array) {
+            
+            [priceArr addObject:dict[@"actualMoney"]];
+        }
+        
+        CGFloat allPrice = [[priceArr valueForKeyPath:@"@sum.floatValue"] floatValue];
+        _threeLable.text = [NSString stringWithFormat:@"￥%.2f",allPrice];
+        _dingjinImg.hidden = YES;
+        
+        //优惠金额
+        _weiKuanLable.text = [NSString stringWithFormat:@"￥%@",model.discountPrice];
+        
+        if ([model.payType isEqualToString:@"1"]) {
+            [_twoRightBtn setTitle:@"定金加尾款" forState:UIControlStateNormal];
+            
+        }else if ([model.payType isEqualToString:@"2"])
+        {
+            [_twoRightBtn setTitle:@"先装车后全款" forState:UIControlStateNormal];
+        }else
+        {
+            [_twoRightBtn setTitle:@"先全款后装车" forState:UIControlStateNormal];
+        }
+        
+        if ([model.invoiceType isEqualToString:@"0"]) {
+            [_oneRightBtn setTitle:@"不含税" forState:UIControlStateNormal];
+        }else
+        {
+            [_oneRightBtn setTitle:@"含税" forState:UIControlStateNormal];
+        }
     }
-    
-//    if (![_model.orderStatus isEqualToString:@"1"] && ![_model.orderStatus isEqualToString:@"6"]) {
-//        if ([model.payType isEqualToString:@"1"]) {
-//
-//            [_twoRightBtn setTitle:@"定金加尾款" forState:UIControlStateNormal];
-//            if (_model.actualMoney == nil) {
-//                _threeLable.text = [NSString stringWithFormat:@"￥%@",@"200"];
-//
-//            }else
-//            {
-//                if ([_threeBtn.titleLabel.text isEqualToString:@"支付金额合计"]) {
-//                       _threeLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];
-//                }else
-//                {
-//                NSMutableArray* array = (NSMutableArray *)model.actualMoney;
-//                NSMutableDictionary* dicActual = array[0];
-//                _threeLable.text = [NSString stringWithFormat:@"￥%@",dicActual[@"payAmount"]];
-//                }
-//            }
-//
-//        }else if ([model.payType isEqualToString:@"2"])
-//        {
-//            [_twoRightBtn setTitle:@"先装车后全款" forState:UIControlStateNormal];
-//            _threeLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];
-//
-//        }else if ([model.payType isEqualToString:@"3"])
-//        {
-//            [_twoRightBtn setTitle:@"先全款后装车" forState:UIControlStateNormal];
-//            _threeLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];
-//
-//        }
-//    }
+        
+    }
     
 }
 
@@ -532,13 +779,16 @@
     
     [_delegate closeAction:self];
 }
+- (IBAction)imgAction:(UIButton *)sender {
+    
+    [_delegate imgAction:_imgView];
+}
 
 - (IBAction)addLoadingAction:(UIButton *)sender {
     [_delegate addLoadingDetail:sender];
 }
 
 - (IBAction)lookAction:(UIButton *)sender {
-    
     [_delegate lookAction:_model.orderStatus];
 }
 - (IBAction)oneAction:(UIButton *)sender {
@@ -551,6 +801,30 @@
     [_delegate payNumAction];
 }
 
+- (IBAction)dingjinAction:(id)sender {
+    [_delegate imgAction:_dingjinImg];
 
+}
+
+- (IBAction)twoimgAction:(id)sender {
+    [_delegate imgAction:_imgTwo];
+
+}
+- (IBAction)threeImgAction:(id)sender {
+    [_delegate imgAction:_imgThree];
+
+}
+- (IBAction)fourImgAction:(id)sender {
+    [_delegate imgAction:_imgFour];
+
+}
+- (IBAction)fiveImgAction:(id)sender {
+    [_delegate imgAction:_imgFive];
+
+}
+- (IBAction)sixImgAction:(id)sender {
+    [_delegate imgAction:_Imgsix];
+
+}
 
 @end

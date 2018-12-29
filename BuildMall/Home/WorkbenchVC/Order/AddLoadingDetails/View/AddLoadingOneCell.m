@@ -17,10 +17,15 @@
 
 - (void)setModel:(OrderDetailModel *)model
 {
-    _model = model;
-    NSMutableArray* productTableList = (NSMutableArray *)model.productTableList;
-    NSMutableDictionary* tableDic = productTableList[0];
-    _nameLable.text = tableDic[@"title"];
+//    _model = model;
+//    if ([model.categoryId isEqualToString:@"1"]) {
+//        _nameLable.text = @"原木";
+//        
+//    }else if([model.categoryId isEqualToString:@"2"])
+//    {
+//        _nameLable.text = @"实木板材";
+//        
+//    }
 }
 
 -(void)setDict:(NSMutableDictionary *)dict

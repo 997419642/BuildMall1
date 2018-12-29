@@ -19,9 +19,14 @@
 {
     _model = model;
     
-    NSMutableArray* productTableList = (NSMutableArray *)model.productTableList;
-    NSMutableDictionary* tableDic = productTableList[0];
-    _namelable.text = tableDic[@"title"];
+    if ([model.categoryId isEqualToString:@"1"]) {
+        _namelable.text = @"原木";
+
+    }else if([model.categoryId isEqualToString:@"2"])
+    {
+        _namelable.text = @"实木板材";
+
+    }
     
 }
 

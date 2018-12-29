@@ -22,9 +22,10 @@
 #import "SWGOrderPackControllerApi.h"
 #import "AddCustomPlankVC.h"
 #import "ChangePriceView.h"
+#import "DeleteView.h"
 
 
-@interface AddLoadingDetails ()<UITableViewDelegate,UITableViewDataSource,AddLoadingFiveCellDelegate,AddLoadingFourCellDelegate,ChangePriceViewDelegate>
+@interface AddLoadingDetails ()<UITableViewDelegate,UITableViewDataSource,AddLoadingFiveCellDelegate,AddLoadingFourCellDelegate,ChangePriceViewDelegate,DeleteViewDelegate>
 
 @property(nonatomic,strong)UITableView* tableView;
 
@@ -39,6 +40,9 @@
 @property(nonatomic,assign)CGFloat allPrice;
 @property(nonatomic,assign)int allNum;
 @property(nonatomic,assign)CGFloat allUnit;
+
+@property(nonatomic,strong)DeleteView* deleteView;
+
 
 @end
 
@@ -151,14 +155,17 @@
                 NSMutableArray* lifangshuArray = [NSMutableArray array];
 
                 for (NSMutableDictionary* dict in weakSelf.deliveryOrderArray) {
-                     if ([dict[@"packages"] isEqual:[NSNull null]]) {
+                     if ([dict[@"goodsId"] intValue] != 0) {
 
                         //库存商品
-                         if ([dict[@"categoryId"] intValue] == 1) {
+                         if ([_categoryId intValue] == 1) {
                              //原木
                              NSString* number = [NSString stringWithFormat:@"%@",dict[@"buyNumber"]];
                              NSString* price = [NSString stringWithFormat:@"%@",dict[@"buyPrice"]];
-                             numPrice = [number floatValue]*[price floatValue]*[dict[@"unitNum"] floatValue];
+                            
+                            numPrice = [number floatValue]*[price floatValue]*[dict[@"unitNum"] floatValue];
+                        
+                        
                              numshuliang = [number floatValue];
                              numunitNum = [dict[@"unitNum"] floatValue];
                          }else
@@ -172,6 +179,9 @@
                      }else
                      {
                          //自定义商品dict
+                         
+                         NSLog(@"--%@",dict[@"packages"]);
+
                          NSMutableDictionary* dataDict = [dict[@"packages"] mj_JSONObject];
 
                          if (!dataDict[@"houdu"]) {
@@ -187,12 +197,10 @@
                               //板材
                              NSString* price = [NSString stringWithFormat:@"%@",dict[@"buyPrice"]];
                              numPrice = [price floatValue]*[dataDict[@"lifangshu"] floatValue];
-                             
                              numshuliang = [@"1" floatValue];
                              numunitNum = [dataDict[@"lifangshu"] floatValue];
                              
                          }
-        
                      }
                     
                     [priceArray addObject:[NSString stringWithFormat:@"%f",numPrice]];
@@ -334,19 +342,22 @@
     if (indexPath.section == 1) {
         OrderManageModel* model = _dataArray[0];
         OrderDetailModel* detailModel = model.orderDetailList[indexPath.row];
-        if ([detailModel.categoryId isEqualToString:@"1"]) {
-            
-            //板材
+        if ([_categoryId isEqualToString:@"1"]) {
+            //原木
             AddCustomPlankVC* VC = [AddCustomPlankVC new];
             VC.detailModel = detailModel;
             VC.model = model;
+            VC.categoryId = _categoryId;
+
             [self.navigationController pushViewController:VC animated:YES];
+
         }else
         {
-            //原木
+            //板材
             AddCustomVC* VC = [AddCustomVC new];
             VC.detailModel = detailModel;
             VC.model = model;
+            VC.categoryId = _categoryId;
             [self.navigationController pushViewController:VC animated:YES];
         }
         
@@ -421,23 +432,25 @@
     }
 }
 
--(void)deleteAction:(NSString *)ID
+-(void)sureDelete:(NSString *)orderID
 {
     NSMutableArray* array = [NSMutableArray array];
     
-    NSNumber* num = [NSNumber numberWithInt:[ID intValue]];
+    NSNumber* num = [NSNumber numberWithInt:[orderID intValue]];
     [array addObject:num];
     
     
     SWGOrderPackControllerApi*apiInstance = [[SWGOrderPackControllerApi alloc] init];
     __weak typeof(self)weakSelf = self;
-
-    [apiInstance cancelPackagesUsingGETWithAuthorization:@"Q" orderPackIdList:array completionHandler:^(SWGMessageResult *output, NSError *error) {
     
+    [apiInstance cancelPackagesUsingGETWithAuthorization:@"Q" orderPackIdList:array completionHandler:^(SWGMessageResult *output, NSError *error) {
+        
         if (!error) {
             if ([output.code intValue] == 0) {
                 
                 [weakSelf showAlert:@"删除成功"];
+                [weakSelf.deleteView removeFromSuperview];
+                [weakSelf.deleteView.backgroupView removeFromSuperview];
                 [weakSelf refreshing];
             }
         }else
@@ -448,19 +461,30 @@
         }
     }];
     
-//    [[WebClient sharedClient]orderPackCancelPackages:dict complete:^(ResponseMode *result, NSError *error) {
-//        if (!error) {
-//            if (result.code == 0) {
-//
-//            }
-//        }else
-//        {
-//            NSData * data = error.userInfo[@"com.alamofire.serialization.response.error.data"];
-//            NSString * str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-//            NSLog(@"错误原因:%@",str);
-//        }
-//
-//    }];
+    //    [[WebClient sharedClient]orderPackCancelPackages:dict complete:^(ResponseMode *result, NSError *error) {
+    //        if (!error) {
+    //            if (result.code == 0) {
+    //
+    //            }
+    //        }else
+    //        {
+    //            NSData * data = error.userInfo[@"com.alamofire.serialization.response.error.data"];
+    //            NSString * str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+    //            NSLog(@"错误原因:%@",str);
+    //        }
+    //
+    //    }];
+}
+
+-(void)deleteAction:(NSString *)ID
+{
+    
+    _deleteView = [DeleteView addDeleteVView];
+    _deleteView.delegate = self;
+    _deleteView.orderID = ID;
+    [_deleteView show];
+    
+    
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -476,7 +500,13 @@
         if (_dataArray.count) {
             OrderManageModel* model = _dataArray[0];
             OrderDetailModel* detailModel = model.orderDetailList[indexPath.row];
-            cell1.model = detailModel;
+            if ([_categoryId isEqualToString:@"1"]) {
+                cell1.nameLable.text = @"原木";
+            }else
+            {
+                cell1.nameLable.text = @"实木板材";
+                
+            }
             
             NSMutableArray* arr = (NSMutableArray *)detailModel.warestoreList;
             cell1.dict = arr[0];

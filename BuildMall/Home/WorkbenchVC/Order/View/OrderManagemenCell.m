@@ -31,6 +31,19 @@
         _priceLable.text = [NSString stringWithFormat:@"￥%@/%@",model.buyPrice,model.goodsNuit];
     }
     
+    if (_model.packages != nil) {
+        
+        NSMutableDictionary* dict = [model.packages mj_JSONObject];
+        _nameLable.text = dict[@"shuzhong"];
+
+        if (!dict[@"houdu"]) {
+            _volumeLable.text = [NSString stringWithFormat:@"%@，%@，%@*%@",dict[@"pinpai"],dict[@"dengji"],dict[@"kuandu"],dict[@"changdu"]];
+        }else
+        {
+            _volumeLable.text = [NSString stringWithFormat:@"%@,%@,%@*%@*%@",dict[@"pinpai"],dict[@"dengji"],dict[@"houdu"],dict[@"kuandu"],dict[@"changdu"]];
+        }
+    }else{
+    
     
     NSMutableArray* productTableList = (NSMutableArray *)model.productTableList;
     NSMutableDictionary* tableDic = productTableList[0];
@@ -82,6 +95,7 @@
     }else
     {
         _volumeLable.text = [NSString stringWithFormat:@"%@，%@，%@*%@*%@",tableDic[@"brandName"],modelDict[@"dengji"],modelDict[@"houdu"],modelDict[@"koujin"],lengthAttributesList[0][@"specValue"]];
+    }
     }
     
 }

@@ -21,6 +21,7 @@
         
         _secondsLable.hidden = YES;
         _miniteLable.hidden = YES;
+        _guanbiLable.hidden = YES;
         
     }
     return self;
@@ -46,6 +47,7 @@
                     
                     _secondsLable.hidden = NO;
                     _miniteLable.hidden = NO;
+                    _guanbiLable.hidden = NO;
                     
                     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
                     
@@ -185,6 +187,10 @@
     {
         _stateLable.text = @"待收货";
         
+    }else if ([model.orderStatus isEqualToString:@"10"])
+    {
+        _stateLable.text = @"交易成功";
+
     }
 }
 

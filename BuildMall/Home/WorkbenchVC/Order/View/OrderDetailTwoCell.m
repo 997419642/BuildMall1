@@ -149,11 +149,22 @@
         _priceTF.hidden = YES;
         _priceBtn.hidden = YES;
         
+    }else if ([_manegeModel.orderStatus isEqualToString:@"10"])
+    {
+        _keshouLable.hidden = YES;
+        _jiaBtn.hidden = YES;
+        _jianBtn.hidden = YES;
+        _deleteBtn.hidden = YES;
+        _rightLable.hidden = NO;
+        _addNumBtn.hidden = YES;
+        _priceTF.hidden = YES;
+        _priceBtn.hidden = YES;
     }
 }
 
 -(void)setModel:(OrderDetailModel *)model
 {
+    
     _rightLable.text = [NSString stringWithFormat:@"￥%@/%@",model.buyPrice,model.goodsNuit];
 
     NSMutableArray* productTableList = (NSMutableArray *)model.productTableList;
@@ -215,15 +226,17 @@
     NSString* keshouStr = [NSString stringWithFormat:@"%d",keshouNum];
     _keshouLable.text = [NSString stringWithFormat:@"可售%@",keshouStr];
     
-    //如果数据是自定义添加的商品，进行赋值
+    //如果数据是自定义添加的商品，赋值
     if (_model.packages != nil) {
         
         NSMutableDictionary* dict = [_model.packages mj_JSONObject];
-        if (!dict[@"thickness"]) {
-            _namelable.text = [NSString stringWithFormat:@"%@，%@，%@，%@*%@",dict[@"species"],dict[@"brandName"],dict[@"grade"],dict[@"width"],dict[@"length"]];
+        _rightLable.text = [NSString stringWithFormat:@"￥%@/%@",model.buyPrice,@"m³"];
+
+        if (!dict[@"houdu"]) {
+            _namelable.text = [NSString stringWithFormat:@"%@，%@，%@，%@*%@",dict[@"shuzhong"],dict[@"pinpai"],dict[@"dengji"],dict[@"kuandu"],dict[@"changdu"]];
         }else
         {
-            _namelable.text = [NSString stringWithFormat:@"%@，%@,%@,%@*%@*%@",dict[@"species"],dict[@"brandName"],dict[@"grade"],dict[@"thickness"],dict[@"width"],dict[@"length"]];
+            _namelable.text = [NSString stringWithFormat:@"%@，%@,%@,%@*%@*%@",dict[@"shuzhong"],dict[@"pinpai"],dict[@"dengji"],dict[@"houdu"],dict[@"kuandu"],dict[@"changdu"]];
         }
     }
 }

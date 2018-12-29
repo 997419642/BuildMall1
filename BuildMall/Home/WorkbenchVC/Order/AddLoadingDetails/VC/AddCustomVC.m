@@ -376,25 +376,17 @@
         SWGOrderAbroadPackBean* bean = [SWGOrderAbroadPackBean new];
         
         bean.buyPrice = _detailModel.buyPrice;
-        NSNumber *cubicNumber = [NSNumber numberWithInt:[_detailModel.unitNum intValue]];
-        bean.cubicNumber = cubicNumber;
         NSNumber *goodsId = [NSNumber numberWithInt:[_detailModel.goodsId intValue]];
         bean.goodsId = goodsId;
         NSNumber *orderId = [NSNumber numberWithInt:[_model.orderId intValue]];
         bean.orderId = orderId;
         NSNumber *Number = [NSNumber numberWithInt:[_detailModel.buyNumber intValue]];
         bean.buyNumber = Number;
-        //    NSNumber *buyNumber = [NSNumber numberWithInt:1];
-        //    bean.buyNumber = buyNumber;
-        NSNumber *categoryId = [NSNumber numberWithInt:[_detailModel.categoryId intValue]];
+        NSNumber *categoryId = [NSNumber numberWithInt:[_categoryId intValue]];
         bean.categoryId = categoryId;
-        NSNumber *stockNum = [NSNumber numberWithInt:[_detailModel.stockNum intValue]];
-        bean.stockNum = stockNum;
-        int num = [_detailModel.stockNum intValue] - [_detailModel.lockNum intValue];
-        NSNumber *lockNum = [NSNumber numberWithInt:num];
-        bean.lockNum = lockNum;
         bean.packages = packages.packetNumber;
-        
+        bean.orderPackId = [NSNumber numberWithInt:[packages.packetId intValue]];
+        bean.orderDetailId = [NSNumber numberWithInt:[_detailModel.orderDetailId intValue]];
         [array addObject:bean];
     }
     
