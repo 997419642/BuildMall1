@@ -141,6 +141,19 @@ strip_invalid_archs() {
   STRIP_BINARY_RETVAL=1
 }
 
+
+if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "${PODS_ROOT}/NELivePlayer/LivePlayer_iOS_SDK_v1.7.0/NELivePlayerFramework.framework"
+  install_framework "${PODS_ROOT}/NIMSDK/NIMSDK/NIMSDK.framework"
+  install_framework "${PODS_ROOT}/NIMSDK/NIMAVChat/NIMAVChat.framework"
+  install_framework "${PODS_ROOT}/NIMSDK/NIMAVChat/NMC.framework"
+fi
+if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "${PODS_ROOT}/NELivePlayer/LivePlayer_iOS_SDK_v1.7.0/NELivePlayerFramework.framework"
+  install_framework "${PODS_ROOT}/NIMSDK/NIMSDK/NIMSDK.framework"
+  install_framework "${PODS_ROOT}/NIMSDK/NIMAVChat/NIMAVChat.framework"
+  install_framework "${PODS_ROOT}/NIMSDK/NIMAVChat/NMC.framework"
+fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait
 fi

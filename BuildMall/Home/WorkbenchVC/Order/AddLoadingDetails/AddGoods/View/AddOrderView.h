@@ -52,6 +52,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic,strong)NSMutableDictionary* dict;
 
+@property(nonatomic,strong)NSMutableDictionary* genshuDict;
+
+
+@property(nonatomic,strong)OrderDBModel* DBmodel;
+
 //装货
 @property(nonatomic,strong)GoodsBeansListModel* parksModel;
 

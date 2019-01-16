@@ -21,7 +21,7 @@
 
 -(void)payNumAction;
 
--(void)lookAction:(NSString* )str;
+-(void)lookAction:(NSString* )str btn:(UIButton *)btn;
 
 -(void)imgAction:(UIImageView *)imgUrl;
 

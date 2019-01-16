@@ -110,7 +110,7 @@
     _dict = dict;
     
     
-    if ([dict[@"packages"] isEqual:[NSNull null]]) {
+    if ([dict[@"goodsId"] intValue] != 0) {
    
         //库存商品
         NSMutableArray* lengthList = dict[@"lengthList"];
@@ -220,7 +220,7 @@
 - (IBAction)changeAction:(id)sender {
     NSMutableDictionary* dict = [NSMutableDictionary dictionary];
     
-    if ([_dict[@"packages"] isEqual:[NSNull null]]) {
+    if ([_dict[@"goodsId"] intValue] != 0) {
         //库存商品
         [dict setObject:_dict[@"id"] forKey:@"orderPackId"];
         [dict setObject:_priceTF.text forKey:@"buyPrice"];
@@ -237,6 +237,7 @@
     }else
     {
         //自定义商品
+        
         NSMutableDictionary* datadict = [_dict[@"packages"] mj_JSONObject];
         [dict setObject:_dict[@"id"] forKey:@"orderPackId"];
         [dict setObject:_priceTF.text forKey:@"buyPrice"];

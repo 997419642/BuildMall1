@@ -33,52 +33,45 @@
 #import "SWGOrderPackControllerApi.h"
 #import "SWGComeStockBean.h"
 #import "ZWHScanImage.h"
+#import <sqlite3.h>
+#import "BasicNavigationController.h"
+
+
 
 @interface OrderManagementDetailVC ()<UITableViewDelegate,UITableViewDataSource,OrderBoomCellDelegate,OrderDetailTwoCellDelegate,DeleteViewDelegate,AddGoodCellDelegate,HQPickerViewDelegate,UITextFieldDelegate,AddOrderViewDelegate>
 
 
 @property(nonatomic,strong)UITableView* tableView;
-
 @property(nonatomic,strong)UITableView* topTableView;
-
-
 @property(nonatomic,copy)NSString * num;
-
 @property(nonatomic,strong)NSMutableArray* dataArray;
 @property(nonatomic,strong)DeleteView *photoView;
-
 @property(nonatomic,strong)OrderBoomCell *cell1;//最后一个区的cell
-
 @property(nonatomic,strong)NSMutableDictionary* modedic;
-
 @property(nonatomic,strong)AddOrderView *addView;//修改数量价格View
-
 @property(nonatomic,strong)NSMutableArray* PayAccoutArray;
 @property(nonatomic,strong)MoveGroupingModel* moveModel;//改变收歀账号数组
-
 @property(nonatomic,strong)NSMutableArray* logArray;
-
 @property(nonatomic,assign)int invoiceType;//是否含税
-
 @property(nonatomic,assign)int payType;
-
 @property(nonatomic,copy)NSString* fourStateStr;
 @property(nonatomic,strong)NSMutableArray* pickerInfoArray;
 @property(nonatomic) NSArray<SWGOrderDetailBean>* orderDetailList;
-
 @property(nonatomic,strong)UILabel* orderSnLable;
 @property(nonatomic,strong)UILabel* priceLable;
 @property(nonatomic,strong)UILabel* stateLable;
 @property(nonatomic,strong)NSMutableArray* deliveryOrderArray;
-
 //出货单
 @property(nonatomic,copy)NSString* allPrice;
 @property(nonatomic,assign)int allNum;
 @property(nonatomic,assign)CGFloat allUnit;
 @property(nonatomic,strong)NSString* fiveRightBtnStr;
-
 @property(nonatomic) NSArray<SWGComeStockBean>* stockBeanArray;
 
+@property (nonatomic,strong) NSMutableArray *dataList;
+
+//自己计算订单总价
+@property(nonatomic,copy)NSString* allOrderPrice;
 
 
 
@@ -91,6 +84,22 @@
     // Do any additional setup after loading the view from its nib.
     self.navigationItem.title = @"订单详情";
     
+    _dataList = [NSMutableArray array];
+    
+    UIBarButtonItem *backItem =[[UIBarButtonItem alloc]init];
+    backItem.title =@"返回";
+    self.navigationItem.backBarButtonItem = backItem;
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setImage:[UIImage imageNamed:@"n_back_arrow"] forState:UIControlStateNormal];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+    [button setTitle:@"返回" forState:UIControlStateNormal];
+    //设置换行识别方式
+    button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, 5, 0, -5);
+    [button sizeToFit];
+    [button addTarget:self action:@selector(pressleft) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:button];
+    
     _dataArray = [NSMutableArray array];
     _deliveryOrderArray = [NSMutableArray array];
     _PayAccoutArray = [NSMutableArray array];
@@ -98,6 +107,7 @@
     _pickerInfoArray = [NSMutableArray array];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenW, screenH-64) style:UITableViewStylePlain];
+    _tableView.backgroundColor = [UIColor colorWithHexString:@"F5F5F5"];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
     _tableView.delegate = self;
@@ -169,6 +179,190 @@
     [self requestPayAccout];
     [self requestLogInfo];
     
+    //获取数据库数据
+    if ([_orderStatus isEqualToString:@"1"] || [_orderStatus isEqualToString:@"2"]) {
+        [self refreshingFMDB];
+        
+        
+    }
+
+}
+
+
+-(void)requestData
+{
+    
+    [_dataList removeAllObjects];
+    OrderDBTool *noticeModelDBTool = [OrderDBTool shareInstance];
+    NSMutableArray *arr = [NSMutableArray arrayWithArray:[noticeModelDBTool selectAllModel]];
+    for (NSDictionary *dict in arr) {
+        OrderDBModel *model = [[OrderDBModel alloc]init];
+        model.noticeId = [dict valueForKey:@"noticeId"];
+        model.orderDetailId = [dict valueForKey:@"orderDetailId"];
+        model.buyNumber = [dict valueForKey:@"buyNumber"];
+        model.buyPrice = [dict valueForKey:@"buyPrice"];
+        model.unitNum = [dict valueForKey:@"unitNum"];
+        model.goodsId = [dict valueForKey:@"goodsId"];
+        model.stockNum = [dict valueForKey:@"stockNum"];
+        model.lockNum = [dict valueForKey:@"lockNum"];
+        model.goodsNuit = [dict valueForKey:@"goodsNuit"];
+        model.packages = [dict valueForKey:@"packages"];
+        model.genshu = [dict valueForKey:@"genshu"];
+        model.houdu = [dict valueForKey:@"houdu"];
+        model.kuandu = [dict valueForKey:@"kuandu"];
+        model.changdu = [dict valueForKey:@"changdu"];
+        model.shuzhong = [dict valueForKey:@"shuzhong"];
+        model.pinpai = [dict valueForKey:@"pinpai"];
+        model.dengji = [dict valueForKey:@"dengji"];
+        model.isCus = [dict valueForKey:@"isCus"];
+        model.cangku = [dict valueForKey:@"cangku"];
+//        model.goodsName = [dict valueForKey:@"goodsName"];
+        
+        [_dataList addObject:model];
+    }
+    [self.tableView reloadData];
+}
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    //从详情页返回时刷新页面
+    [self requestData];
+}
+
+-(void)pressleft
+{
+    OrderDBTool *noticeDBTool = [OrderDBTool shareInstance];
+    [noticeDBTool dropTable];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)dealloc{
+    
+    OrderDBTool *noticeDBTool = [OrderDBTool shareInstance];
+    [noticeDBTool dropTable];
+}
+
+//获取数据放数据库
+-(void)refreshingFMDB
+{
+    
+    OrderDBTool *noticeDBTool = [OrderDBTool shareInstance];
+    [noticeDBTool dropTable];
+    
+    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+    AMUserAccountInfo *userInfo = [AMUserAccountInfo shareInfo];
+    [dict setObject:userInfo.storeId forKey:@"storeId"];
+    [dict setObject:_orderId forKey:@"orderId"];
+    [dict setObject:_categoryId forKey:@"categoryId"];
+    
+    __weak typeof(self)weakSelf = self;
+    [_dataArray removeAllObjects];
+    [[WebClient sharedClient]myOrder:dict complete:^(ResponseMode *result, NSError *error) {
+        
+        if (!error) {
+            
+            if (result.code == 0) {
+                
+                weakSelf.dataArray = [OrderManageModel mj_objectArrayWithKeyValuesArray:result.data];
+                
+                OrderManageModel* model = weakSelf.dataArray[0];
+                
+                //存数据库
+                if ([model.orderStatus isEqualToString:@"1"] || [model.orderStatus isEqualToString:@"2"]) {
+                    OrderDBTool *noticeDBTool = [OrderDBTool shareInstance];
+                    [noticeDBTool createTable];
+                    for (OrderDetailModel* detailModel in model.orderDetailList) {
+                        NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+                        if (detailModel.packages == nil || [detailModel.packages isEqualToString:@""]){
+                            [dict setObject:@"" forKey:@"packages"];
+                            [dict setObject:detailModel.orderDetailId forKey:@"orderDetailId"];
+                            [dict setObject:detailModel.buyNumber forKey:@"buyNumber"];
+                            [dict setObject:detailModel.buyPrice forKey:@"buyPrice"];
+                            [dict setObject:detailModel.unitNum forKey:@"unitNum"];
+                            [dict setObject:detailModel.goodsId forKey:@"goodsId"];
+                            [dict setObject:detailModel.stockNum forKey:@"stockNum"];
+                            [dict setObject:detailModel.lockNum forKey:@"lockNum"];
+                            [dict setObject:detailModel.goodsNuit forKey:@"goodsNuit"];
+                            [dict setObject:@"NO" forKey:@"isCus"];
+                            NSMutableDictionary* warestore = detailModel.warestoreList[0];
+                            [dict setObject:[NSString stringWithFormat:@"%@ 地址：%@",warestore[@"name"],warestore[@"address"]] forKey:@"cangku"];
+                            NSMutableDictionary* dict0 = detailModel.numAttributes[0];
+                            //片数
+                            [dict setObject:dict0[@"specValue"] forKey:@"genshu"];
+                            NSMutableArray* productTableList = (NSMutableArray *)detailModel.productTableList;
+                            NSMutableDictionary* tableDic = productTableList[0];
+                            NSMutableArray* productAttributeList = productTableList[0][@"productAttributeList"];
+                            NSMutableArray* lengthAttributesList = (NSMutableArray *)detailModel.lengthAttributesList;
+                            NSMutableDictionary* modelDict = [NSMutableDictionary dictionary];
+                            for (NSMutableDictionary* dict in productAttributeList) {
+                                if ([dict[@"attrName"] isEqualToString:@"树种"]) {
+                                    [modelDict setObject:dict[@"attrValue"] forKey:@"shuzhong"];
+                                }
+                                if ([dict[@"attrName"] isEqualToString:@"等级"]) {
+                                    [modelDict setObject:dict[@"attrValue"] forKey:@"dengji"];
+                                }
+                                if ([dict[@"attrName"] isEqualToString:@"口径"] || [dict[@"attrName"] isEqualToString:@"宽度"]) {
+                                    [modelDict setObject:dict[@"attrValue"] forKey:@"koujin"];
+                                }
+                                if ([dict[@"attrName"] isEqualToString:@"厚度"]) {
+                                    [modelDict setObject:dict[@"attrValue"] forKey:@"houdu"];
+                                }
+                            }
+                            if (!modelDict[@"houdu"]) {
+                                [dict setObject:@"" forKey:@"houdu"];
+
+                            }else{
+                                [dict setObject:modelDict[@"houdu"] forKey:@"houdu"];
+                            }
+                            [dict setObject:modelDict[@"koujin"] forKey:@"kuandu"];
+                            [dict setObject:lengthAttributesList[0][@"specValue"] forKey:@"changdu"];
+                            [dict setObject:modelDict[@"shuzhong"] forKey:@"shuzhong"];
+                            [dict setObject:tableDic[@"brandName"] forKey:@"pinpai"];
+                            [dict setObject:modelDict[@"dengji"] forKey:@"dengji"];
+
+                        }else
+                        {
+                        
+//                            {"kuandu":"50","changdu":"90","pinpai":"adidas","dengji":"实木板材等级1","houdu":"30","cangku":"2仓库5","genshu":"88","shuzhong":"实木板材树种1","lifangshu":"6","packetNum":"22334455"}
+                            
+                            //自定义商品
+                            NSMutableDictionary* cusDict = [detailModel.packages mj_JSONObject];
+                            [dict setObject:@"" forKey:@"packages"];
+
+                            [dict setObject:detailModel.orderDetailId forKey:@"orderDetailId"];
+                            [dict setObject:detailModel.buyNumber forKey:@"buyNumber"];
+                            [dict setObject:detailModel.buyPrice forKey:@"buyPrice"];
+                            [dict setObject:cusDict[@"lifangshu"] forKey:@"unitNum"];
+                            [dict setObject:@"0" forKey:@"goodsId"];
+                            [dict setObject:@"0" forKey:@"stockNum"];
+                            [dict setObject:@"0" forKey:@"lockNum"];
+                            [dict setObject:@"m³" forKey:@"goodsNuit"];
+                            [dict setObject:cusDict[@"houdu"] forKey:@"houdu"];
+                            [dict setObject:cusDict[@"kuandu"] forKey:@"kuandu"];
+                            [dict setObject:cusDict[@"changdu"] forKey:@"changdu"];
+                            [dict setObject:cusDict[@"shuzhong"] forKey:@"shuzhong"];
+                            [dict setObject:cusDict[@"pinpai"] forKey:@"pinpai"];
+                            [dict setObject:cusDict[@"dengji"] forKey:@"dengji"];
+                            [dict setObject:cusDict[@"genshu"] forKey:@"genshu"];
+                            [dict setObject:@"NO" forKey:@"isCus"];
+                            [dict setObject:cusDict[@"cangku"] forKey:@"cangku"];
+                        }
+                        
+                        OrderDBModel *noticeModel =[[OrderDBModel alloc]initWithDictionary:dict];
+                        [noticeDBTool insertModel:noticeModel];
+                    }
+  
+                    [weakSelf requestData];
+                }
+                
+            }else
+            {
+                
+            }
+        }else
+        {
+            
+        }
+    }];
 }
 
 
@@ -193,6 +387,7 @@
             if (result.code == 0) {
                 weakSelf.logArray = [OrderLogModel mj_objectArrayWithKeyValuesArray:result.data];
                 if ([_logArray firstObject]) {
+                    //取出第一条数据，隐藏他的上面的那条线
                     OrderLogModel* model = [_logArray firstObject];
                     model.isOne = @"YES";
                 }
@@ -232,7 +427,10 @@
                 weakSelf.PayAccoutArray = [MoveGroupingModel mj_objectArrayWithKeyValuesArray:result.data];
                 MoveGroupingModel* model = weakSelf.PayAccoutArray[0];
                 
-                weakSelf.fiveRightBtnStr = [self returnBankCard:model.code];
+                if (!_moveModel) {
+                    //默认一个付款账号
+                    weakSelf.fiveRightBtnStr = [self returnBankCard:model.code];
+                }
         
                 [weakSelf.tableView reloadData];
        
@@ -292,7 +490,7 @@
                         }
                     }else
                     {
-                        //自定义商品dict
+                        //自定义商品
                         NSMutableDictionary* dataDict = [dict[@"packages"] mj_JSONObject];
                         
                         if (!dataDict[@"houdu"]) {
@@ -321,14 +519,14 @@
                     [lifangshuArray addObject:[NSString stringWithFormat:@"%f",numunitNum]];
                     
                 }
-//                CGFloat allPrice = [[priceArray valueForKeyPath:@"@sum.floatValue"] floatValue];
                 
                 OrderManageModel* model = _dataArray[0];
-                
+                //出货单总价
                 weakSelf.allPrice = [NSString stringWithFormat:@"￥%@",model.realityPrice];
-                
+                //出货单总数量
                 int allNum = [[numArray valueForKeyPath:@"@sum.intValue"] intValue];
                 weakSelf.allNum = allNum;
+                //出货单总立方数
                 CGFloat allUnit = [[lifangshuArray valueForKeyPath:@"@sum.floatValue"] floatValue];
                 weakSelf.allUnit = allUnit;
                 
@@ -342,6 +540,7 @@
 }
 
 
+
 //获取数据
 -(void)refreshing
 {
@@ -349,6 +548,7 @@
     AMUserAccountInfo *userInfo = [AMUserAccountInfo shareInfo];
     [dict setObject:userInfo.storeId forKey:@"storeId"];
     [dict setObject:_orderId forKey:@"orderId"];
+    [dict setObject:_categoryId forKey:@"categoryId"];
 
     __weak typeof(self)weakSelf = self;
     [_dataArray removeAllObjects];
@@ -361,6 +561,7 @@
                 weakSelf.dataArray = [OrderManageModel mj_objectArrayWithKeyValuesArray:result.data];
                 
                 OrderManageModel* model = weakSelf.dataArray[0];
+ 
                 NSMutableArray* array = (NSMutableArray *)model.actualMoney;
                 NSMutableArray* priceArr = [NSMutableArray array];
                 for (NSMutableDictionary* dict in array) {
@@ -370,18 +571,19 @@
                 OrderManageModel* model0 = weakSelf.dataArray[0];
                 NSLog(@"%@--%@",model0.totalPrice,model0.realityPrice);
                 
-                
                 if ([model0.orderStatus isEqualToString:@"4"]) {
+                    //orderstates为待装货时请求买家有没有添加提货信息
                     [weakSelf requestPickGoodsInformation:model0.orderId];
                 }
                 
                 if ([model0.orderStatus isEqualToString:@"6"] || [model0.orderStatus isEqualToString:@"7"] || [model0.orderStatus isEqualToString:@"8"] || [model0.orderStatus isEqualToString:@"9"]|| [model0.orderStatus isEqualToString:@"10"]) {
+                    //请求装货单
                     [weakSelf requestParkDetail:model0.orderId];
                 }
                 
                 for (OrderDetailModel* model in model0.orderDetailList) {
                     //如果数据是自定义添加的商品，添加没有返回数据的字段
-                    if (model.packages) {
+                    if (model.packages != nil && ![model.packages isEqualToString:@""]) {
                         NSMutableDictionary* dict = [model.packages mj_JSONObject];
                         model.unitNum = [NSString stringWithFormat:@"%@",dict[@"cubicNum"]];
                     }
@@ -434,6 +636,7 @@
                 {
                     _stateLable.text = @"交易成功";
                     
+                    //计算有没有欠款，记录
                     OrderManageModel* model = weakSelf.dataArray[0];
                     NSMutableArray* array = (NSMutableArray *)model.actualMoney;
                     NSMutableArray* priceArr = [NSMutableArray array];
@@ -450,9 +653,7 @@
                     }else
                     {
                         model.ishaveArrears = @"0";//没有欠款
-
                     }
-
                 }
                 
                 [weakSelf.tableView reloadData];
@@ -491,7 +692,6 @@
                     weakSelf.fourStateStr = @"待装货";
                     [weakSelf.tableView reloadData];
                     weakSelf.stateLable.text = @"待装货";
-
                 }
             }
         }else
@@ -499,6 +699,10 @@
             NSData * data = error.userInfo[@"com.alamofire.serialization.response.error.data"];
             NSString * str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
             NSLog(@"错误原因:%@",str);
+            
+            weakSelf.fourStateStr = @"待买家提货";
+            [weakSelf.tableView reloadData];
+            weakSelf.stateLable.text = @"待买家提货";
         }
     }];
 }
@@ -597,12 +801,19 @@
         
         }else if (section == 2)
         {
+            
+            if (_dataList.count) {
+                return _dataList.count;
+            }else
+            {
+            
             if (_dataArray.count) {
                 OrderManageModel* model = _dataArray[0];
                 return model.orderDetailList.count;
             }else
             {
                 return 0;
+            }
             }
         }else if (section == 3)
         {
@@ -686,7 +897,7 @@
             
         }else if (indexPath.section == 5)
         {
-            return 90;
+            return 70;
             
         }else if (indexPath.section == 6)
         {
@@ -696,10 +907,7 @@
             if (_dataArray.count) {
                 
                 OrderManageModel* model = _dataArray[0];
-                
                 if ([model.orderStatus isEqualToString:@"0"]) {
-                    
-                    
                 }else if ([model.orderStatus isEqualToString:@"1"] || [model.orderStatus isEqualToString:@"2"] || [model.orderStatus isEqualToString:@"12"] )
                 {
                     return 434;
@@ -837,14 +1045,12 @@
 //        _cell1.actualTF.text = @"";
 //    }
     
-    
     if ([_cell1.youhuiTF.text floatValue]<0) {
         [self showAlert:@"金额不能小于0"];
         _cell1.actualTF.text = @"";
-
     }
     
-    self.view.frame =CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height);
+    self.view.frame = CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height);
     if (![_cell1.actualTF.text isEqualToString:@""]) {
         if ([_cell1.huiyouTwoTF.text isEqualToString:@""] || [_cell1.huiyouTwoTF.text isEqualToString:@"0"]) {
 
@@ -887,16 +1093,22 @@
     
 }
 
--(void)lookAction:(NSString *)str
+-(void)lookAction:(NSString *)str btn:(UIButton *)btn
 {
-    AddLoadingDetails* VC = [AddLoadingDetails new];
-    OrderManageModel* model = _dataArray[0];
-    OrderDetailModel* detailModel = model.orderDetailList[0];
-    VC.orderIdTrue = model.orderId;
-    //订单编号
-    VC.orderId = _orderId;
-    VC.categoryId = detailModel.categoryId;
-    [self.navigationController pushViewController:VC animated:YES];
+    
+    if ([btn.titleLabel.text isEqualToString:@"查看合同"]) {
+        
+    }else if([btn.titleLabel.text isEqualToString:@"修改装货单"])
+    {
+        AddLoadingDetails* VC = [AddLoadingDetails new];
+        OrderManageModel* model = _dataArray[0];
+        VC.orderIdTrue = model.orderId;
+        //订单编号
+        VC.orderId = _orderId;
+        VC.categoryId = _categoryId;
+        [self.navigationController pushViewController:VC animated:YES];
+    }
+
 }
 
 //添加装货明细||确认到款
@@ -1001,21 +1213,19 @@
     {
         AddLoadingDetails* VC = [AddLoadingDetails new];
         OrderManageModel* model = _dataArray[0];
-        OrderDetailModel* detailModel = model.orderDetailList[0];
         VC.orderIdTrue = model.orderId;
         //订单编号
         VC.orderId = _orderId;
-        VC.categoryId = detailModel.categoryId;
+        VC.categoryId = _categoryId;
         [self.navigationController pushViewController:VC animated:YES];
     }
 }
 
-//审核
+
 -(void)shenheOrder:(UIButton *)btn
 {
-
+    //发货
     OrderManageModel* model1 = _dataArray[0];
-    OrderDetailModel* mdodel = model1.orderDetailList[0];
     if ([btn.titleLabel.text isEqualToString:@"确认发货"]) {
         
         SWGOrderPackControllerApi* orderParkApi = [[SWGOrderPackControllerApi alloc] init];
@@ -1025,11 +1235,21 @@
             SWGComeStockBean* stockBean = [[SWGComeStockBean alloc] init];
 
             stockBean.buyNumber = dict[@"buyNumber"];
-            stockBean.categoryId = [NSNumber numberWithInt:[mdodel.categoryId intValue]];
+            stockBean.categoryId = [NSNumber numberWithInt:[_categoryId intValue]];
             stockBean.goodsId = dict[@"goodsId"];
             stockBean.orderId = [NSNumber numberWithInt:[model1.orderId intValue]];
             stockBean.userId = [NSNumber numberWithInt:[userInfo.userId intValue]];
-            
+            if ([_categoryId isEqualToString:@"2"]) {
+                if ([dict[@"goodsId"]  intValue] == 0) {
+                    NSMutableDictionary* datadict = [dict[@"packages"] mj_JSONObject];
+
+                    stockBean.packages = datadict[@"packages"];
+                }else
+                {
+                    stockBean.packages = dict[@"packages"];
+                }
+                
+            }
             //板材添加包号
             [array addObject:stockBean];
         }
@@ -1062,45 +1282,79 @@
     AMUserAccountInfo *userInfo = [AMUserAccountInfo shareInfo];
     [dict setObject:userInfo.storeId forKey:@"storeId"];
     [dict setObject:userInfo.userId forKey:@"userId"];
-    
     if (_moveModel) {
-
+        //用户自己选择
         [dict setObject:_moveModel.accountId forKey:@"paymentAccountId"];
-
     }else
     {
+        //用户没有选择默认一个
         MoveGroupingModel* model0 = _PayAccoutArray[0];
         [dict setObject:model0.accountId forKey:@"paymentAccountId"];
     }
-    
-    [dict setObject:model1.totalPrice forKey:@"prepayPrice"];
+        
+    //model1.totalPrice
+    [dict setObject:_allOrderPrice forKey:@"prepayPrice"];
     [dict setObject:model1.buyerId forKey:@"buyerId"];
     [dict setObject:model1.orderId forKey:@"orderId"];
     [dict setObject:@(_payType) forKey:@"payType"];
     [dict setObject:@(_invoiceType) forKey:@"invoiceType"];
     [dict setObject:@(1) forKey:@"collectType"];
-
+    [dict setObject:_orderStatus forKey:@"orderStatus"];
     NSMutableArray* priceArray  = [NSMutableArray array];
-    for (OrderDetailModel* model in model1.orderDetailList) {
-        NSMutableDictionary* dict = [NSMutableDictionary dictionary];
-        [dict setObject:model.buyNumber forKey:@"buyNumber"];
-        [dict setObject:model.buyPrice forKey:@"buyPrice"];
-        if (model.packages) {
-            //自定义
-            NSMutableDictionary* dictCus = [model.packages mj_JSONObject];
-            [dict setObject:dictCus[@"lifangshu"] forKey:@"cubicNumber"];
+        
+//    for (OrderDetailModel* model in model1.orderDetailList) {
+//        NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+//        [dict setObject:model.buyNumber forKey:@"buyNumber"];
+//        [dict setObject:model.buyPrice forKey:@"buyPrice"];
+//        if (model.packages != nil && ![model.packages isEqualToString:@""]) {
+//            //自定义
+//            NSMutableDictionary* dictCus = [model.packages mj_JSONObject];
+//            [dict setObject:dictCus[@"lifangshu"] forKey:@"cubicNumber"];
+//
+//        }else
+//        {
+//            [dict setObject:model.unitNum forKey:@"cubicNumber"];
+//        }
+//        [priceArray addObject:dict];
+//    }
+        
+    
+    for (OrderDBModel* model in _dataList) {
+        NSMutableDictionary* dataDict = [NSMutableDictionary dictionary];
+        
+        if (![model.goodsId isEqualToString:@""]) {
+            [dataDict setObject:model.goodsId forKey:@"goodsId"];
+        }
+        
+        if (![model.orderDetailId isEqualToString:@""]) {
+            [dataDict setObject:model.orderDetailId forKey:@"id"];
+        }
+    
+        [dataDict setObject:model1.orderId forKey:@"orderId"];
+        [dataDict setObject:model.buyNumber forKey:@"buyNumber"];
+        [dataDict setObject:model.buyPrice forKey:@"buyPrice"];
+        [dataDict setObject:model.unitNum forKey:@"cubicNumber"];
+        [dataDict setObject:@"1" forKey:@"status"];
+//        if (![model.goodsName isEqualToString:@""] && model.goodsName != nil) {
+//            [dataDict setObject:model.goodsName forKey:@"goodsName"];
+//        }
 
+        if ([model.isCus isEqualToString:@"YES"]) {
+            //自定义
+            //NSMutableDictionary* dictCus = [model.packages mj_JSONObject];
+            
+            [dataDict setObject:model.packages forKey:@"packages"];
+            
         }else
         {
-            [dict setObject:model.unitNum forKey:@"cubicNumber"];
-
+            
         }
-        [priceArray addObject:dict];
+        
+        [priceArray addObject:dataDict];
     }
-    
+        
     _orderDetailList = priceArray;
     [dict setObject:[priceArray mj_JSONString] forKey:@"orderDetailList"];
-    
     int invoice;
     //用户没有选择默认1
     if (_invoiceType == 0) {
@@ -1117,36 +1371,29 @@
     if (_payType == 0) {
         _payType = 1;
     }
-
     SWGOrderControllerApi* apiInstance = [[SWGOrderControllerApi alloc] init];
     NSNumber *orderId = [NSNumber numberWithInt:[model1.orderId intValue]];
     NSNumber *userId = [NSNumber numberWithInt:[userInfo.userId intValue]];
     NSNumber *payType = [NSNumber numberWithInt:_payType];
     NSNumber *invoiceType = [NSNumber numberWithInt:invoice];
     NSNumber *collectType = [NSNumber numberWithInt:1];
-
+    
+        
     NSString *totalPrice;
     if ([payType intValue] == 1) {
-        
         NSString* str = [_cell1.threeLable.text stringByReplacingOccurrencesOfString:@"￥" withString:@""];
         totalPrice = str;
-
-        
     }else if ([payType intValue] == 2||[payType intValue] == 3)
     {
-        totalPrice = model1.totalPrice;
-
+        totalPrice = _allOrderPrice;
     }
-    
     NSNumber *paymentAccountId = [NSNumber numberWithInt:[dict[@"paymentAccountId"] intValue]];
     NSNumber *buyerId = [NSNumber numberWithInt:[model1.buyerId intValue]];
-    
     __weak typeof(self)weakSelf = self;
     
-    [apiInstance updateOrderInfoUsingPOSTWithAuthorization:@"Q" orderId:orderId userId:userId payType:payType prepayPrice:totalPrice invoiceType:invoiceType collectType:collectType paymentAccountId:paymentAccountId buyerId:buyerId orderDetailList:_orderDetailList tailMoney:nil completionHandler:^(SWGMessageResult *output, NSError *error) {
+    [apiInstance updateOrderInfoUsingPOSTWithAuthorization:@"Q" orderId:orderId userId:userId orderStatus:_orderStatus payType:payType prepayPrice:totalPrice invoiceType:invoiceType collectType:collectType paymentAccountId:paymentAccountId buyerId:buyerId orderDetailList:_orderDetailList tailMoney:nil completionHandler:^(SWGMessageResult *output, NSError *error) {
         if (!error) {
             if ([output.code intValue] == 0) {
-                
                 [weakSelf showAlert:@"提交审核成功"];
                 [weakSelf.navigationController popViewControllerAnimated:YES];
                 weakSelf.slectBlock(_sectionNum,_orderId);
@@ -1170,7 +1417,6 @@
 //    }];
         
     }
-    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -1184,7 +1430,7 @@
 -(void)addgoods:(NSString *)categoryId
 {
     AddOrderGoodsVC* VC  =[AddOrderGoodsVC new];
-    VC.categoryId = categoryId;
+    VC.categoryId = _categoryId;
     OrderManageModel* model = _dataArray[0];
     VC.orderId = model.orderId;
     [self.navigationController pushViewController:VC animated:YES];
@@ -1195,7 +1441,7 @@
 -(void)addCustomgoods:(NSString *)categoryId
 {
     AddCustomGoodsVC* VC  =[AddCustomGoodsVC new];
-    VC.categoryId = categoryId;
+    VC.categoryId = _categoryId;
     OrderManageModel* model = _dataArray[0];
     VC.orderId = model.orderId;
     [self.navigationController pushViewController:VC animated:YES];
@@ -1203,11 +1449,11 @@
 
 
 //确定删除按钮
--(void)sureDelete:(NSString *)orderID
+-(void)sureDelete:(NSString *)orderID noticeId:(NSString *)noticeId
 {
     __weak typeof(self)weakSelf = self;
-    //如果是最后一个详情订单删除整个订单
-    if (_dataArray.count != 1) {
+    //如果是最后一个详情订单取消整个订单
+    if (_dataList.count == 1) {
         
         NSLog(@"%@",@"00-");
         
@@ -1218,8 +1464,8 @@
         AMUserAccountInfo *userInfo = [AMUserAccountInfo shareInfo];
         [dict setObject:userInfo.storeId forKey:@"storeId"];
         __weak typeof(self)weakSelf = self;
-        
-        [[WebClient sharedClient]orderDelete:dict complete:^(ResponseMode *result, NSError *error) {
+
+        [[WebClient sharedClient]orderCancelOrder:dict complete:^(ResponseMode *result, NSError *error) {
             
             [weakSelf.photoView.backgroupView removeFromSuperview];
             [weakSelf.photoView removeFromSuperview];
@@ -1227,83 +1473,110 @@
             if (!error) {
                 if (result.code == 0) {
                     
-                    [weakSelf showAlert:@"订单删除成功"];
+                    [weakSelf showAlert:@"订单已取消"];
                     [weakSelf refreshing];
                 }
             }
         }];
         
     }else{
-
-    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
-    //orderDetailId详细订单ID
-    [dict setObject:orderID forKey:@"id"];
-    AMUserAccountInfo *userInfo = [AMUserAccountInfo shareInfo];
-    [dict setObject:userInfo.storeId forKey:@"storeId"];
-    [[WebClient sharedClient] deleteOrderDetail:dict complete:^(ResponseMode *result, NSError *error) {
-        [weakSelf.photoView.backgroupView removeFromSuperview];
-        [weakSelf.photoView removeFromSuperview];
-        if (!error) {
-            if (result.code == 0) {
-                
-                [weakSelf showAlert:@"删除成功"];
-                [weakSelf refreshing];
-   
-            }else
-            {
-                
-            }
-        }else
-        {
-            NSData * data = error.userInfo[@"com.alamofire.serialization.response.error.data"];
-            NSString * str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-            NSLog(@"错误原因==:%@",str);
-        }
         
-    }];
         
-    }
-}
-//修改
--(void)sureAction:(NSMutableDictionary *)dict
-{
-    OrderManageModel* model = _dataArray[0];
-    _modedic = dict;
-    [_modedic setObject:model.orderId forKey:@"orderId"];
-    
-    //计算总价
-    CGFloat num;
-    NSMutableArray* priceArray = [NSMutableArray array];
-    for (OrderDetailModel* mdoel0 in model.orderDetailList) {
-        
-        if (!mdoel0.goodsId) {
-            //自定义商品
-            NSMutableDictionary* cusDict = [mdoel0.packages mj_JSONObject];
-            num = [cusDict[@"lifangshu"] floatValue] * [mdoel0.buyNumber floatValue] * [mdoel0.buyPrice floatValue];
-        }else
-        {
-            //库存商品
-            num = [mdoel0.buyNumber floatValue]*[mdoel0.buyPrice floatValue]*[mdoel0.unitNum floatValue];
-        }
-        
-        if (mdoel0.orderDetailId == dict[@"orderDetailId"]) {
+        if (![orderID isEqualToString:@""] && orderID != nil) {
+            //删除一个详细订单
+            NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+            //orderDetailId详细订单ID
+            [dict setObject:orderID forKey:@"id"];
+            [dict setObject:_orderStatus forKey:@"orderStatus"];
+            AMUserAccountInfo *userInfo = [AMUserAccountInfo shareInfo];
+            [dict setObject:userInfo.storeId forKey:@"storeId"];
+            [[WebClient sharedClient] deleteOrderDetail:dict complete:^(ResponseMode *result, NSError *error) {
+                [weakSelf.photoView.backgroupView removeFromSuperview];
+                [weakSelf.photoView removeFromSuperview];
+                if (!error) {
+                    if (result.code == 0) {
+                        
+                        [weakSelf showAlert:@"删除成功"];
+                        [weakSelf refreshing];
+                        
+                    }else
+                    {
+                        
+                    }
+                }else
+                {
+                    NSData * data = error.userInfo[@"com.alamofire.serialization.response.error.data"];
+                    NSString * str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                    NSLog(@"错误原因==:%@",str);
+                }
+            }];
+            
+            OrderDBTool *noticeDBTool = [OrderDBTool shareInstance];
+            [noticeDBTool deleteModelWithkey:@"Id" value:noticeId];
+            [self requestData];
             
         }else
         {
-            //没有修改的详单放进数组
-            [priceArray addObject:[NSString stringWithFormat:@"%f",num]];
+            OrderDBTool *noticeDBTool = [OrderDBTool shareInstance];
+            [noticeDBTool deleteModelWithkey:@"Id" value:noticeId];
+            [self requestData];
+            [self.photoView.backgroupView removeFromSuperview];
+            [self.photoView removeFromSuperview];
         }
     }
+}
+
+//修改
+-(void)sureAction:(NSMutableDictionary *)dict
+{
+
+    OrderDBTool *noticeDBTool = [OrderDBTool shareInstance];
+    [noticeDBTool createTable];
+    [noticeDBTool updateModelWithkey:@"nbuyNumber" value:dict[@"buyNumber"] nId:dict[@"noticeId"]];
+    [noticeDBTool updateModelWithkey:@"nbuyPrice" value:dict[@"buyPrice"] nId:dict[@"noticeId"]];
+    [self requestData];
     
-    //没有修改的详单总价
-    CGFloat sum = [[priceArray valueForKeyPath:@"@sum.floatValue"] floatValue];
-    //当前修改的详单
-    CGFloat nowNum = [dict[@"buyNumber"] floatValue]*[dict[@"buyPrice"] floatValue]*[dict[@"cubicNumber"] floatValue];
-    CGFloat allPrice = sum+nowNum;
-    NSString* allStr = [NSString stringWithFormat:@"%.2f",allPrice];
-    [_modedic setObject:allStr forKey:@"totalPrice"];
+    [self.addView removeFromSuperview];
+    [self.addView.backgroupView removeFromSuperview];
     
-    [self requestChangeNumAndPrice:_modedic];
+//    OrderManageModel* model = _dataArray[0];
+//    _modedic = dict;
+//    [_modedic setObject:model.orderId forKey:@"orderId"];
+//
+//    //计算总价
+//    CGFloat num;
+//    NSMutableArray* priceArray = [NSMutableArray array];
+//    for (OrderDetailModel* mdoel0 in model.orderDetailList) {
+//
+//        if (!mdoel0.goodsId) {
+//            //自定义商品  数量*价格*立方数
+//            NSMutableDictionary* cusDict = [mdoel0.packages mj_JSONObject];
+//            num = [cusDict[@"lifangshu"] floatValue] * [mdoel0.buyNumber floatValue] * [mdoel0.buyPrice floatValue];
+//        }else
+//        {
+//            //库存商品 数量*价格*立方数
+//            num = [mdoel0.buyNumber floatValue]*[mdoel0.buyPrice floatValue]*[mdoel0.unitNum floatValue];
+//        }
+//
+//        if (mdoel0.orderDetailId == dict[@"orderDetailId"]) {
+//
+//        }else
+//        {
+//            //没有修改的详单放进数组
+//            [priceArray addObject:[NSString stringWithFormat:@"%f",num]];
+//        }
+//    }
+//
+//    //没有修改的详单总价
+//    CGFloat sum = [[priceArray valueForKeyPath:@"@sum.floatValue"] floatValue];
+//    //当前修改的详单
+//    CGFloat nowNum = [dict[@"buyNumber"] floatValue]*[dict[@"buyPrice"] floatValue]*[dict[@"cubicNumber"] floatValue];
+//    CGFloat allPrice = sum+nowNum;
+//    NSString* allStr = [NSString stringWithFormat:@"%.2f",allPrice];
+//    [_modedic setObject:allStr forKey:@"totalPrice"];
+    
+    
+//    [self requestChangeNumAndPrice:_modedic];
 }
 
 //修改价格和数量
@@ -1331,11 +1604,12 @@
 
 
 //删除按钮
--(void)deleteAction:(NSString *)orderID
+-(void)deleteAction:(NSString *)orderID noticeId:(NSString *)noticeId
 {
     DeleteView *photoView = [DeleteView addDeleteVView];
     photoView.delegate = self;
     photoView.orderID = orderID;
+    photoView.noticeId = noticeId;
     _photoView = photoView;
     [photoView show];
 }
@@ -1365,7 +1639,7 @@
         OrderManageModel* model = _dataArray[0];
         if ([model.orderStatus isEqualToString:@"6"] || [model.orderStatus isEqualToString:@"7"] || [model.orderStatus isEqualToString:@"8"] || [model.orderStatus isEqualToString:@"9"]|| [model.orderStatus isEqualToString:@"10"])
         {
-            //结算和放货状态添加出货单明细cell
+            //添加出货单明细cell
             if (indexPath.section == 0) {
             
                     NSString *identifier1 = @"OrderInfoCell";
@@ -1417,18 +1691,7 @@
                 cell1.model = detailModel;
                 cell1.delegate = self;
                 cell1.manegeModel = model;
-                
-                if (!detailModel.packages) {
-                    //库存
-                    cell1.numLable.text = [NSString stringWithFormat:@"数量：%@ %@*%@",detailModel.unitNum,detailModel.goodsNuit,detailModel.buyNumber];
-                    
-                }else
-                {
-                    //自定义
-                    NSMutableDictionary* dict = [detailModel.packages mj_JSONObject];
-                    cell1.numLable.text = [NSString stringWithFormat:@"数量：%@%@*%@",dict[@"lifangshu"],@"m³",detailModel.buyNumber];
-                }
-                
+   
                 return cell1;
             }else if(indexPath.section == 3)
             {
@@ -1442,12 +1705,14 @@
                 tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
                 cell1.selectionStyle = UITableViewCellSelectionStyleNone;
                 cell1.delegate = self;
+                
+       
                 if (_dataArray.count) {
                     OrderManageModel* model = _dataArray[0];
-                    OrderDetailModel* detailModel = model.orderDetailList[indexPath.row];
-                    cell1.categoryId = detailModel.categoryId;
+                    cell1.categoryId = _categoryId;
                     cell1.model = model;
                 }
+                
                 return cell1;
                 
               
@@ -1511,6 +1776,7 @@
                 
                 fiveCell.priceLable.text = [NSString stringWithFormat:@"￥%@",model.realityPrice];
                 
+                //判断是不是整数  不是整数保留三位小数
                 if ((int)_allUnit != _allUnit) {
                     
                     fiveCell.numLable.text = [NSString stringWithFormat:@"共%d件  %.3f%@",_allNum,_allUnit,@"m³"];
@@ -1539,11 +1805,14 @@
                 cell1.actualTF.delegate = self;
                 cell1.huiyouTwoTF.delegate = self;
                 
-                if ([model.orderStatus isEqualToString:@"1"]) {
-                    
-                    [cell1.fiveRightBtn setTitle:self.fiveRightBtnStr forState:UIControlStateNormal];
+                //如果没有切换付款方式默认第一个付款方式
+                if (!_moveModel) {
+                    if ([model.orderStatus isEqualToString:@"1"]) {
+                        
+                        [cell1.fiveRightBtn setTitle:self.fiveRightBtnStr forState:UIControlStateNormal];
+                    }
                 }
-                
+           
                 if ([model.orderStatus isEqualToString:@"6"] || [model.orderStatus isEqualToString:@"7"] || ([model.orderStatus isEqualToString:@"10"] && [model.ishaveArrears isEqualToString:@"1"])) {
                     //计算需要支付的尾款
                     NSMutableDictionary* dict = model.actualMoney[0];
@@ -1573,19 +1842,17 @@
                     }
                 }
                 
-                if ([model.orderStatus isEqualToString:@"3"] || [model.orderStatus isEqualToString:@"2"] || [model.orderStatus isEqualToString:@"6"] || [model.orderStatus isEqualToString:@"7"] || [model.orderStatus isEqualToString:@"8"] || [model.orderStatus isEqualToString:@"9"]) {
+                if ([model.orderStatus isEqualToString:@"3"] || [model.orderStatus isEqualToString:@"2"] || [model.orderStatus isEqualToString:@"6"] || [model.orderStatus isEqualToString:@"7"] || [model.orderStatus isEqualToString:@"8"] || [model.orderStatus isEqualToString:@"9"]|| [model.orderStatus isEqualToString:@"10"]) {
                     NSMutableDictionary* dict = model.actualMoney[0];
                     //根据支付账户id取到账户账号
-                    for (MoveGroupingModel*model in _PayAccoutArray) {
+                    for (MoveGroupingModel*model0 in _PayAccoutArray) {
                         
-                        if ([dict[@"paymentAccountId"] intValue] == [model.accountId intValue]) {
-                            NSString* str = [self returnBankCard:model.code];
+                        if ([dict[@"paymentAccountId"] intValue] == [model0.accountId intValue]) {
+                            NSString* str = [self returnBankCard:model0.code];
                             [cell1.fiveRightBtn setTitle:str forState:UIControlStateNormal];
                             
                         }
                     }
-                    
-                    
                 }
                 cell1.model = model;
 
@@ -1594,7 +1861,7 @@
             
         }else
         {
-            //不是结算状态和放货状态没有出货单明细cell
+            //没有出货单明细cell
             if (indexPath.section == 0) {
                 NSString *identifier1 = @"OrderInfoCell";
                 OrderInfoCell *cell1 = [_tableView dequeueReusableCellWithIdentifier:identifier1];
@@ -1635,21 +1902,19 @@
                 tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
                 cell1.selectionStyle = UITableViewCellSelectionStyleNone;
                 OrderManageModel* model = _dataArray[0];
-                OrderDetailModel* detailModel = model.orderDetailList[indexPath.row];
-                cell1.model = detailModel;
                 cell1.delegate = self;
                 cell1.manegeModel = model;
-        
-                if (!detailModel.packages) {
-                    //库存
-                    cell1.numLable.text = [NSString stringWithFormat:@"数量：%@ %@*%@",detailModel.unitNum,detailModel.goodsNuit,detailModel.buyNumber];
-    
+                if ([model.orderStatus isEqualToString:@"2"] || [model.orderStatus isEqualToString:@"1"]) {
+
+                    if (_dataList.count) {
+                        cell1.DBModel = _dataList[indexPath.row];
+                    }
                 }else
                 {
-                    //自定义
-                    NSMutableDictionary* dict = [detailModel.packages mj_JSONObject];
-                    cell1.numLable.text = [NSString stringWithFormat:@"数量：%@%@*%@",dict[@"lifangshu"],@"m³",detailModel.buyNumber];
+                    cell1.model = model.orderDetailList[indexPath.row];
+
                 }
+        
                 return cell1;
             }else if(indexPath.section == 3)
             {
@@ -1658,11 +1923,55 @@
                 tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
                 cell1.selectionStyle = UITableViewCellSelectionStyleNone;
                 cell1.delegate = self;
-                if (_dataArray.count) {
-                    OrderManageModel* model = _dataArray[0];
-                    OrderDetailModel* detailModel = model.orderDetailList[indexPath.row];
-                    cell1.categoryId = detailModel.categoryId;
-                    cell1.model = model;
+                
+                if ([_orderStatus isEqualToString:@"1"] || [_orderStatus isEqualToString:@"2"]) {
+                    if (_dataList.count) {
+                        
+                        //计算总价
+                        NSMutableArray* numArray = [NSMutableArray array];
+                        NSMutableArray* unitArray = [NSMutableArray array];
+                        NSMutableArray* priceArray = [NSMutableArray array];
+
+                        
+                        for (OrderDBModel* model0 in _dataList) {
+                            [numArray addObject:model0.buyNumber];
+                            
+                            float num = [model0.unitNum floatValue] * [model0.buyNumber floatValue];
+                            [unitArray addObject:@(num)];
+                            
+                            float allPrice = [model0.unitNum floatValue] * [model0.buyNumber floatValue] * [model0.buyPrice floatValue];
+                            [priceArray addObject:@(allPrice)];
+                        }
+                        
+                        OrderDetailModel* detailModel = model.orderDetailList[0];
+                        int sum = [[numArray valueForKeyPath:@"@sum.intValue"] intValue];
+                        float unit = [[unitArray valueForKeyPath:@"@sum.floatValue"] floatValue];
+                        float price = [[priceArray valueForKeyPath:@"@sum.floatValue"] floatValue];
+                        
+                        if ((int)price != price) {
+                            
+                            cell1.allPriceLable.text = [NSString stringWithFormat:@"￥%.2f",price];
+                            _allOrderPrice = [NSString stringWithFormat:@"￥%.2f",price];
+                        }else
+                        {
+                            cell1.allPriceLable.text = [NSString stringWithFormat:@"￥%d",(int)price];
+                            _allOrderPrice = [NSString stringWithFormat:@"￥%d",(int)price];
+
+                        }
+                        
+                        if ((int)unit != unit) {
+                            cell1.numLable.text = [NSString stringWithFormat:@"共%d件 %.3f%@",sum,unit,detailModel.goodsNuit];
+                        }else
+                        {
+                            cell1.numLable.text = [NSString stringWithFormat:@"共%d件 %d%@",sum,(int)unit,detailModel.goodsNuit];
+                        }
+                    }
+                }else{
+                    if (_dataArray.count) {
+                        OrderManageModel* model = _dataArray[0];
+                        cell1.categoryId = _categoryId;
+                        cell1.model = model;
+                    }
                 }
                 return cell1;
             }else
@@ -1682,7 +1991,6 @@
                             cell1.addLoadingDetails.userInteractionEnabled = YES;
                             cell1.addLoadingDetails.backgroundColor = MINE_Color;
                            
-//                            model.isPicker = @"0";//有提货信息
                             if (_pickerInfoArray.count) {
                                 cell1.pickerDict = _pickerInfoArray[0];
                             }
@@ -1696,23 +2004,24 @@
                             [cell1.fiveRightBtn setTitle:@"未确认" forState:UIControlStateNormal];
                             cell1.addLoadingDetails.backgroundColor = [UIColor colorWithHexString:@"D8D8D8"];
                             cell1.addLoadingDetails.userInteractionEnabled = NO;
-//                            model.isPicker = @"1";//没有提货信息
                         }
                     }
-                    
-                    //状态等于1时，默认一个收款账号
-                    if ([model.orderStatus isEqualToString:@"1"]) {
-                       
-                        [cell1.fiveRightBtn setTitle:self.fiveRightBtnStr forState:UIControlStateNormal];
+                    if (!_moveModel) {
+                        //状态等于1时，默认一个收款账号
+                        if ([model.orderStatus isEqualToString:@"1"]) {
+                            
+                            [cell1.fiveRightBtn setTitle:self.fiveRightBtnStr forState:UIControlStateNormal];
+                        }
                     }
+                 
   
                     if ([model.orderStatus isEqualToString:@"3"] || [model.orderStatus isEqualToString:@"2"] || [model.orderStatus isEqualToString:@"6"] || [model.orderStatus isEqualToString:@"7"] || [model.orderStatus isEqualToString:@"8"] || [model.orderStatus isEqualToString:@"9"]) {
                         NSMutableDictionary* dict = model.actualMoney[0];
                         //根据支付账户id取到账户账号
-                        for (MoveGroupingModel*model in _PayAccoutArray) {
+                        for (MoveGroupingModel*model0 in _PayAccoutArray) {
                             
-                            if ([dict[@"paymentAccountId"] intValue] == [model.accountId intValue]) {
-                                NSString* str = [self returnBankCard:model.code];
+                            if ([dict[@"paymentAccountId"] intValue] == [model0.accountId intValue]) {
+                                NSString* str = [self returnBankCard:model0.code];
                                 [cell1.fiveRightBtn setTitle:str forState:UIControlStateNormal];
                                 
                             }
@@ -1735,7 +2044,6 @@
     VC.slectAccountIdBlock = ^(MoveGroupingModel * _Nonnull model) {
         
         _moveModel = model;
-   
         NSString* str = [self returnBankCard:model.code];
         [_cell1.fiveRightBtn setTitle:str forState:UIControlStateNormal];
         
@@ -1751,7 +2059,6 @@
     NSString* endStr = [BankCardStr substringFromIndex:BankCardStr.length-4];
     NSString* str2 = [str1 stringByReplacingOccurrencesOfString:endStr withString:@""];
     NSString* middleStr = [str2 stringByReplacingOccurrencesOfString:str2 withString:@"****"];
-//    NSString* CardNumberStr = [formerStr stringByAppendingFormat:@"%@%@",middleStr,endStr];
     NSString* CardNumberStr = [NSString stringWithFormat:@"%@%@%@",str1,middleStr,endStr];
     return CardNumberStr;
 }
@@ -1777,7 +2084,7 @@
         picker.customArr = @[@"定金+尾款",@"先装车后全款",@"先全款后装车"];
         [self.view addSubview:picker];
         
-    }else if ([btn.titleLabel.text isEqualToString:@"支付金额合计"])
+    }else if ([btn.titleLabel.text isEqualToString:@"此次付款金额"])
     {
         HQPickerView *picker = [[HQPickerView alloc]initWithFrame:self.view.bounds];
         picker.delegate = self ;
@@ -1795,18 +2102,20 @@
 {
     if (indexPath.section == 2) {
         OrderManageModel* model = _dataArray[0];
-        OrderDetailModel* detailModel = model.orderDetailList[indexPath.row];
-        //    cell1.model = detailModel;
+//        OrderDetailModel* detailModel = model.orderDetailList[indexPath.row];
         
         if ([model.orderStatus intValue] == 1 || [model.orderStatus intValue] == 2) {
             AddOrderView *addView = [AddOrderView addSureView];
-            addView.detailModel = detailModel;
+//            addView.detailModel = detailModel;
+//
+//            //如果是库存商品传长度
+//            if (!detailModel.packages) {
+//                NSMutableArray* lengthAttributesList = (NSMutableArray *)detailModel.lengthAttributesList;
+//                addView.dict = lengthAttributesList[0];
+//            }
             
-            //如果是库存商品传长度
-            if (!detailModel.packages) {
-                NSMutableArray* lengthAttributesList = (NSMutableArray *)detailModel.lengthAttributesList;
-                addView.dict = lengthAttributesList[0];
-            }
+            OrderDBModel* DBmodel = _dataList[indexPath.row];
+            addView.DBmodel = DBmodel;
 
             _addView = addView;
             addView.isDetail = YES;

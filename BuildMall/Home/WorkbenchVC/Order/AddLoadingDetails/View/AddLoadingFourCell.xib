@@ -51,9 +51,9 @@
                         </constraints>
                     </view>
                     <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="12432" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="q9h-PH-OhT">
-                        <rect key="frame" x="285" y="16" width="70" height="25"/>
+                        <rect key="frame" x="295" y="16" width="60" height="25"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="70" id="thG-t0-BHD"/>
+                            <constraint firstAttribute="width" constant="60" id="thG-t0-BHD"/>
                             <constraint firstAttribute="height" constant="25" id="wYE-GE-xSR"/>
                         </constraints>
                         <color key="textColor" red="0.90980392160000001" green="0.14117647059999999" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -61,10 +61,10 @@
                         <textInputTraits key="textInputTraits"/>
                     </textField>
                     <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XCZ-PT-UsW">
-                        <rect key="frame" x="265" y="16" width="90" height="25"/>
+                        <rect key="frame" x="275" y="16" width="80" height="25"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="25" id="mUb-Kf-MHb"/>
-                            <constraint firstAttribute="width" constant="90" id="yGN-RI-Fk3"/>
+                            <constraint firstAttribute="width" constant="80" id="yGN-RI-Fk3"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <state key="normal" title=" ￥">

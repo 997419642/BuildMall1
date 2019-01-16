@@ -63,11 +63,10 @@
             NSMutableArray* arr = (NSMutableArray *)model.actualMoney;
             if (arr.count) {
                 NSMutableDictionary* actualDict = arr[0];
-                NSLog(@"--%@",actualDict[@"payImage"]);
-                NSString *strUrl = [actualDict[@"payImage"] stringByReplacingOccurrencesOfString:@"," withString:@""];
-                NSString* imageUrl = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",strUrl];
                 if (![actualDict[@"payImage"] isEqual:[NSNull null]]) {
-
+                    NSLog(@"--%@",actualDict[@"payImage"]);
+                    NSString *strUrl = [actualDict[@"payImage"] stringByReplacingOccurrencesOfString:@"," withString:@""];
+                    NSString* imageUrl = [NSString stringWithFormat:@"%@%@",@"https://uwood.oss-cn-qingdao.aliyuncs.com/shop/",strUrl];
                     [_imgView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:[UIImage imageNamed:@"xxx"]];
                 }
             }
@@ -76,7 +75,7 @@
     
     
     //转账凭证
-    if ([model.orderStatus isEqualToString:@"6"] || [model.orderStatus isEqualToString:@"7"] ||[model.orderStatus isEqualToString:@"8"] || [model.orderStatus isEqualToString:@"9"]) {
+    if ([model.orderStatus isEqualToString:@"6"] || [model.orderStatus isEqualToString:@"7"] ||[model.orderStatus isEqualToString:@"8"] || [model.orderStatus isEqualToString:@"9"] || [model.orderStatus isEqualToString:@"10"]) {
         
         NSMutableArray* arr = (NSMutableArray *)model.actualMoney;
         if (arr.count) {
@@ -97,7 +96,7 @@
                 [imgArr removeObject:[imgArr lastObject]];
                 
                 //状态8.9时候把所有转账凭证显示在一起
-                if ([model.orderStatus isEqualToString:@"8"] || [model.orderStatus isEqualToString:@"9"]) {
+                if ([model.orderStatus isEqualToString:@"8"] || [model.orderStatus isEqualToString:@"9"] || [model.orderStatus isEqualToString:@"10"]) {
                     if (![actualDict[@"payImage"] isEqual:[NSNull null]]) {
                         NSString *strUrl = [actualDict[@"payImage"] stringByReplacingOccurrencesOfString:@"," withString:@""];
                         [imgArr addObject:strUrl];
@@ -229,6 +228,7 @@
         _twoBtn.userInteractionEnabled = YES;
         _threeBtn.userInteractionEnabled = YES;
         _payNum.userInteractionEnabled = YES;
+        _dingjinBtn.userInteractionEnabled = NO;
         
     }else if ([model.orderStatus isEqualToString:@"2"])
     {
@@ -311,6 +311,7 @@
             [_twoRightBtn setTitle:@"定金加尾款" forState:UIControlStateNormal];
             NSMutableArray* array = (NSMutableArray *)model.actualMoney;
             NSMutableDictionary* dicActual = array[0];
+            NSLog(@"--%@",dicActual);
             _threeLable.text = [NSString stringWithFormat:@"￥%@",dicActual[@"payAmount"]];
             
         }else if ([model.payType isEqualToString:@"2"])
@@ -758,9 +759,10 @@
     [_oneRightBtn setTitle:pickerDict[@"method"] forState:UIControlStateNormal];
     [_twoRightBtn setTitle:pickerDict[@"carNo"] forState:UIControlStateNormal];
     _threenameLable.text = pickerDict[@"carName"];
-
     [_fourRightBtn setTitle:pickerDict[@"mobile"] forState:UIControlStateNormal];
     [_fiveRightBtn setTitle:pickerDict[@"idCode"] forState:UIControlStateNormal];
+    _remarkLable.hidden = NO;
+    _remarkLable.text = pickerDict[@"memo"];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -789,7 +791,7 @@
 }
 
 - (IBAction)lookAction:(UIButton *)sender {
-    [_delegate lookAction:_model.orderStatus];
+    [_delegate lookAction:_model.orderStatus btn:sender];
 }
 - (IBAction)oneAction:(UIButton *)sender {
     

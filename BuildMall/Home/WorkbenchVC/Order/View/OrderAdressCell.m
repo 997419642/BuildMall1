@@ -32,7 +32,7 @@
 
 -(void)setDict:(NSDictionary *)dict
 {
-    _adresslable.text = [NSString stringWithFormat:@"%@  地址:%@",dict[@"name"],dict[@"address"]];
+//    _adresslable.text = [NSString stringWithFormat:@"%@  地址:%@",dict[@"name"],dict[@"address"]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

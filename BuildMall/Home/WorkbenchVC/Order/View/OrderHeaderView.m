@@ -142,7 +142,7 @@
     NSDate *date               = [NSDate dateWithTimeIntervalSince1970:start];
     [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSString *dateString       = [formatter stringFromDate: date];
-    NSLog(@"服务器返回的时间戳对应的时间是:%@",dateString);
+    NSLog(@"服务器返回的时间戳对、应的时间是:%@",dateString);
     
     _timeLable.text = dateString;
     

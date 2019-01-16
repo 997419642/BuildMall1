@@ -158,8 +158,6 @@
 
 -(void)loadData
 {
-    
-    
     NSArray* arr = self.dataDic[@"info"][@"m_store_item"];
     
     [self.mArray removeAllObjects];

@@ -2386,6 +2386,7 @@ NSInteger kSWGOrderControllerApiMissingParamErrorCode = 234513;
 -(NSURLSessionTask*) updateOrderInfoUsingPOSTWithAuthorization: (NSString*) authorization
     orderId: (NSNumber*) orderId
     userId:(NSNumber*)userId
+    orderStatus:(NSString*)orderStatus
     payType: (NSNumber*) payType
     prepayPrice: (NSString*) prepayPrice
     invoiceType: (NSNumber*) invoiceType
@@ -2492,6 +2493,9 @@ NSInteger kSWGOrderControllerApiMissingParamErrorCode = 234513;
     }
     if (userId != nil) {
         queryParams[@"userId"] = userId;
+    }
+    if (payType != nil) {
+        queryParams[@"orderStatus"] = orderStatus;
     }
     if (payType != nil) {
         queryParams[@"payType"] = payType;

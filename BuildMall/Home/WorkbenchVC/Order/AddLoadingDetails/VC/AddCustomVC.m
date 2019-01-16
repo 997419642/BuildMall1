@@ -26,24 +26,24 @@
 @property (weak, nonatomic) IBOutlet UIButton *addNumBtn;
 @property (weak, nonatomic) IBOutlet UIButton *sureBtn;
 
-@property(nonatomic,strong)NSMutableArray* customArray;
+@property(nonatomic,strong)NSMutableArray* customArray;//手动输入的包号数组
 
 @property(nonatomic,strong)NSMutableArray* dataArray;
 
 @property (nonatomic, assign) NSInteger pageNum;
-@property(nonatomic,strong)NSMutableArray* selectArray;
+@property(nonatomic,strong)NSMutableArray* selectArray;//所有选中数组
 
 @property(nonatomic) NSArray<SWGOrderAbroadPackBean>* packBeanArray;
 
 @property(nonatomic) NSArray<SWGOrderPackBean>* attributeList;
 
 
-@property(nonatomic,strong)NSMutableArray* hasAddArray;
+@property(nonatomic,strong)NSMutableArray* hasAddArray;//已经添加的包号数组
 
-@property(nonatomic,strong)NSMutableArray* selectRequestArray;
+@property(nonatomic,strong)NSMutableArray* selectRequestArray;//选中的数据请求添加接口
 
 
-@property(nonatomic,strong)NSMutableArray* deleteArray;
+@property(nonatomic,strong)NSMutableArray* deleteArray;//需要调删除接口的数组
 
 @property(nonatomic,assign)NSString* searStr;
 
@@ -56,6 +56,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    //板材装货
     _dataArray = [NSMutableArray array];
     _customArray = [NSMutableArray array];
     _selectArray = [NSMutableArray array];
@@ -96,6 +97,7 @@
     [self requestHasBeenAdded];
 }
 
+//已添加过的包号
 -(void)requestHasBeenAdded
 {
     NSMutableDictionary* dict = [NSMutableDictionary dictionary];
@@ -111,10 +113,20 @@
                     if ([dict[@"packages"] isEqual:[NSNull null]]) {
                         
                     }else{
-                        
-                        model.packetNumber = dict[@"packages"];
-                        model.packetId = dict[@"id"];
-                        [_hasAddArray addObject:model];
+                        if ([dict[@"goodsId"] intValue] == 0) {
+                            //自定义的商品添加的包号
+                            NSMutableDictionary* dictCus = [dict[@"packages"] mj_JSONObject];
+                            model.packetNumber = dictCus[@"packages"];
+                            model.packetId = dict[@"id"];
+                            [_hasAddArray addObject:model];
+                            
+                        }else
+                        {
+                            //库存商品添加的包号
+                            model.packetNumber = dict[@"packages"];
+                            model.packetId = dict[@"id"];
+                            [_hasAddArray addObject:model];
+                        }
                     }
                 }
                 [self refreshing];
@@ -128,10 +140,14 @@
     }];
 }
 
+//所有包号
 -(void)refreshing
 {
     NSMutableDictionary* dict = [NSMutableDictionary dictionary];
-    [dict setObject:_detailModel.goodsId forKey:@"goodsId"];
+    if (_detailModel.goodsId) {
+        [dict setObject:_detailModel.goodsId forKey:@"goodsId"];
+
+    }
     if (_searStr != nil) {
         [dict setObject:_searStr forKey:@"packetNumber"];
     }
@@ -296,6 +312,7 @@
 
 }
 
+//删除
 -(void)deleteRequest:(NSMutableArray *)array
 {
     
@@ -308,7 +325,6 @@
             if ([output.code intValue] == 0) {
                 
                 [weakSelf showAlert:@"操作成功"];
-//                [weakSelf requestHasBeenAdded];
 
                 [weakSelf.navigationController popViewControllerAnimated:YES];
             }
@@ -321,9 +337,12 @@
     }];
 }
 
+//确认按钮
 - (IBAction)sureAction:(UIButton *)sender
 {
+    
     if (_hasAddArray.count) {
+        //如果有已添加的数据
         NSMutableArray* selearray = [NSMutableArray array];
         NSMutableArray* noDeleteArray = [NSMutableArray array];
         
@@ -370,24 +389,51 @@
         //如果没有已经添加过的数据直接请求添加接口
         _selectRequestArray = [NSMutableArray arrayWithArray:_selectArray];
     }
+    
     NSMutableArray* array = [NSMutableArray array];
     
     for (AddCustomModel* packages in _selectRequestArray) {
+        
         SWGOrderAbroadPackBean* bean = [SWGOrderAbroadPackBean new];
         
-        bean.buyPrice = _detailModel.buyPrice;
-        NSNumber *goodsId = [NSNumber numberWithInt:[_detailModel.goodsId intValue]];
-        bean.goodsId = goodsId;
-        NSNumber *orderId = [NSNumber numberWithInt:[_model.orderId intValue]];
-        bean.orderId = orderId;
-        NSNumber *Number = [NSNumber numberWithInt:[_detailModel.buyNumber intValue]];
-        bean.buyNumber = Number;
-        NSNumber *categoryId = [NSNumber numberWithInt:[_categoryId intValue]];
-        bean.categoryId = categoryId;
-        bean.packages = packages.packetNumber;
-        bean.orderPackId = [NSNumber numberWithInt:[packages.packetId intValue]];
-        bean.orderDetailId = [NSNumber numberWithInt:[_detailModel.orderDetailId intValue]];
-        [array addObject:bean];
+        if (_detailModel.packages != nil && ![_detailModel.packages isEqualToString:@""]) {
+        //库存商品
+            bean.buyPrice = _detailModel.buyPrice;
+            NSNumber *goodsId = [NSNumber numberWithInt:[_detailModel.goodsId intValue]];
+            bean.goodsId = goodsId;
+            NSNumber *orderId = [NSNumber numberWithInt:[_model.orderId intValue]];
+            bean.orderId = orderId;
+            NSNumber *Number = [NSNumber numberWithInt:[_detailModel.buyNumber intValue]];
+            bean.buyNumber = Number;
+            NSNumber *categoryId = [NSNumber numberWithInt:[_categoryId intValue]];
+            bean.categoryId = categoryId;
+            bean.packages = packages.packetNumber;
+            bean.orderPackId = [NSNumber numberWithInt:[packages.packetId intValue]];
+            bean.orderDetailId = [NSNumber numberWithInt:[_detailModel.orderDetailId intValue]];
+            [array addObject:bean];
+            
+        }else
+        {
+            
+            NSMutableDictionary* dictCus = [_detailModel.packages mj_JSONObject];
+            bean.buyPrice = _detailModel.buyPrice;
+            NSNumber *goodsId = [NSNumber numberWithInt:[_detailModel.goodsId intValue]];
+            bean.goodsId = goodsId;
+            NSNumber *orderId = [NSNumber numberWithInt:[_model.orderId intValue]];
+            bean.orderId = orderId;
+            NSNumber *Number = [NSNumber numberWithInt:[_detailModel.buyNumber intValue]];
+            bean.buyNumber = Number;
+            NSNumber *categoryId = [NSNumber numberWithInt:[_categoryId intValue]];
+            bean.categoryId = categoryId;
+            bean.orderPackId = [NSNumber numberWithInt:[packages.packetId intValue]];
+            bean.orderDetailId = [NSNumber numberWithInt:[_detailModel.orderDetailId intValue]];
+            NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+            [dict addEntriesFromDictionary:dictCus];
+            [dict setObject:packages.packetNumber forKey:@"packages"];
+            bean.packages = [dict mj_JSONString];
+            [array addObject:bean];
+            
+        }
     }
     
     _packBeanArray = array;
@@ -518,6 +564,7 @@
 
     }else
     {
+       //手动输入的包号
        AddCustomModel* cusDict = _customArray[indexPath.row];
         
         if (cusDict.isSelect == NO) {
@@ -558,11 +605,9 @@
         view.detailmodel = _detailModel;
         NSMutableArray* arr = (NSMutableArray *)_detailModel.warestoreList;
         view.dict = arr[0];
-        
         view.model = _model;
     }
     return view;
-    
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section

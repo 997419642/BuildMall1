@@ -21,6 +21,8 @@
     // Do any additional setup after loading the view.
 
 }
+
+
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     UIBarButtonItem *backItem =[[UIBarButtonItem alloc]init];
@@ -28,17 +30,13 @@
     viewController.navigationItem.backBarButtonItem = backItem;
     if (self.childViewControllers.count > 0) {
         viewController.hidesBottomBarWhenPushed = YES;
-//        viewController.navigationController.navigationBarHidden = NO;
         [UITabBar appearance].translucent = NO;
 
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.frame = CGRectMake(0, 0, 40, 40);
+
         [button setImage:[UIImage imageNamed:@"n_back_arrow"] forState:UIControlStateNormal];
-        button.imageEdgeInsets = UIEdgeInsetsMake(0, -15, 0, 0);
-        [button setTitle:@"返回" forState:UIControlStateNormal];
-        //设置换行识别方式
-        button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        button.titleEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 0);
-        [button sizeToFit];
+
         [button addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
         viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:button];
         ;

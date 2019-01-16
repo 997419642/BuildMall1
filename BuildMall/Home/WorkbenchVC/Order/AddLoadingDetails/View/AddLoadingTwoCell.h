@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *yitiLable;
 @property (weak, nonatomic) IBOutlet UILabel *unitPriceLable;
 
+@property(nonatomic,copy)NSString* hasTiStr;
+
 @end
 
 NS_ASSUME_NONNULL_END

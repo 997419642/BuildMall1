@@ -73,12 +73,13 @@
     [_priceTF resignFirstResponder];
 }
 
+//添加装货单库存商品
 -(void)setParksModel:(GoodsBeansListModel *)parksModel
 {
     _parksModel = parksModel;
     GoodsTableModel* tableModel = parksModel.productTableList[0];
-    NSInteger keshouNum = parksModel.stockNum - parksModel.lockNum;
-    _keshouLable.text = [NSString stringWithFormat:@"库存：%ld 可售：%ld",parksModel.stockNum,(long)keshouNum];
+    int keshouNum = parksModel.stockNum - parksModel.lockNum;
+    _keshouLable.text = [NSString stringWithFormat:@"库存：%d 可售：%d",parksModel.stockNum,keshouNum];
     
     _priceTF.text = parksModel.unitPrice;
     
@@ -136,6 +137,12 @@
 
 }
 
+-(void)setGenshuDict:(NSMutableDictionary *)genshuDict
+{
+    _genshuDict = genshuDict;
+    
+}
+
 - (void)setDict:(NSMutableDictionary *)dict
 {
     _dict = dict;
@@ -147,8 +154,10 @@
 {
     _beanModel = beanModel;
     GoodsTableModel* tableModel = beanModel.productTableList[0];
-    NSInteger keshouNum = beanModel.stockNum - beanModel.lockNum;
-    _keshouLable.text = [NSString stringWithFormat:@"库存：%ld 可售件数：%ld",beanModel.stockNum,(long)keshouNum];
+    int keshouNum = beanModel.stockNum - beanModel.lockNum;
+    _keshouLable.text = [NSString stringWithFormat:@"库存：%d 可售件数：%d",beanModel.stockNum,keshouNum];
+    
+    _priceTF.text = beanModel.unitPrice;
     
     NSMutableDictionary* modelDict = [NSMutableDictionary dictionary];
     
@@ -196,6 +205,27 @@
         _houLable.text = [NSString stringWithFormat:@"%@*%@",modelDict[@"houdu"],modelDict[@"koujin"]];
     }
     
+}
+
+-(void)setDBmodel:(OrderDBModel *)DBmodel
+{
+    _DBmodel = DBmodel;
+    _specifLable.text = [NSString stringWithFormat:@"%@ %@ %@",DBmodel.shuzhong,DBmodel.pinpai,DBmodel.dengji];
+    if (!DBmodel.houdu) {
+        //原木
+        _houLable.text = [NSString stringWithFormat:@"%@",DBmodel.kuandu];
+
+    }else
+    {
+        _houLable.text = [NSString stringWithFormat:@"%@*%@",DBmodel.houdu,DBmodel.kuandu];
+
+    }
+    
+    _lenthLable.text = [NSString stringWithFormat:@"*%@",DBmodel.changdu];
+    int num = [DBmodel.stockNum intValue] - [DBmodel.lockNum intValue];
+    _keshouLable.text = [NSString stringWithFormat:@"库存：%@  可售：%d",DBmodel.stockNum,num];
+    _priceTF.text = DBmodel.buyPrice;
+    [_numBtn setTitle:DBmodel.buyNumber forState:UIControlStateNormal];
 }
 
 //修改数量和价格
@@ -269,7 +299,7 @@
          _houLable.text = [NSString stringWithFormat:@"%@*%@",modelDict[@"houdu"],modelDict[@"koujin"]];
     }
     
-    if (detailModel.packages) {
+    if (detailModel.packages != nil && ![detailModel.packages isEqualToString:@""]) {
 
         //自定义商品
         NSMutableDictionary* dict = [detailModel.packages mj_JSONObject];
@@ -364,17 +394,67 @@
             [dict setObject:@"1" forKey:@"status"];
             [dict setObject:_numBtn.titleLabel.text forKey:@"buyNumber"];
             [dict setObject:_priceTF.text forKey:@"buyPrice"];
-            NSDate *date =[NSDate date];//简书 FlyElephant
-            NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-            [formatter setDateFormat:@"yyyy"];
-            NSInteger currentYear=[[formatter stringFromDate:date] integerValue];
-            [formatter setDateFormat:@"MM"];
-            NSInteger currentMonth=[[formatter stringFromDate:date]integerValue];
-            [formatter setDateFormat:@"dd"];
-            NSInteger currentDay=[[formatter stringFromDate:date] integerValue];
-            NSLog(@"currentDate = %@ ,year = %ld ,month=%ld, day=%ld",date,currentYear,currentMonth,currentDay);
-            NSString* dateStr = [NSString stringWithFormat:@"%ld-%ld-%ld",(long)currentYear,(long)currentMonth,(long)currentDay];
-            [dict setObject:dateStr forKey:@"createTime"];
+            
+            NSMutableDictionary* modelDict = [NSMutableDictionary dictionary];
+            NSMutableArray* array = (NSMutableArray *)tableModel.productAttributeList;
+            
+            for (NSMutableDictionary* dict in array) {
+                
+                if ([dict[@"attrName"] isEqualToString:@"树种"]) {
+                    [modelDict setObject:dict[@"attrValue"] forKey:@"shuzhong"];
+                }
+                
+                if ([dict[@"attrName"] isEqualToString:@"等级"]) {
+                    [modelDict setObject:dict[@"attrValue"] forKey:@"dengji"];
+                    
+                }
+                
+                if ([dict[@"attrName"] isEqualToString:@"口径"] || [dict[@"attrName"] isEqualToString:@"宽度"]) {
+                    [modelDict setObject:dict[@"attrValue"] forKey:@"koujin"];
+                    
+                }
+                
+                if ([dict[@"attrName"] isEqualToString:@"厚度"]) {
+                    [modelDict setObject:dict[@"attrValue"] forKey:@"houdu"];
+                    
+                }
+            }
+            [dict setObject:modelDict[@"shuzhong"] forKey:@"shuzhong"];
+            [dict setObject:tableModel.brandName forKey:@"pinpai"];
+            [dict setObject:modelDict[@"dengji"] forKey:@"dengji"];
+            [dict setObject:modelDict[@"koujin"] forKey:@"kuandu"];
+            if(!modelDict[@"houdu"])
+            {
+                [dict setObject:@"" forKey:@"houdu"];
+
+            }else
+            {
+                [dict setObject:modelDict[@"houdu"] forKey:@"houdu"];
+
+            }
+            [dict setObject:_dict[@"specValue"] forKey:@"changdu"];
+            [dict setObject:[NSString stringWithFormat:@"%d",_beanModel.lockNum] forKey:@"lockNum"];
+            [dict setObject:[NSString stringWithFormat:@"%d",_beanModel.stockNum] forKey:@"stockNum"];
+            [dict setObject:_beanModel.goodsNuit forKey:@"goodsNuit"];
+            if(_genshuDict != nil)
+            {
+                [dict setObject:_genshuDict[@"specValue"] forKey:@"genshu"];
+            }else
+            {
+                [dict setObject:@"" forKey:@"genshu"];
+            }
+            
+//            NSDate *date =[NSDate date];//简书 FlyElephant
+//            NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+//            [formatter setDateFormat:@"yyyy"];
+//            NSInteger currentYear=[[formatter stringFromDate:date] integerValue];
+//            [formatter setDateFormat:@"MM"];
+//            NSInteger currentMonth=[[formatter stringFromDate:date]integerValue];
+//            [formatter setDateFormat:@"dd"];
+//            NSInteger currentDay=[[formatter stringFromDate:date] integerValue];
+//            NSLog(@"currentDate = %@ ,year = %ld ,month=%ld, day=%ld",date,currentYear,currentMonth,currentDay);
+//            NSString* dateStr = [NSString stringWithFormat:@"%ld-%ld-%ld",(long)currentYear,(long)currentMonth,(long)currentDay];
+//            [dict setObject:dateStr forKey:@"createTime"];
             [_delegate sureAction:dict];
         
         }
@@ -383,28 +463,30 @@
         
     //修改价格
 
-    int keshouNum = [_detailModel.stockNum intValue] - [_detailModel.lockNum intValue];
-    NSString* keshouStr = [NSString stringWithFormat:@"%d",keshouNum];
+//    int keshouNum = [_detailModel.stockNum intValue] - [_detailModel.lockNum intValue];
+//    NSString* keshouStr = [NSString stringWithFormat:@"%d",keshouNum];
 
     NSMutableDictionary* dict = [NSMutableDictionary dictionary];
-    [dict setObject:_detailModel.orderDetailId forKey:@"orderDetailId"];
+//    [dict setObject:_detailModel.orderDetailId forKey:@"orderDetailId"];
     [dict setObject:_numBtn.titleLabel.text forKey:@"buyNumber"];
     [dict setObject:_priceTF.text forKey:@"buyPrice"];
-    [dict setObject:keshouStr forKey:@"lockNum"];
+    [dict setObject:_DBmodel.noticeId forKey:@"noticeId"];
+//    [dict setObject:keshouStr forKey:@"lockNum"];
         
-    if (!_detailModel.goodsId) {
-        //自定义商品
-        NSMutableDictionary* dictdata = [_detailModel.packages mj_JSONObject];
-        NSString* cubicNum = [NSString stringWithFormat:@"%@",dictdata[@"lifangshu"]];
-        [dict setObject:cubicNum forKey:@"cubicNumber"];
-        [dict setObject:@"0" forKey:@"goodsId"];
-    }else
-    {
+//    if (!_detailModel.goodsId) {
+//        //自定义商品
+//        NSMutableDictionary* dictdata = [_detailModel.packages mj_JSONObject];
+//        NSString* cubicNum = [NSString stringWithFormat:@"%@",dictdata[@"lifangshu"]];
+//        [dict setObject:cubicNum forKey:@"cubicNumber"];
+//        [dict setObject:@"0" forKey:@"goodsId"];
+//    }else
+//    {
+//
+//        [dict setObject:_detailModel.goodsId forKey:@"goodsId"];
+//
+//        [dict setObject:_detailModel.unitNum forKey:@"cubicNumber"];
+//    }
     
-        [dict setObject:_detailModel.goodsId forKey:@"goodsId"];
-    
-        [dict setObject:_detailModel.unitNum forKey:@"cubicNumber"];
-    }
     
         [_delegate sureAction:dict];
         

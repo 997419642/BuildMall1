@@ -35,7 +35,7 @@
                         <constraint firstAttribute="width" constant="84" id="fsa-p3-WQX"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <state key="normal" title="查看商品">
+                    <state key="normal" title="取消订单">
                         <color key="titleColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>

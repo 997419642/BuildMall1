@@ -12,6 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CompanyGoodVC : BasicVC
 
+@property(nonatomic,assign)BOOL isSend;
+
+@property(nonatomic,copy)void(^slectGoodsBlock)(NSString* str);
+
+
+
+
 @end
 
 NS_ASSUME_NONNULL_END

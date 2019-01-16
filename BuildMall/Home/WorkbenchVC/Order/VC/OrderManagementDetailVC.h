@@ -14,8 +14,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic,copy)NSString* orderId;
 
+@property(nonatomic,copy)NSString* categoryId;
+
 
 @property(nonatomic,copy)NSString* orderIdTwo;
+
+@property(nonatomic,copy)NSString* orderStatus;
+
 
 
 @property(nonatomic,assign)NSInteger sectionNum;

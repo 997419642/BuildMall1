@@ -114,7 +114,7 @@
 
     [_tableView registerNib:[UINib nibWithNibName:@"CustomerTwoCell" bundle:nil] forCellReuseIdentifier:@"CustomerTwoCell"];
     
-    [self personRequest];
+//    [self personRequest];
 
 
 }

@@ -43,13 +43,10 @@
             {
                 // 设置搜索信息
                 _weakSelf.searchBar.text = didSelectText;
-                
             }
-            
         };
         searchSuggestionVC.view.frame = CGRectMake(0, 0, self.view.mj_w, self.view.mj_h);
         searchSuggestionVC.view.backgroundColor = [UIColor whiteColor];
-        
         [self.view addSubview:searchSuggestionVC.view];
         [self addChildViewController:searchSuggestionVC];
         _searchSuggestionVC = searchSuggestionVC;
@@ -62,33 +59,22 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    _allBtn.layer.cornerRadius = 15;//2.0是圆角的弧度，根据需求自己更改
+    _allBtn.layer.cornerRadius = 15;
     _allBtn.layer.borderColor = [UIColor colorWithHexString:@"5F7CCC"].CGColor;//设置边框颜色
     _allBtn.layer.borderWidth = 1.0f;
-    
     _oneBtn.layer.cornerRadius = 15;
     _twoBtn.layer.cornerRadius = 15;
-
     _threeBtn.layer.cornerRadius = 15;
-
     _fourBtn.layer.cornerRadius = 15;
-
     _fiveBtn.layer.cornerRadius = 15;
-
     _sixBtn.layer.cornerRadius = 15;
-
     _sevenBtn.layer.cornerRadius = 15;
-
     _eightBtn.layer.cornerRadius = 15;
-
     _nineBtn.layer.cornerRadius = 15;
 
-    
-    
     // 创建搜索框
     UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(10, 7, screenW-64-20, 30)];
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(-10, 0, titleView.frame.size.width, 30)
-                              ];
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(-10, 0, titleView.frame.size.width, 30)];
     searchBar.placeholder = @"搜索";
     searchBar.delegate = self;
     searchBar.backgroundColor = [UIColor whiteColor];
@@ -102,9 +88,7 @@
     [searchField setValue:[UIColor colorWithHexString:@"BFBFBF"] forKeyPath:@"_placeholderLabel.textColor"];
     [searchField setValue:[UIFont boldSystemFontOfSize:12] forKeyPath:@"_placeholderLabel.font"];
     searchField.font = [UIFont systemFontOfSize:13];
-
     self.navigationItem.titleView = titleView;
-    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStyleDone target:self action:@selector(cancelDidClick)];
 }
 
@@ -124,6 +108,14 @@
     
     // 回收键盘
     [self.searchBar resignFirstResponder];
+    self.navigationItem.hidesBackButton=NO;
+
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationItem.hidesBackButton=YES;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText

@@ -28,7 +28,7 @@
 - (instancetype) init {
     self = [super init];
     if (self) {
-        _host = @"http://192.168.0.128:8099";
+        _host = @"http://192.168.31.169:8099";
         _username = @"";
         _password = @"";
         _accessToken= @"";

@@ -24,14 +24,14 @@
     
     _numLable.text = [NSString stringWithFormat:@"数量：%@件",model.buyNumber];
     
-    if (_model.packages) {
+    if (model.packages != nil && ![model.packages isEqualToString:@""]) {
         _priceLable.text = [NSString stringWithFormat:@"￥%@/%@",model.buyPrice,@"m³"];
     }else{
    
         _priceLable.text = [NSString stringWithFormat:@"￥%@/%@",model.buyPrice,model.goodsNuit];
     }
     
-    if (_model.packages != nil) {
+    if (model.packages != nil && ![model.packages isEqualToString:@""]) {
         
         NSMutableDictionary* dict = [model.packages mj_JSONObject];
         _nameLable.text = dict[@"shuzhong"];

@@ -24,7 +24,7 @@
 
         _sharedClient.responseSerializer = serial;
 //        _sharedClient.requestSerializer = [AFJSONRequestSerializer  serializer];
-//        _sharedClient.responseSerializer = [AFHTTPResponseSerializer serializer];
+        _sharedClient.requestSerializer = [AFHTTPRequestSerializer serializer];
         
         _sharedClient.requestSerializer.timeoutInterval = 10;
 
@@ -33,6 +33,7 @@
     return _sharedClient;
 }
 
+//订单接口
 - (NSURLSessionDataTask *)post:(NSString *)urlString parameters:(NSMutableDictionary *)params complete:(responseBlock) block{
     self.requestSerializer.timeoutInterval = 10;
     
@@ -60,6 +61,7 @@
     
 }
 
+//订单接口
 - (NSURLSessionDataTask *)get:(NSString*)urlString parameters:(NSDictionary *)params complete:(responseBlock) block{
     NSString *url = [NSString stringWithFormat:@"%@%@",onewebUrlOld,urlString];
     
@@ -79,7 +81,7 @@
     }];
 }
 
-//第二个端口
+//买家提货信息接口
 - (NSURLSessionDataTask *)postTwo:(NSString *)urlString parameters:(NSMutableDictionary *)params complete:(responseBlock) block{
     self.requestSerializer.timeoutInterval = 10;
     
@@ -107,6 +109,7 @@
     
 }
 
+//买家提货信息接口
 - (NSURLSessionDataTask *)getTwo:(NSString*)urlString parameters:(NSDictionary *)params complete:(responseBlock) block{
     NSString *url = [NSString stringWithFormat:@"%@%@",twowebUrlOld,urlString];
     
@@ -126,6 +129,57 @@
     }];
 }
 
+
+//聊天
+- (NSURLSessionDataTask *)postThree:(NSString *)urlString parameters:(NSMutableDictionary *)params complete:(responseBlock) block{
+    self.requestSerializer.timeoutInterval = 10;
+    
+    NSString * url = [NSString stringWithFormat:@"%@%@",threewebUrlOld,urlString];
+
+    NSLog(@"%@--%@",url,params);
+    
+    
+    return [self POST:url parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if (block) {
+            NSLog(@"-==%@",responseObject);
+            
+            ResponseMode* model = [ResponseMode mj_objectWithKeyValues:responseObject];
+            block(model,nil);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        NSData * data = error.userInfo[@"com.alamofire.serialization.response.error.data"];
+        NSString * str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"错误原因:%@",str);
+    }];
+}
+
+//聊天
+- (NSURLSessionDataTask *)getThree:(NSString*)urlString parameters:(NSDictionary *)params complete:(responseBlock) block{
+    NSString *url = [NSString stringWithFormat:@"%@%@",threewebUrlOld,urlString];
+    NSLog(@"%@--%@",url,params);
+
+    return [self GET:url parameters:params progress:nil success:^(NSURLSessionDataTask *__unused task,id resultObject){
+        if (block) {
+            NSLog(@"-==%@",resultObject);
+            
+            ResponseMode *model =[ResponseMode mj_objectWithKeyValues:resultObject];
+            block(model,nil);
+        }
+        
+    }failure:^(NSURLSessionDataTask *__unused task,NSError *e){
+        
+        if (block) {
+            block(nil,e);
+        }
+    }];
+}
+
+//通过用户id获取imToken
+-(void)getTokenWithUserId:(NSMutableDictionary *)parames complete:(responseBlock)block
+{
+    [self getThree:@"/ImController/select" parameters:parames complete:block];
+}
 
 //装货单修改价格
 -(void)orderPackUpdateMoney:(NSMutableDictionary *)parames complete:(responseBlock)block
@@ -241,9 +295,6 @@
     [self post:@"/orderDetail/deleteOrderDetail" parameters:parames complete:block];
 
 }
-
-
-
 
 //删除订单
 -(void)orderDelete:(NSMutableDictionary *)parames complete:(responseBlock)block

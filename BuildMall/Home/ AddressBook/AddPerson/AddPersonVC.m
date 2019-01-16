@@ -51,7 +51,6 @@
     _selectArray = [NSMutableArray array];
     _infoArr = [NSMutableArray array];
 
-
     AddPersonResultVC *result = [[AddPersonResultVC alloc] init];
     result.view.frame = CGRectMake(0, 0, screenW, screenH-64);
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:result];
@@ -68,7 +67,6 @@
     self.definesPresentationContext = YES;
     self.extendedLayoutIncludesOpaqueBars = YES;
     [self setAutomaticallyAdjustsScrollViewInsets:YES];
-
     NSLog(@"%f",_searchController.searchBar.height);
 
 }

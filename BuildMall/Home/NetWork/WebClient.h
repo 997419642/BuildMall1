@@ -18,6 +18,8 @@ typedef void (^responseBlock)(ResponseMode *result, NSError *error);
 @interface WebClient : AFHTTPSessionManager
 
 + (instancetype)sharedClient;
+
+-(void)getTokenWithUserId:(NSMutableDictionary *)parames complete:(responseBlock)block;
 -(void)orderPackUpdateMoney:(NSMutableDictionary *)parames complete:(responseBlock)block;
 
 -(void)orderCancelOrder:(NSMutableDictionary *)parames complete:(responseBlock)block;

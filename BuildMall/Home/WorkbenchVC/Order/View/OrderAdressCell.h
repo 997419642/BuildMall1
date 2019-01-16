@@ -19,7 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,strong)NSDictionary* dict;
 
 @property (weak, nonatomic) IBOutlet UILabel *namelable;
-@property (weak, nonatomic) IBOutlet UILabel *adresslable;
 
 @end
 

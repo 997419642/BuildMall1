@@ -20,9 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic,copy)NSString* unitPrice;
 
-@property(nonatomic,assign)NSInteger stockNum;
+@property(nonatomic,assign)int stockNum;
 
-@property(nonatomic,assign)NSInteger lockNum;
+@property(nonatomic,assign)int lockNum;
 
 @property(nonatomic,assign)NSInteger orderId;
 

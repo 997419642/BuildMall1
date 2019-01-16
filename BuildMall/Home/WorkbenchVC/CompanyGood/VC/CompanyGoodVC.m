@@ -57,9 +57,18 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CompanyGoodDetailVC* VC = [CompanyGoodDetailVC new];
     
-    [self.navigationController pushViewController:VC animated:YES];
+    if (_isSend == YES) {
+        
+        self.slectGoodsBlock(@"3");
+        [self.navigationController popViewControllerAnimated:YES];
+    }else
+    {
+        CompanyGoodDetailVC* VC = [CompanyGoodDetailVC new];
+        
+        [self.navigationController pushViewController:VC animated:YES];
+    }
+
     
 }
 

@@ -29,6 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,strong)NSMutableDictionary* parksDict;
 @property(nonatomic,strong)NSMutableDictionary* detailParkDict;
 
+@property(nonatomic,strong)NSMutableDictionary* genshuDict;
+
 
 @end
 

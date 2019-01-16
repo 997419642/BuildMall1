@@ -89,9 +89,9 @@
                         </connections>
                     </button>
                     <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1LI-Dz-lAo">
-                        <rect key="frame" x="26" y="54" width="90" height="20"/>
+                        <rect key="frame" x="26" y="54" width="80" height="20"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="90" id="036-0q-dpt"/>
+                            <constraint firstAttribute="width" constant="80" id="036-0q-dpt"/>
                             <constraint firstAttribute="height" constant="20" id="qCe-Y1-FxG"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -100,9 +100,9 @@
                         </state>
                     </button>
                     <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="12432" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aMl-ia-D3u">
-                        <rect key="frame" x="46" y="55.5" width="70" height="17"/>
+                        <rect key="frame" x="46" y="55.5" width="60" height="17"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="70" id="v4x-ly-cSI"/>
+                            <constraint firstAttribute="width" constant="60" id="v4x-ly-cSI"/>
                         </constraints>
                         <color key="textColor" red="0.90980392160000001" green="0.14117647059999999" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -114,11 +114,19 @@
                         <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="太仓龙达   地址：环路1号" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SfS-Oo-mDH">
+                        <rect key="frame" x="167" y="35" width="127.5" height="14"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" red="0.62745098040000002" green="0.62745098040000002" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="KDW-WB-6ko" firstAttribute="leading" secondItem="LyJ-k9-zZN" secondAttribute="trailing" constant="14" id="4QQ-oL-Bmi"/>
                     <constraint firstItem="KDW-WB-6ko" firstAttribute="leading" secondItem="LyJ-k9-zZN" secondAttribute="trailing" constant="14" id="4Xo-Rf-kzj"/>
+                    <constraint firstItem="SfS-Oo-mDH" firstAttribute="leading" secondItem="FSl-EF-sCX" secondAttribute="trailing" constant="10" id="6ps-KP-yd6"/>
                     <constraint firstAttribute="trailing" secondItem="KDW-WB-6ko" secondAttribute="trailing" constant="20" id="AoK-r6-j2M"/>
+                    <constraint firstItem="SfS-Oo-mDH" firstAttribute="centerY" secondItem="FSl-EF-sCX" secondAttribute="centerY" id="BBb-es-rKl"/>
                     <constraint firstItem="uan-nK-AYx" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="10" id="BKu-eQ-kxE"/>
                     <constraint firstAttribute="trailing" secondItem="kTs-I4-g3W" secondAttribute="trailing" constant="20" id="BoO-5M-eBl"/>
                     <constraint firstItem="Mz0-5a-MJG" firstAttribute="leading" secondItem="uan-nK-AYx" secondAttribute="leading" id="Dlb-XU-Rfj"/>
@@ -145,6 +153,7 @@
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
                 <outlet property="addNumBtn" destination="iMZ-bu-Xjv" id="Wsu-hT-zyr"/>
+                <outlet property="adressLable" destination="SfS-Oo-mDH" id="8FT-dB-Paa"/>
                 <outlet property="deleteBtn" destination="KDW-WB-6ko" id="zsq-C3-5H9"/>
                 <outlet property="jiaBtn" destination="LyJ-k9-zZN" id="LFU-mp-hCa"/>
                 <outlet property="jianBtn" destination="IM8-4s-SKK" id="VvF-b0-Pl2"/>

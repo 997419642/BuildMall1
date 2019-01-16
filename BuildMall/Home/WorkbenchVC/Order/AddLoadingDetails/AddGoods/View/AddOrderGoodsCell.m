@@ -19,6 +19,12 @@
 
 }
 
+-(void)setGenshuDict:(NSMutableDictionary *)genshuDict
+{
+    _genshuDict = genshuDict;
+    
+}
+
 -(void)setDetailParkDict:(NSMutableDictionary *)detailParkDict
 {
     _detailParkDict = detailParkDict;
@@ -42,7 +48,7 @@
         
         NSInteger keshouNum = parksModel.stockNum - parksModel.lockNum;
         
-        _numLable.text = [NSString stringWithFormat:@"数量：%ld根，%ld%@",(long)keshouNum,(long)parksModel.unitNum,parksModel.goodsNuit];
+        _numLable.text = [NSString stringWithFormat:@"数量：%ld件，%ld%@",(long)keshouNum,(long)parksModel.unitNum,parksModel.goodsNuit];
         
         NSMutableDictionary* modelDict = [NSMutableDictionary dictionary];
         

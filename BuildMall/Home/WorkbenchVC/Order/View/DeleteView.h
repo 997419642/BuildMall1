@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol DeleteViewDelegate <NSObject>
 
--(void)sureDelete:(NSString *)orderID;
+-(void)sureDelete:(NSString *)orderID noticeId:(NSString *)noticeId;
 
 @optional
 
@@ -25,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,strong)UIView *backgroupView;
 
 @property(nonatomic,strong)NSString *orderID;
+
+@property(nonatomic,strong)NSString *noticeId;
+
 
 + (instancetype)addDeleteVView;
 

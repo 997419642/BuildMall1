@@ -13,7 +13,7 @@
 
 @protocol OrderDetailTwoCellDelegate <NSObject>
 
-- (void)deleteAction:(NSString *)orderID;
+- (void)deleteAction:(NSString *)orderID noticeId:(NSString *)noticeId;
 
 
 
@@ -29,6 +29,8 @@
 
 @property(nonatomic,strong)OrderDetailModel* model;
 
+@property(nonatomic,strong)OrderDBModel* DBModel;
+
 @property (weak, nonatomic) IBOutlet UIButton *priceBtn;
 
 @property (weak, nonatomic) IBOutlet UIButton *addNumBtn;
@@ -40,6 +42,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *jianBtn;
 @property (weak, nonatomic) IBOutlet UIButton *deleteBtn;
 @property (weak, nonatomic) IBOutlet UILabel *rightLable;
+@property (weak, nonatomic) IBOutlet UILabel *adressLable;
 
 @end
 

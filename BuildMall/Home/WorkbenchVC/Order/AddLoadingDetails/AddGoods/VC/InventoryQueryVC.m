@@ -65,16 +65,13 @@
     _houduArray = [NSMutableArray array];
     _koujinArray = [NSMutableArray array];
     
-    
     [self resetConlloctionView];
-    
     
 }
 
+//确定按钮
 -(void)pressright
 {
-   
-    
     self.slectInventoryBlock(_selectArray);
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -422,4 +419,5 @@
 {
     return CGSizeMake(screenW, 35);
 }
+
 @end

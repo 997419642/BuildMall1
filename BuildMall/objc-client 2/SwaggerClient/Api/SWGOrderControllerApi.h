@@ -526,6 +526,7 @@ extern NSInteger kSWGOrderControllerApiMissingParamErrorCode;
 -(NSURLSessionTask*) updateOrderInfoUsingPOSTWithAuthorization: (NSString*) authorization
     orderId: (NSNumber*) orderId
     userId:(NSNumber*)userId
+    orderStatus:(NSString*)orderStatus
     payType: (NSNumber*) payType
     prepayPrice: (NSString*) prepayPrice
     invoiceType: (NSNumber*) invoiceType

@@ -132,7 +132,7 @@
     for (OrderDetailModel* model0 in model.orderDetailList) {
         [numArray addObject:model0.buyNumber];
         
-        int num = [model0.unitNum intValue] * [model0.buyNumber intValue];
+        float num = [model0.unitNum floatValue] * [model0.buyNumber floatValue];
         [unitArray addObject:@(num)];
     }
 

@@ -17,24 +17,42 @@
     
 }
 
+-(void)setHasTiStr:(NSString *)hasTiStr
+{
+    _hasTiStr = hasTiStr;
+   
+    _yitiLable.text = [NSString stringWithFormat:@"已提%@",_hasTiStr];
+    
+    if ([_hasTiStr intValue] >= [_detailModel.buyNumber intValue]) {
+        self.userInteractionEnabled = NO;
+    }
+    
+}
+
 -(void)setDetailModel:(OrderDetailModel *)detailModel
 {
     _detailModel = detailModel;
-    
 
     //如果数据是自定义添加的商品，进行赋值
-    if (detailModel.packages != nil) {
+    if (detailModel.packages != nil && ![detailModel.packages isEqualToString:@""]) {
         
         NSMutableDictionary* dict = [detailModel.packages mj_JSONObject];
         _nameLable.text = dict[@"shuzhong"];
         _unitPriceLable.text = [NSString stringWithFormat:@"￥%@/%@",detailModel.buyPrice,@"m³"];
-        _numLable.text = [NSString stringWithFormat:@"数量：%@%@*%@件",dict[@"lifangshu"],@"m³",detailModel.buyNumber];
+
 
         if (!dict[@"houdu"]) {
+            //原木
             _spactilLable.text = [NSString stringWithFormat:@"%@，%@，%@*%@",dict[@"pinpai"],dict[@"dengji"],dict[@"kuandu"],dict[@"changdu"]];
+            
+            _numLable.text = [NSString stringWithFormat:@"数量：%@%@*%@件",dict[@"lifangshu"],@"m³",detailModel.buyNumber];
+            
         }else
         {
+            //板材
             _spactilLable.text = [NSString stringWithFormat:@"%@,%@,%@*%@*%@",dict[@"pinpai"],dict[@"dengji"],dict[@"houdu"],dict[@"kuandu"],dict[@"changdu"]];
+            
+            _numLable.text = [NSString stringWithFormat:@"数量：%@%@*(%@支)*%@件",dict[@"lifangshu"],@"m³",dict[@"genshu"],detailModel.buyNumber];
         }
     }else
     {
@@ -87,15 +105,21 @@
         if (!modelDict[@"houdu"]) {
             //原木
             _spactilLable.text = [NSString stringWithFormat:@"%@，%@，%@*%@",tableDic[@"brandName"],modelDict[@"dengji"],modelDict[@"koujin"],lengthAttributesList[0][@"specValue"]];
+            _numLable.text = [NSString stringWithFormat:@"数量：%@%@*%@件",detailModel.unitNum,detailModel.goodsNuit,detailModel.buyNumber];
         }else
         {
             //板材
             _spactilLable.text = [NSString stringWithFormat:@"%@，%@，%@*%@*%@",tableDic[@"brandName"],modelDict[@"dengji"],modelDict[@"houdu"],modelDict[@"koujin"],lengthAttributesList[0][@"specValue"]];
+            
+            //片数
+            NSMutableDictionary* dict = _detailModel.numAttributes[0];
+            
+            _numLable.text = [NSString stringWithFormat:@"数量：%@%@*(%@支)*%@件",detailModel.unitNum,detailModel.goodsNuit,dict[@"specValue"],detailModel.buyNumber];
         }
         
         _unitPriceLable.text = [NSString stringWithFormat:@"￥%@/%@",detailModel.buyPrice,detailModel.goodsNuit];
         
-        _numLable.text = [NSString stringWithFormat:@"数量：%@%@*%@件",detailModel.unitNum,detailModel.goodsNuit,detailModel.buyNumber];
+  
     }
 }
 
@@ -103,6 +127,8 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+    
+  
 }
 
 @end

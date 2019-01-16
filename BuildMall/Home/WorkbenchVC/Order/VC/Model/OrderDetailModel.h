@@ -44,6 +44,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,copy)NSString* packages;
 
 
+@property(nonatomic,strong)NSArray *numAttributes;//片数
+
 
 @end
 

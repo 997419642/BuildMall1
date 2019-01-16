@@ -28,9 +28,9 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NkI-TF-gED">
-                    <rect key="frame" x="265" y="107.5" width="90" height="25"/>
+                    <rect key="frame" x="275" y="107.5" width="80" height="25"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="90" id="r9s-oT-d2z"/>
+                        <constraint firstAttribute="width" constant="80" id="r9s-oT-d2z"/>
                         <constraint firstAttribute="height" constant="25" id="wzL-Fa-txd"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -63,9 +63,9 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yTs-Mr-omI">
-                    <rect key="frame" x="285" y="107.5" width="70" height="25"/>
+                    <rect key="frame" x="295" y="107.5" width="60" height="25"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="70" id="Qny-cT-D6S"/>
+                        <constraint firstAttribute="width" constant="60" id="Qny-cT-D6S"/>
                         <constraint firstAttribute="height" constant="25" id="msB-9M-9eu"/>
                     </constraints>
                     <nil key="textColor"/>

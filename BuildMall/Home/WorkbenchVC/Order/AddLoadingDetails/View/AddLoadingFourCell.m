@@ -87,7 +87,7 @@
             //板材
             _numLable.text = dict[@"packages"];
             _detailLable.text = [NSString stringWithFormat:@"%@，%@，%@*%@*%@",productTableDict[@"brandName"],modelDict[@"dengji"],modelDict[@"houdu"],modelDict[@"koujin"],lengthDict[@"specValue"]];
-            _volumeLable.text = [NSString stringWithFormat:@"数量：%@%@(%@片)%@件",dict[@"unitNum"],dict[@"goodsNuit"],numDict[@"specValue"],dict[@"buyNumber"]];
+            _volumeLable.text = [NSString stringWithFormat:@"数量：%@%@ %@支",dict[@"unitNum"],dict[@"goodsNuit"],numDict[@"specValue"]];
         }
         
     }else
@@ -113,8 +113,8 @@
         {
             //自定义商品板材
             _detailLable.text = [NSString stringWithFormat:@"%@，%@，%@*%@*%@",datadict[@"pinpai"],datadict[@"dengji"],datadict[@"houdu"],datadict[@"kuandu"],datadict[@"changdu"]];
-            _volumeLable.text = [NSString stringWithFormat:@"数量：%@%@*(%@片)*%@",datadict[@"lifangshu"],@"m³",datadict[@"piecesNum"],dict[@"buyNumber"]];
-            _numLable.text = datadict[@"packetNum"];
+            _volumeLable.text = [NSString stringWithFormat:@"数量：%@%@  %@支",datadict[@"lifangshu"],@"m³",datadict[@"genshu"]];
+            _numLable.text = datadict[@"packages"];
 
         }
     

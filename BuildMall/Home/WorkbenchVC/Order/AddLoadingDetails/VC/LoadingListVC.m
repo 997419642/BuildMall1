@@ -165,8 +165,9 @@
         if ([dict[@"goodsId"] intValue] != 0) {
             
             bean = [SWGConfirmLoadingBean new];
-            bean.buyNumber = [NSNumber numberWithInt:[dict[@"buyNumber"] intValue]];
+            bean.buyNumber = [NSNumber numberWithInt:1];
             bean.buyPrice = dict[@"buyPrice"];
+         
             bean.cubicNum = [NSNumber numberWithInt:[dict[@"unitNum"] intValue]];
             bean.orderId = [NSNumber numberWithInt:[model0.orderId intValue]];
             bean.orderStatus = [NSNumber numberWithInt:[model.orderStatus intValue]];
@@ -177,7 +178,7 @@
         {
             NSMutableDictionary* datadict = [dict[@"packages"] mj_JSONObject];
             bean = [SWGConfirmLoadingBean new];
-            bean.buyNumber = [NSNumber numberWithInt:[dict[@"buyNumber"] intValue]];
+            bean.buyNumber = [NSNumber numberWithInt:1];
             bean.buyPrice = [NSString stringWithFormat:@"%@",dict[@"buyPrice"]];
             bean.cubicNum = [NSNumber numberWithInt:[datadict[@"lifangshu"] intValue]];
             bean.orderId = [NSNumber numberWithInt:[model0.orderId intValue]];
@@ -190,6 +191,7 @@
     }
     
     _loadingBeanList = arrayData;
+    NSLog(@"--%@",arrayData);
     __weak typeof(self)weakSelf = self;
 
     NSLog(@"---%@",_loadingBeanList);

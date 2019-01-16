@@ -8,6 +8,13 @@
 
 #import "BasicVC.h"
 
+@class ContactDataMember;
+
 @interface PersonDetailVC : BasicVC
+
+- (instancetype)initWithUserId:(NSString *)userId;
+
+@property (nonatomic, strong) UITableView *tableView;
+
 
 @end

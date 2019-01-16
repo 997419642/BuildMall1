@@ -160,23 +160,22 @@
     }
     
     if (_isZhuanghuo == YES) {
-        
+        //装货时添加
         NSMutableDictionary* dataDict =[NSMutableDictionary new];
 
         if ([_categoryId intValue] == 1) {
+            //原木
             [dataDict setObject:_pinmingLable.text forKey:@"shuzhong"];
             [dataDict setObject:_pingpaiLable.text forKey:@"pinpai"];
             [dataDict setObject:_dengjiLable.text forKey:@"dengji"];
             [dataDict setObject:_kuanDuTF.text forKey:@"kuandu"];
             [dataDict setObject:_changDuTF.text forKey:@"changdu"];
             [dataDict setObject:_liFanfshuTF.text forKey:@"lifangshu"];
-//            [dataDict setObject:_genShuTF.text forKey:@"piecesNum"];
-//            [dataDict setObject:_danJiaTF.text forKey:@"price"];
-//            [dataDict setObject:_orderId forKey:@"orderId"];
             [dataDict setObject:_cangKuStr forKey:@"cangku"];
 
         }else
         {
+            //板材
             [dataDict setObject:_pinmingLable.text forKey:@"shuzhong"];
             [dataDict setObject:_pingpaiLable.text forKey:@"pinpai"];
             [dataDict setObject:_dengjiLable.text forKey:@"dengji"];
@@ -184,32 +183,23 @@
             [dataDict setObject:_kuanDuTF.text forKey:@"kuandu"];
             [dataDict setObject:_changDuTF.text forKey:@"changdu"];
             [dataDict setObject:_liFanfshuTF.text forKey:@"lifangshu"];
-//            [dataDict setObject:_genShuTF.text forKey:@"piecesNum"];
-//            [dataDict setObject:_danJiaTF.text forKey:@"price"];
-//            [dataDict setObject:_orderId forKey:@"orderId"];
             [dataDict setObject:_baoHaoTF.text forKey:@"packetNum"];
             [dataDict setObject:_cangKuStr forKey:@"cangku"];
-
-
         }
 
         NSString* packages = [dataDict mj_JSONString];
-        
         SWGLoadingCustomBean* bean = [SWGLoadingCustomBean new];
         NSNumber* cubicNum = [NSNumber  numberWithInt:[_liFanfshuTF.text intValue]];
         bean.cubicNum = cubicNum;
         bean.piecesNum = _genShuTF.text;
         bean.price = _danJiaTF.text;
         bean.species = _pinmingLable.text;
-  
         bean.orderId = [NSNumber numberWithInt:[_orderId intValue]];
         bean.categoryId = [NSNumber  numberWithInt:[_categoryId intValue]];
         bean.packages = packages;
-        
         __weak typeof(self)weakSelf = self;
         
         SWGOrderPackControllerApi* OrderDetail = [SWGOrderPackControllerApi new];
-        
         [OrderDetail insertLoadingCustomUsingPOSTWithAuthorization:@"Q" loadingCustomBean:bean completionHandler:^(SWGMessageResult *output, NSError *error) {
   
             if (!error) {
@@ -226,60 +216,141 @@
         }];
     }else
     {
-    
+        //审核时添加
         NSMutableDictionary* dataDict =[NSMutableDictionary new];
+//        if ([_categoryId intValue] == 1) {
+//            [dataDict setObject:_pinmingLable.text forKey:@"shuzhong"];
+//            [dataDict setObject:_pingpaiLable.text forKey:@"pinpai"];
+//            [dataDict setObject:_dengjiLable.text forKey:@"dengji"];
+//            [dataDict setObject:_kuanDuTF.text forKey:@"kuandu"];
+//            [dataDict setObject:_changDuTF.text forKey:@"changdu"];
+//            [dataDict setObject:_liFanfshuTF.text forKey:@"lifangshu"];
+//            [dataDict setObject:_cangKuStr forKey:@"cangku"];
+//
+//        }else
+//        {
+//            [dataDict setObject:_pinmingLable.text forKey:@"shuzhong"];
+//            [dataDict setObject:_pingpaiLable.text forKey:@"pinpai"];
+//            [dataDict setObject:_dengjiLable.text forKey:@"dengji"];
+//            [dataDict setObject:_houDuTF.text forKey:@"houdu"];
+//            [dataDict setObject:_kuanDuTF.text forKey:@"kuandu"];
+//            [dataDict setObject:_changDuTF.text forKey:@"changdu"];
+//            [dataDict setObject:_liFanfshuTF.text forKey:@"lifangshu"];
+//            [dataDict setObject:_baoHaoTF.text forKey:@"packetNum"];
+//            [dataDict setObject:_cangKuStr forKey:@"cangku"];
+//            [dataDict setObject:_genShuTF.text forKey:@"genshu"];
+//        }
         
-        if ([_categoryId intValue] == 1) {
-            [dataDict setObject:_pinmingLable.text forKey:@"shuzhong"];
-            [dataDict setObject:_pingpaiLable.text forKey:@"pinpai"];
-            [dataDict setObject:_dengjiLable.text forKey:@"dengji"];
-            [dataDict setObject:_kuanDuTF.text forKey:@"kuandu"];
-            [dataDict setObject:_changDuTF.text forKey:@"changdu"];
-            [dataDict setObject:_liFanfshuTF.text forKey:@"lifangshu"];
-            [dataDict setObject:_cangKuStr forKey:@"cangku"];
+        OrderDBTool *noticeDBTool = [OrderDBTool shareInstance];
+        [noticeDBTool createTable];
+        NSMutableDictionary* dict0 = [NSMutableDictionary dictionary];
+        [dict0 setObject:@"" forKey:@"orderDetailId"];
+        [dict0 setObject:_danJiaTF.text forKey:@"buyPrice"];
+        [dict0 setObject:_liFanfshuTF.text forKey:@"unitNum"];
+        [dict0 setObject:@"0" forKey:@"goodsId"];
+        [dict0 setObject:@"0" forKey:@"stockNum"];
+        [dict0 setObject:@"0" forKey:@"lockNum"];
+        [dict0 setObject:@"m³" forKey:@"goodsNuit"];
+        [dict0 setObject:_kuanDuTF.text forKey:@"kuandu"];
+        [dict0 setObject:_changDuTF.text forKey:@"changdu"];
+        [dict0 setObject:_pinmingLable.text forKey:@"shuzhong"];
+        [dict0 setObject:_pingpaiLable.text forKey:@"pinpai"];
+        [dict0 setObject:_dengjiLable.text forKey:@"dengji"];
+        if ([_categoryId isEqualToString:@"1"]) {
+            [dict0 setObject:_genShuTF.text forKey:@"buyNumber"];
+            [dict0 setObject:@"" forKey:@"genshu"];
+            [dict0 setObject:@"" forKey:@"houdu"];
+            [dict0 setObject:@"" forKey:@"packages"];
             
-        }else
+        }else if([_categoryId isEqualToString:@"2"])
         {
-            [dataDict setObject:_pinmingLable.text forKey:@"shuzhong"];
-            [dataDict setObject:_pingpaiLable.text forKey:@"pinpai"];
-            [dataDict setObject:_dengjiLable.text forKey:@"dengji"];
-            [dataDict setObject:_houDuTF.text forKey:@"houdu"];
-            [dataDict setObject:_kuanDuTF.text forKey:@"kuandu"];
-            [dataDict setObject:_changDuTF.text forKey:@"changdu"];
-            [dataDict setObject:_liFanfshuTF.text forKey:@"lifangshu"];
-            [dataDict setObject:_baoHaoTF.text forKey:@"packetNum"];
-            [dataDict setObject:_cangKuStr forKey:@"cangku"];
-            
+            //板材
+            [dict0 setObject:@"1" forKey:@"buyNumber"];
+            //片数
+            [dict0 setObject:_genShuTF.text forKey:@"genshu"];
+            [dict0 setObject:_houDuTF.text forKey:@"houdu"];
+            [dict0 setObject:_baoHaoTF.text forKey:@"packages"];
         }
+        [dict0 setObject:_cangKuStr forKey:@"cangku"];
+//        NSString* packages = [dict0 mj_JSONString];
+//        [dict0 setObject:packages forKey:@"packages"];
+        [dict0 setObject:@"YES" forKey:@"isCus"];
         
-        NSString* packages = [dataDict mj_JSONString];
         
-        SWGLoadingCustomBean* bean = [SWGLoadingCustomBean new];
-        NSNumber* cubicNum = [NSNumber  numberWithInt:[_liFanfshuTF.text intValue]];
-        bean.cubicNum = cubicNum;
-        bean.piecesNum = _genShuTF.text;
-        bean.price = _danJiaTF.text;
-        bean.species = _pinmingLable.text;
-        bean.orderId = [NSNumber numberWithInt:[_orderId intValue]];
-        bean.categoryId = [NSNumber  numberWithInt:[_categoryId intValue]];
-        bean.packages = packages;
+        NSMutableDictionary* dict2 = [NSMutableDictionary dictionary];
+        [dict2 setObject:@"" forKey:@"orderDetailId"];
+        [dict2 setObject:_danJiaTF.text forKey:@"buyPrice"];
+        //lifangshu不一样
+        [dict2 setObject:_liFanfshuTF.text forKey:@"lifangshu"];
+        [dict2 setObject:@"0" forKey:@"goodsId"];
+        [dict2 setObject:@"0" forKey:@"stockNum"];
+        [dict2 setObject:@"0" forKey:@"lockNum"];
+        [dict2 setObject:@"m³" forKey:@"goodsNuit"];
         
-        __weak typeof(self)weakSelf = self;
+        [dict2 setObject:_kuanDuTF.text forKey:@"kuandu"];
+        [dict2 setObject:_changDuTF.text forKey:@"changdu"];
+        [dict2 setObject:_pinmingLable.text forKey:@"shuzhong"];
+        [dict2 setObject:_pingpaiLable.text forKey:@"pinpai"];
+        [dict2 setObject:_dengjiLable.text forKey:@"dengji"];
+        
+        if ([_categoryId isEqualToString:@"1"]) {
+            [dict2 setObject:_genShuTF.text forKey:@"buyNumber"];
+            [dict2 setObject:@"" forKey:@"genshu"];
+            [dict2 setObject:@"" forKey:@"houdu"];
+            [dict2 setObject:@"" forKey:@"packages"];
+            
+        }else if([_categoryId isEqualToString:@"2"])
+        {
+            //板材
+            [dict2 setObject:@"1" forKey:@"buyNumber"];
+            //片数
+            [dict2 setObject:_genShuTF.text forKey:@"genshu"];
+            [dict2 setObject:_houDuTF.text forKey:@"houdu"];
+            [dict2 setObject:_baoHaoTF.text forKey:@"packages"];
+        }
+        [dict2 setObject:_cangKuStr forKey:@"cangku"];
+        
+        NSString* packages = [dict2 mj_JSONString];
+        [dict0 setObject:packages forKey:@"packages"];
+        
+        OrderDBModel *noticeModel =[[OrderDBModel alloc]initWithDictionary:dict0];
+        [noticeDBTool insertModel:noticeModel];
+        [self.navigationController popViewControllerAnimated:YES];
 
-        SWGOrderDetailControllerApi* OrderDetail = [SWGOrderDetailControllerApi new];
-        [OrderDetail customAddBoardGoodsUsingPOSTWithAuthorization:@"Q" bean:bean completionHandler:^(SWGMessageResult *output, NSError *error) {
-            if (!error) {
-                if ([output.code intValue] == 0) {
-                    [weakSelf showAlert:@"添加成功"];
-                    [weakSelf.navigationController popViewControllerAnimated:YES];
-                }
-            }else
-            {
-                NSData * data = error.userInfo[@"com.alamofire.serialization.response.error.data"];
-                NSString * str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                NSLog(@"错误原因:%@",str);
-            }
-        }];
+        
+        
+//        NSString* packages = [dataDict mj_JSONString];
+//        SWGLoadingCustomBean* bean = [SWGLoadingCustomBean new];
+//        NSNumber* cubicNum = [NSNumber  numberWithInt:[_liFanfshuTF.text intValue]];
+//        bean.cubicNum = cubicNum;
+//        if ([_categoryId isEqualToString:@"1"]) {
+//            bean.piecesNum = _genShuTF.text;
+//        }else
+//        {
+//            bean.piecesNum = @"1";
+//        }
+//        bean.price = _danJiaTF.text;
+//        bean.species = _pinmingLable.text;
+//        bean.orderId = [NSNumber numberWithInt:[_orderId intValue]];
+//        bean.categoryId = [NSNumber  numberWithInt:[_categoryId intValue]];
+//        bean.packages = packages;
+//
+//        __weak typeof(self)weakSelf = self;
+
+//        SWGOrderDetailControllerApi* OrderDetail = [SWGOrderDetailControllerApi new];
+//        [OrderDetail customAddBoardGoodsUsingPOSTWithAuthorization:@"Q" bean:bean completionHandler:^(SWGMessageResult *output, NSError *error) {
+//            if (!error) {
+//                if ([output.code intValue] == 0) {
+//                    [weakSelf showAlert:@"添加成功"];
+//                    [weakSelf.navigationController popViewControllerAnimated:YES];
+//                }
+//            }else
+//            {
+//                NSData * data = error.userInfo[@"com.alamofire.serialization.response.error.data"];
+//                NSString * str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+//                NSLog(@"错误原因:%@",str);
+//            }
+//        }];
     }
     
 }
@@ -318,7 +389,6 @@
     VC.slectChooseBlock = ^(NSMutableDictionary * _Nonnull dict) {
         _pingpaiLable.text = dict[@"attrValue"];
         _pinPaiStr = dict[@"attrValue"];
-
     };
     [self.navigationController pushViewController:VC animated:YES];
 }
@@ -331,7 +401,6 @@
     VC.slectChooseBlock = ^(NSMutableDictionary * _Nonnull dict) {
         _dengjiLable.text = dict[@"attrValue"];
         _dengJiStr = dict[@"attrValue"];
-
     };
     [self.navigationController pushViewController:VC animated:YES];
 }

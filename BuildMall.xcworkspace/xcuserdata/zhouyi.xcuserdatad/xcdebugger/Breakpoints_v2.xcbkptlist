@@ -9,7 +9,7 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            scope = "0"
+            scope = "1"
             stopOnStyle = "0">
          </BreakpointContent>
       </BreakpointProxy>
@@ -19,13 +19,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BuildMall/Home/WorkbenchVC/Order/AddLoadingDetails/VC/LoadingListVC.m"
-            timestampString = "567743797.031854"
+            filePath = "BuildMall/Home/Message/Chat/YunXin/Util/NTESSessionUtil.m"
+            timestampString = "569240940.510175"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "197"
-            endingLineNumber = "197"
-            landmarkName = "-submittedAction"
+            startingLineNumber = "238"
+            endingLineNumber = "238"
+            landmarkName = "+tipOnMessageRevoked:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -35,13 +35,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BuildMall/Home/WorkbenchVC/Order/AddLoadingDetails/VC/AddLoadingDetails.m"
-            timestampString = "567690383.995391"
+            filePath = "BuildMall/Home/Message/Chat/YunXin/Util/NTESSessionUtil.m"
+            timestampString = "569240940.510456"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "485"
-            endingLineNumber = "485"
-            landmarkName = "-deleteAction:"
+            startingLineNumber = "264"
+            endingLineNumber = "264"
+            landmarkName = "+tipTitleFromMessageRevokeNotificationTeam:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -51,13 +51,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BuildMall/Home/WorkbenchVC/Order/AddLoadingDetails/VC/AddLoadingDetails.m"
-            timestampString = "567690383.99546"
+            filePath = "BuildMall/Home/Message/Chat/YunXin/Util/NTESNotificationCenter.m"
+            timestampString = "569226157.90985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "482"
-            endingLineNumber = "482"
-            landmarkName = "-deleteAction:"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
+            landmarkName = "-onRecvRevokeMessageNotification:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -67,61 +67,46 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BuildMall/Home/WorkbenchVC/Order/AddLoadingDetails/VC/LoadingListVC.m"
-            timestampString = "567743797.03249"
+            filePath = "BuildMall/Home/Message/Chat/YunXin/Util/NTESNotificationCenter.m"
+            timestampString = "569226157.910076"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "196"
-            endingLineNumber = "196"
-            landmarkName = "-submittedAction"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
+            landmarkName = "-onRecvRevokeMessageNotification:"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[LoadingListVC submittedAction]"
-                  moduleName = "BuildMall"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhouyi/Desktop/BuildMall1/BuildMall/Home/WorkbenchVC/Order/AddLoadingDetails/VC/LoadingListVC.m"
-                  timestampString = "567762528.8940181"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "196"
-                  endingLineNumber = "196"
-                  offsetFromSymbolStart = "3122">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__32-[LoadingListVC submittedAction]_block_invoke"
-                  moduleName = "BuildMall"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhouyi/Desktop/BuildMall1/BuildMall/Home/WorkbenchVC/Order/AddLoadingDetails/VC/LoadingListVC.m"
-                  timestampString = "567762528.896365"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "197"
-                  endingLineNumber = "197"
-                  offsetFromSymbolStart = "78">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__destroy_helper_block_.242"
-                  moduleName = "BuildMall"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/zhouyi/Desktop/BuildMall1/BuildMall/Home/WorkbenchVC/Order/AddLoadingDetails/VC/LoadingListVC.m"
-                  timestampString = "567762528.898119"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "196"
-                  endingLineNumber = "196"
-                  offsetFromSymbolStart = "16">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BuildMall/Home/Message/Chat/YunXin/Sections/Notification/NTESSystemNotificationCell.m"
+            timestampString = "569319528.3228281"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
+            landmarkName = "-updateSourceMember:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BuildMall/Home/Message/Chat/YunXin/Sections/Notification/NTESSystemNotificationCell.m"
+            timestampString = "569319529.1104341"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
+            landmarkName = "-updateSourceMember:"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

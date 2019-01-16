@@ -8,55 +8,110 @@
 
 #ifndef PrefixHeader_pch
 #define PrefixHeader_pch
+
+#ifdef __OBJC__
+
 #import "UIColor+Hex.h"
 
 #import "UIView+TimeExtension.h"
 #import <Masonry.h>
 #import "WebClient.h"
 
-//坐标
-#define applicatonWidth       [[UIScreen mainScreen] applicationFrame].size.width
-#define applicatonHeight      [[UIScreen mainScreen] applicationFrame].size.height
+#import "FMDB.h"
+#import "DataBaseTool.h"
+#import "ColumnPropertyMappingDelegate.h"
+#import "OrderDBModel.h"
+#import "OrderDBTool.h"
+#import <NIMSDK/NIMSDK.h>
+
+//#import "NSString+MyNSString.h"
+
+#import "AMUserAccountInfo.h"
+#import "AAGlobalMacro.h"
+
+//网易云信
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <NIMSDK/NIMSDK.h>
+#import <NIMAVChat/NIMAVChat.h>
+#import "NTESGlobalMacro.h"
+#import "NIMKit.h"
+#import <CocoaLumberjack/CocoaLumberjack.h>
+
+#ifdef DEBUG
+static DDLogLevel ddLogLevel = DDLogLevelVerbose;
+#else
+static DDLogLevel ddLogLevel = DDLogLevelInfo;
+#endif
+
+#endif
+
+//#ifdef DEBUG
+//static DDLogLevel ddLogLevel = DDLogLevelVerbose;
+//#else
+//static DDLogLevel ddLogLevel = DDLogLevelInfo;
+//#endif
+
+#define NTES_USE_CLEAR_BAR - (BOOL)useClearBar{return YES;}
+
+#define NTES_FORBID_INTERACTIVE_POP - (BOOL)forbidInteractivePop{return YES;}
+
+
+
+#pragma mark ----接口
+#define Token @"token"
+#define  Pwd @"pwd"
+#define User @"usrName"
+/// 在线
+#define Islogin @"isLogin"
+/// 忙碌
+#define IsBusy @"isBusy"
+/// 离线
+#define OffLine @"off-line"
+/// 默认的自动回复消息
+#define AutomateMessage @"message"
+#define AccessToken @"accessToken"
+
+
+//主题色
+#define MINE_Color [UIColor colorWithHexString:@"52C9C5"]
+#define   StatusbarH  [[UIApplication sharedApplication] statusBarFrame].size.height
+#define   NavigationbarH  44
+#define   TableBarH  49
+
+///端口
+#define threewebUrlOld  @"http://192.168.0.102:8020"
+#define twowebUrlOld  @"http://192.168.0.141:8010"//买家取货信息和关闭订单
+//#define onewebUrlOld  @"http://192.168.0.128:8099"
+#define onewebUrlOld  @"http://192.168.31.169:8099"//订单端口
 
 
 //主题色
 #define MINE_Color [UIColor colorWithHexString:@"52C9C5"]
 
 
-#import "AAGlobalMacro.h"
-
 /*分割线颜色*/
 #define SPLIT_LINE [UIColor colorWithRed:230/250.0f green:230/250.0f blue:230/250.0f alpha:1]
-
-////友盟统计&广告位
-//#define MOBCLICK_KEY @"5abc9ca2f43e4803b50000ce"
-
-
-// Include any system framework and library headers here that should be included in all compilation units.
-// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
-
-#import "AMUserAccountInfo.h"
-
-#define twowebUrlOld  @"http://192.168.0.141:8010"
+#define   StatusbarH  [[UIApplication sharedApplication] statusBarFrame].size.height
+#define   NavigationbarH  44
+#define   TableBarH  49
 
 
-#define onewebUrlOld  @"http://192.168.0.128:8099"
+//网易云信
+#define  AppKeyWY @"2b8ebcb70e0c31c994fb5340370ef760"
+#define  AppSecretWY @"575ca25b0b55"
+
+
+
 
 #define webUrlOld  @"http://www.immks.com/"
-
 #define isPad (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
-#define  EnterForeground @"UIApplicationDidBecomeActiveNotification"
-
-#define RED_COLOR [UIColor colorWithRed:255/255.0 green:90/255.0 blue:56/255.0 alpha:1]
-
-#define pink_COLOR [UIColor colorWithRed:244/255.0 green:202/255.0 blue:208/255.0 alpha:1]
-#define blue_COLOR [UIColor colorWithRed:66/255.0 green:85/255.0 blue:206/255.0 alpha:1]
 
 #define screenW [UIScreen mainScreen].bounds.size.width
+#define screenH [UIScreen mainScreen].bounds.size.height
 
 #define IS_IPHONE5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
-#define screenH [UIScreen mainScreen].bounds.size.height
 #define IsHasValueNSString(str) (str && ![str isEqual:[NSNull null]] && ![str isEqualToString:@""])
 #define IsNSStringHasData(str)  (str == nil || [str isEqualToString:@""])
 
@@ -66,7 +121,6 @@
 #define kDevice_Is_iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
 
 
-#define  startAngleValue (90 - (fullAngleValue - fanShowCount*angleForFan)/2)                                         //圆周起始角度
 
 //#else //发布阶段
 //#define NSLog(...)

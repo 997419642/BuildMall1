@@ -43,6 +43,8 @@
 
 @property(nonatomic,strong)DeleteView* deleteView;
 
+@property(nonatomic,strong)NSMutableArray* dataHasArr;
+
 
 @end
 
@@ -90,6 +92,8 @@
     AMUserAccountInfo *userInfo = [AMUserAccountInfo shareInfo];
     [dict setObject:userInfo.storeId forKey:@"storeId"];
     [dict setObject:_orderId forKey:@"orderId"];
+    [dict setObject:_categoryId forKey:@"categoryId"];
+
     
     __weak typeof(self)weakSelf = self;
     [_dataArray removeAllObjects];
@@ -102,7 +106,7 @@
                 OrderManageModel* model0 = weakSelf.dataArray[0];
                 for (OrderDetailModel* model in model0.orderDetailList) {
                     //如果数据是自定义添加的商品，添加没有返回数据的字段
-                    if (model.packages) {
+                    if (model.packages != nil && ![model.packages isEqualToString:@""]) {
                         NSMutableDictionary* dict = [model.packages mj_JSONObject];
                         model.unitNum = [NSString stringWithFormat:@"%@",dict[@"cubicNum"]];
                     }
@@ -115,7 +119,8 @@
 
                     }
                 }
-                
+                [weakSelf refreshing];
+
                 [weakSelf.tableView reloadData];
                 
             }else
@@ -138,12 +143,40 @@
     [dict setObject:_orderIdTrue forKey:@"orderId"];
     __weak typeof(self)weakSelf = self;
     [self.deliveryOrderArray removeAllObjects];
-    [[WebClient sharedClient]orderPackList:dict complete:^(ResponseMode *result, NSError *error) {
-        
+    [[WebClient sharedClient]orderPackList:dict complete:^(ResponseMode *result, NSError *error)
+    {
         if (!error) {
             if (result.code == 0) {
                 NSMutableArray* array = result.data;
                 weakSelf.deliveryOrderArray = [NSMutableArray arrayWithArray:array];
+           
+                
+                
+                if (_dataArray.count && weakSelf.deliveryOrderArray.count) {
+                    
+                    //计算已提件数
+                    OrderManageModel* model = weakSelf.dataArray[0];
+                    
+                    NSMutableArray* dataArr = [NSMutableArray array];
+                    for (int i= 0; i<model.orderDetailList.count; i++) {
+                        OrderDetailModel* detailModel = model.orderDetailList[i];
+
+                        NSMutableArray* addParckArr = [NSMutableArray array];
+
+                        for (int t = 0; t<weakSelf.deliveryOrderArray.count; t++) {
+                            NSMutableDictionary* dict = weakSelf.deliveryOrderArray[t];
+
+                            if ([dict[@"orderDetailId"] intValue] == [detailModel.orderDetailId intValue]) {
+                                [addParckArr addObject:dict];
+                                
+                            }
+                        }
+                        [dataArr addObject:[NSString stringWithFormat:@"%lu",(unsigned long)addParckArr.count]];
+                    }
+     
+                    weakSelf.dataHasArr = dataArr;
+                    NSLog(@"%@",dataArr);
+                }
                 
                 //计算总价，总数量和总立方数
                 float numPrice;
@@ -526,6 +559,11 @@
             OrderDetailModel* detailModel = model.orderDetailList[indexPath.row];
             cell1.detailModel = detailModel;
         }
+        
+        if (_dataHasArr.count) {
+            cell1.hasTiStr = _dataHasArr[indexPath.row];
+        }
+      
         
         return cell1;
         

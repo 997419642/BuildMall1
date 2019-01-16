@@ -132,6 +132,10 @@
     [dict setObject:userInfo.storeId forKey:@"storeId"];
     [dict setObject:userInfo.userId forKey:@"userId"];
     [dict setObject:@(_pageNum) forKey:@"pageNum"];
+    if (_numState != 0) {
+        [dict setObject:@(_numState) forKey:@"orderStatus"];
+
+    }
 
     
     [_tableView.mj_footer endRefreshing];
@@ -153,15 +157,17 @@
                 
                 weakSelf.dataArray = [OrderManageModel mj_objectArrayWithKeyValuesArray:result.data];
                 
-                    [weakSelf.tableView reloadData];
+                [weakSelf.tableView reloadData];
                 
             }else
             {
-                
+       
             }
         }else
         {
-            
+            NSData * data = error.userInfo[@"com.alamofire.serialization.response.error.data"];
+            NSString * str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+            NSLog(@"错误原因==:%@",str);
         }
         
     }];
@@ -226,34 +232,40 @@
     [dict setObject:orderID forKey:@"orderId"];
     AMUserAccountInfo *userInfo = [AMUserAccountInfo shareInfo];
     [dict setObject:userInfo.storeId forKey:@"storeId"];
+    [dict setObject:@"12" forKey:@"orderStatus"];
 
     __weak typeof(self)weakSelf = self;
 
-//    [[WebClient sharedClient]orderDelete:dict complete:^(ResponseMode *result, NSError *error) {
-//
-//        [weakSelf.deleteView removeFromSuperview];
-//        [weakSelf.deleteView.backgroupView removeFromSuperview];
-//
-//
-//        if (!error) {
-//            if (result.code == 0) {
-//
-//                [weakSelf showAlert:@"订单删除成功"];
-//                [weakSelf refreshing];
-//            }
-//        }
-//    }];
+    [[WebClient sharedClient]orderCancelOrder:dict complete:^(ResponseMode *result, NSError *error) {
+
+        [weakSelf.deleteView removeFromSuperview];
+        [weakSelf.deleteView.backgroupView removeFromSuperview];
+
+        if (!error) {
+            if (result.code == 0) {
+
+                [weakSelf showAlert:@"订单已取消"];
+                [weakSelf refreshing];
+            }
+        }else
+        {
+            NSData * data = error.userInfo[@"com.alamofire.serialization.response.error.data"];
+            NSString * str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+            NSLog(@"错误原因==:%@",str);
+        }
+    }];
     
 }
 
 
 -(void)deleteAction:(NSString *)orderID
 {
+    
     _deleteView = [DeleteView addDeleteVView];
     _deleteView.delegate = self;
     _deleteView.orderID = orderID;
     [_deleteView show];
-    
+
     NSLog(@"%@",orderID);
     
 }
@@ -274,7 +286,9 @@
     OrderManagementDetailVC* VC = [OrderManagementDetailVC new];
     VC.orderId = model.orderSn;
     VC.orderIdTwo = model.orderId;
-    
+    VC.orderStatus = model.orderStatus;
+    OrderDetailModel* model0 = model.orderDetailList[0];
+    VC.categoryId = model0.categoryId;
     VC.sectionNum = indexPath.section;
     VC.slectBlock = ^(NSInteger senctionNum, NSString * _Nonnull orderId) {
         
@@ -392,11 +406,9 @@
     
     headerView.btnChooseClickReturn = ^(NSInteger x) {
         NSLog(@"点击了第%ld个按钮",x+1);
-     
-        _numState = x+1;
-        
+        _numState = x;
+        [self refreshing];
     };
-    
 }
 
 

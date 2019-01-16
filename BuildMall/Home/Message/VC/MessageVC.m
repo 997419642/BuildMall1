@@ -7,8 +7,9 @@
 //
 
 #import "MessageVC.h"
-#import "ChatListVC.h"
+#import "ChatLIstVC.h"
 #import "InteractiveVC.h"
+#import "NTESSessionListViewController.h"
 
 @interface MessageVC ()
 
@@ -69,7 +70,7 @@
 
 - (void)addChildControllers
 {
-    ChatLIstVC *vc1 = [[ChatLIstVC alloc] init];
+    NTESSessionListViewController *vc1 = [[NTESSessionListViewController alloc] init];
     vc1.view.tag = 0;
     [self addChildViewController:vc1];
     [_contentView addSubview:vc1.view];
@@ -77,7 +78,6 @@
     self.currentVC = vc1;
     InteractiveVC *vc2 = [InteractiveVC new];
     [self addChildViewController:vc2];
-    
     vc2.view.tag = 1;
     
 }

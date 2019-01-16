@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,strong)OrderDetailModel* detailmodel;
 @property(nonatomic,strong)NSMutableDictionary* dict;
 
+
 @property (weak, nonatomic) IBOutlet UILabel *nameLable;
 @property (weak, nonatomic) IBOutlet UILabel *adressLable;
 @property (weak, nonatomic) IBOutlet UILabel *pinnameLable;
@@ -33,6 +34,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *numLable;
 @property (weak, nonatomic) IBOutlet UILabel *unitPriceLable;
 @property (weak, nonatomic) IBOutlet UILabel *yitiLable;
+
+
+
+
 
 @end
 

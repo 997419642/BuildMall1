@@ -33,6 +33,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    //原木装货
     self.navigationItem.title = @"添加装货明细";
     _addBtn.layer.masksToBounds = YES;
     _addBtn.layer.cornerRadius = 3;
@@ -114,8 +116,8 @@
     NSMutableDictionary* dict = arr[0];
     _adressLable.text = [NSString stringWithFormat:@"%@  地址:%@",dict[@"name"],dict[@"address"]];
     
-    //如果数据是自定义添加的商品，进行赋值
-    if (_detailModel.packages != nil) {
+    //如果数据是自定义添加的商品
+    if (_detailModel.packages != nil && ![_detailModel.packages isEqualToString:@""]) {
         
         NSMutableDictionary* dict = [_detailModel.packages mj_JSONObject];
         _pricelable.text = [NSString stringWithFormat:@"￥%@/%@",_detailModel.buyPrice,@"m³"];
@@ -124,13 +126,14 @@
 
         if ([_categoryId isEqualToString:@"1"]) {
             _nameLable.text = @"原木";
-        }else
+        }else if ([_categoryId isEqualToString:@"2"])
         {
             _nameLable.text = @"实木板材";
 
         }
         _shuzhongLable.text = dict[@"shuzhong"];
         
+        //应该可以注释
         _brandlable.text = [NSString stringWithFormat:@"%@， %@， %@*%@",tableDic[@"brandName"],modelDict[@"dengji"],modelDict[@"koujin"],lengthAttributesList[0][@"specValue"]];
         
         if (!dict[@"houdu"]) {

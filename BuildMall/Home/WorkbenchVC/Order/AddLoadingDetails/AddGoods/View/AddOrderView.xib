@@ -59,9 +59,9 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SuG-2r-UQa">
-                    <rect key="frame" x="265" y="148" width="90" height="25"/>
+                    <rect key="frame" x="275" y="148" width="80" height="25"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="90" id="Q71-CC-83k"/>
+                        <constraint firstAttribute="width" constant="80" id="Q71-CC-83k"/>
                         <constraint firstAttribute="height" constant="25" id="Qbt-n7-9ig"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -70,10 +70,10 @@
                     </state>
                 </button>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KKi-RD-L9y">
-                    <rect key="frame" x="285" y="148" width="70" height="25"/>
+                    <rect key="frame" x="295" y="148" width="60" height="25"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="25" id="Ue7-QL-d51"/>
-                        <constraint firstAttribute="width" constant="70" id="rPF-cm-UJ1"/>
+                        <constraint firstAttribute="width" constant="60" id="rPF-cm-UJ1"/>
                     </constraints>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>

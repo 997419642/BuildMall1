@@ -70,6 +70,8 @@
 
 @property(nonatomic,strong)NSMutableArray* detailsBeanList;
 
+@property(nonatomic,strong)NSMutableArray* piecesNumList;
+
 
 @end
 
@@ -85,6 +87,7 @@
     _zhaungHuoDataArray = [NSMutableArray array];
     _zhaungHuolenthArray = [NSMutableArray array];
     _lenthArray = [NSMutableArray array];
+    _piecesNumList = [NSMutableArray array];
     
     _cancelBtn.layer.borderColor = [UIColor colorWithHexString:@"52C9C5"].CGColor;
     _cancelBtn.layer.cornerRadius = 5;
@@ -95,11 +98,6 @@
     _addBtn.layer.masksToBounds =YES;
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 71, screenW, screenH-64-71) style:UITableViewStylePlain];
-
-//    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [button setTitle:@"筛选" forState:UIControlStateNormal];
-//    [button addTarget:self action:@selector(pressleft) forControlEvents:UIControlEventTouchUpInside];
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:button];
     
     [self.view addSubview:self.tableView];
     _tableView.delegate = self;
@@ -148,7 +146,13 @@
     _isConditionsSearch = NO;
     [_selectArray removeAllObjects];
     [_chooseArray removeAllObjects];
-    [self refreshing];
+    if (_isZhuanghuo == YES) {
+        [self refreshingZhuanghuo];
+    }else
+    {
+    
+        [self refreshing];
+    }
 }
 
 -(void)creatRightView
@@ -178,10 +182,7 @@
     
     backView.hidden = YES;
     
-    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshing)];
-    header.stateLabel.font = [UIFont systemFontOfSize:14];
-    header.lastUpdatedTimeLabel.font = [UIFont systemFontOfSize:14];
-    self.tableView.mj_header = header;
+
     //设置尾部加载
     MJRefreshAutoNormalFooter *footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(shipinMoreNetWork)];
     //    footer.automaticallyHidden = YES;
@@ -190,46 +191,48 @@
     
     if (_isZhuanghuo == YES) {
         [self refreshingZhuanghuo];
+        MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshingZhuanghuo)];
+        header.stateLabel.font = [UIFont systemFontOfSize:14];
+        header.lastUpdatedTimeLabel.font = [UIFont systemFontOfSize:14];
+        self.tableView.mj_header = header;
 
     }else
     {
         [self refreshing];
+        
+        MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshing)];
+        header.stateLabel.font = [UIFont systemFontOfSize:14];
+        header.lastUpdatedTimeLabel.font = [UIFont systemFontOfSize:14];
+        self.tableView.mj_header = header;
 
     }
     
 }
 
+//从装货页面过来的
 -(void)refreshingZhuanghuo
 {
     _pageNum = 0;
 
-    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+//    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
     AMUserAccountInfo *userInfo = [AMUserAccountInfo shareInfo];
-    [dict setObject:userInfo.storeId forKey:@"storeId"];
-    [dict setObject:@"0" forKey:@"pageNum"];
-    
-    [dict setObject:_categoryId forKey:@"categoryId"];
-    [dict setObject:@"20" forKey:@"pageSize"];
+//    [dict setObject:userInfo.storeId forKey:@"storeId"];
+//    [dict setObject:@"0" forKey:@"pageNum"];
+//    [dict setObject:_categoryId forKey:@"categoryId"];
+//    [dict setObject:@"20" forKey:@"pageSize"];
     
     SWGOrderPackControllerApi*apiInstance = [[SWGOrderPackControllerApi alloc] init];
-    
     SWGScreenGoods* goods = [SWGScreenGoods new];
-    
     NSNumber *storeIdNum = [NSNumber numberWithInt:[userInfo.storeId intValue]];
     goods.storeId = storeIdNum;
-    
     NSNumber *pageNum = [NSNumber numberWithInt:[@"0" intValue]];
     goods.pageNum = pageNum;
-    
     NSNumber *categoryIdNum = [NSNumber numberWithInt:[_categoryId intValue]];
-    
     goods.categoryId = categoryIdNum;
-    
     NSNumber *pageSizeNum = [NSNumber numberWithInt:[@"20" intValue]];
-    
     goods.pageSize = pageSizeNum;
     
-    //库存查询
+    //库存查询的请求
     if (_selectArray.count && _isConditionsSearch == YES) {
         
         NSMutableArray* dataArr = [NSMutableArray array];
@@ -260,14 +263,15 @@
             }
         }
         
-        if (dataArr.count) {
+        
+        if (dataArr.count && _isConditionsSearch == YES) {
             _attributeList = dataArr;
             goods.attributeList = _attributeList;
         }
         
     }else
     {
-        //全部商品
+        //全部商品请求
         goods.brandId = nil;
         goods.length = nil;
         goods.warehouseId = nil;
@@ -319,33 +323,23 @@
     [self.tableView.mj_footer endRefreshing];
     [self.tableView.mj_footer resetNoMoreData];
     
-    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+//    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
     AMUserAccountInfo *userInfo = [AMUserAccountInfo shareInfo];
-    [dict setObject:userInfo.storeId forKey:@"storeId"];
-    [dict setObject:@"0" forKey:@"pageNum"];
-    [dict setObject:_categoryId forKey:@"categoryId"];
-    [dict setObject:@"20" forKey:@"pageSize"];
+//    [dict setObject:userInfo.storeId forKey:@"storeId"];
+//    [dict setObject:@"0" forKey:@"pageNum"];
+//    [dict setObject:_categoryId forKey:@"categoryId"];
+//    [dict setObject:@"20" forKey:@"pageSize"];
     
     SWGOrderPackControllerApi*apiInstance = [[SWGOrderPackControllerApi alloc] init];
-    
     SWGScreenGoods* goods = [SWGScreenGoods new];
-    
-    
     NSNumber *storeIdNum = [NSNumber numberWithInt:[userInfo.storeId intValue]];
     goods.storeId = storeIdNum;
-    
     NSNumber *pageNum = [NSNumber numberWithInteger:_pageNum];
     goods.pageNum = pageNum;
-    
     NSNumber *categoryIdNum = [NSNumber numberWithInt:[_categoryId intValue]];
-    
     goods.categoryId = categoryIdNum;
-    
-    
     NSNumber *pageSizeNum = [NSNumber numberWithInt:[@"20" intValue]];
-    
     goods.pageSize = pageSizeNum;
-    
     
     if (_selectArray.count && _isConditionsSearch == YES) {
         
@@ -400,7 +394,6 @@
         }
         if (!error) {
             if ([output.code intValue] == 0) {
-                //piecesNumList  goodsBeansList  lengthList
                 
                 NSDictionary* dact = (NSDictionary *)output.data;
                 NSMutableDictionary* muDict = [NSMutableDictionary dictionaryWithDictionary:dact];
@@ -413,6 +406,7 @@
                 }
                 
                 [weakSelf.zhaungHuoDataArray addObjectsFromArray:dataArr];
+                //长度
                 NSMutableArray* lenthArr = [muDict[@"lengthList"] mutableCopy];
                 [weakSelf.zhaungHuolenthArray addObjectsFromArray:lenthArr];
                 [weakSelf.tableView reloadData];
@@ -430,32 +424,25 @@
 -(void)refreshing
 {
     _pageNum = 0;
-    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+//    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
     AMUserAccountInfo *userInfo = [AMUserAccountInfo shareInfo];
-    [dict setObject:userInfo.storeId forKey:@"storeId"];
-    [dict setObject:@"0" forKey:@"pageNum"];
-
-    [dict setObject:_categoryId forKey:@"categoryId"];
-    [dict setObject:@"20" forKey:@"pageSize"];
+//    [dict setObject:userInfo.storeId forKey:@"storeId"];
+//    [dict setObject:@"0" forKey:@"pageNum"];
+//    [dict setObject:_categoryId forKey:@"categoryId"];
+//    [dict setObject:@"20" forKey:@"pageSize"];
  
+    
+    //调API接口
     SWGGoodsControllerApi*apiInstance = [[SWGGoodsControllerApi alloc] init];
-
     SWGScreenGoods* goods = [SWGScreenGoods new];
-
     NSNumber *storeIdNum = [NSNumber numberWithInt:[userInfo.storeId intValue]];
     goods.storeId = storeIdNum;
-    
     NSNumber *pageNum = [NSNumber numberWithInt:[@"0" intValue]];
     goods.pageNum = pageNum;
-    
     NSNumber *categoryIdNum = [NSNumber numberWithInt:[_categoryId intValue]];
-
     goods.categoryId = categoryIdNum;
-    
     NSNumber *pageSizeNum = [NSNumber numberWithInt:[@"20" intValue]];
-    
     goods.pageSize = pageSizeNum;
-    
     //库存查询
     if (_selectArray.count && _isConditionsSearch == YES) {
 
@@ -487,28 +474,29 @@
                 }
             }
         
+        
         if (dataArr.count) {
             _attributeList = dataArr;
             goods.attributeList = _attributeList;
+       
         }
-
-        }else
-        {
-            //全部商品
-            goods.brandId = nil;
-            goods.length = nil;
-            goods.warehouseId = nil;
-            goods.piecesNum = nil;
-            goods.attributeList = nil;
-        }
-
+       
+    }else
+    {
+        //全部商品
+        goods.brandId = nil;
+        goods.length = nil;
+        goods.warehouseId = nil;
+        goods.piecesNum = nil;
+        goods.attributeList = nil;
+    }
     __weak typeof(self)weakSelf = self;
     
     [_tableView.mj_footer endRefreshing];
     [_tableView.mj_footer resetNoMoreData];
-
     [_dataArray removeAllObjects];
     [_lenthArray removeAllObjects];
+    [_piecesNumList removeAllObjects];
     [apiInstance getGoodsUsingPOSTWithAuthorization:@"Q" screenGoods:goods completionHandler:^(SWGMessageResult *output, NSError *error) {
         if (weakSelf.tableView.mj_header.isRefreshing) {
             [weakSelf.tableView.mj_header endRefreshing];
@@ -519,11 +507,12 @@
                 NSDictionary* dact = (NSDictionary *)output.data;
                 NSMutableDictionary* muDict = [NSMutableDictionary dictionaryWithDictionary:dact];
                 
-     
                 weakSelf.dataArray = [GoodsBeansListModel mj_objectArrayWithKeyValuesArray:muDict[@"goodsBeansList"]];
 
                 NSMutableArray* lenthArr = muDict[@"lengthList"];
+                NSMutableArray* piecesNumList = muDict[@"piecesNumList"];
                 
+                [weakSelf.piecesNumList addObjectsFromArray:piecesNumList];
                 [weakSelf.lenthArray addObjectsFromArray:lenthArr];
                 [weakSelf.tableView reloadData];
             }
@@ -551,46 +540,32 @@
 }
 
 
-
+//上拉加载更多
 -(void)reloadData:(NSInteger)page
 {
     
     [self.tableView.mj_footer endRefreshing];
     [self.tableView.mj_footer resetNoMoreData];
     
-    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+//    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
     AMUserAccountInfo *userInfo = [AMUserAccountInfo shareInfo];
-    [dict setObject:userInfo.storeId forKey:@"storeId"];
-    [dict setObject:@"0" forKey:@"pageNum"];
-    
-    [dict setObject:_categoryId forKey:@"categoryId"];
-    [dict setObject:@"20" forKey:@"pageSize"];
+//    [dict setObject:userInfo.storeId forKey:@"storeId"];
+//    [dict setObject:@"0" forKey:@"pageNum"];
+//    [dict setObject:_categoryId forKey:@"categoryId"];
+//    [dict setObject:@"20" forKey:@"pageSize"];
     
     SWGGoodsControllerApi*apiInstance = [[SWGGoodsControllerApi alloc] init];
-    
     SWGScreenGoods* goods = [SWGScreenGoods new];
-    
-    
     NSNumber *storeIdNum = [NSNumber numberWithInt:[userInfo.storeId intValue]];
     goods.storeId = storeIdNum;
-    
     NSNumber *pageNum = [NSNumber numberWithInteger:_pageNum];
     goods.pageNum = pageNum;
-    
     NSNumber *categoryIdNum = [NSNumber numberWithInt:[_categoryId intValue]];
-    
     goods.categoryId = categoryIdNum;
-    
-    
     NSNumber *pageSizeNum = [NSNumber numberWithInt:[@"20" intValue]];
-    
     goods.pageSize = pageSizeNum;
-    
-    
     if (_selectArray.count && _isConditionsSearch == YES) {
-        
         NSMutableArray* dataArr = [NSMutableArray array];
-        
         for (NSMutableDictionary* dict in _selectArray) {
             if ([dict[@"isPinPai"] isEqualToString:@"YES"]) {
                 goods.brandId = dict[@"attrId"];
@@ -611,12 +586,9 @@
                 SWGAttributeBean* bean = [SWGAttributeBean new];
                 bean.attrId = dict[@"attrId"];
                 bean.attrName = dict[@"attrValue"];
-                
                 [dataArr addObject:bean];
-                
             }
         }
-        
         _attributeList = dataArr;
         goods.attributeList = _attributeList;
         
@@ -630,17 +602,14 @@
     }
     
     __weak typeof(self)weakSelf = self;
-    
     [_tableView.mj_footer endRefreshing];
     [_tableView.mj_footer resetNoMoreData];
-    
     [apiInstance getGoodsUsingPOSTWithAuthorization:@"Q" screenGoods:goods completionHandler:^(SWGMessageResult *output, NSError *error) {
         if (weakSelf.tableView.mj_header.isRefreshing) {
             [weakSelf.tableView.mj_header endRefreshing];
         }
         if (!error) {
             if ([output.code intValue] == 0) {
-                //piecesNumList  goodsBeansList  lengthList
                 
                 NSDictionary* dact = (NSDictionary *)output.data;
                 NSMutableDictionary* muDict = [NSMutableDictionary dictionaryWithDictionary:dact];
@@ -655,6 +624,10 @@
                 [weakSelf.dataArray addObjectsFromArray:dataArr];
                 NSMutableArray* lenthArr = [muDict[@"lengthList"] mutableCopy];
                 [weakSelf.lenthArray addObjectsFromArray:lenthArr];
+                
+                NSMutableArray* piecesNumList = [muDict[@"piecesNumList"] mutableCopy];
+                [weakSelf.piecesNumList addObjectsFromArray:piecesNumList];
+
                 [weakSelf.tableView reloadData];
             }
             
@@ -709,6 +682,7 @@
         _chooseArray = arr;
         [self UpdateView];
         if (_isZhuanghuo == YES) {
+            //装货页面来的
             [self refreshingZhuanghuo];
         }else
         {
@@ -730,10 +704,8 @@
         SWGOrderAbroadPackBean* bean = [SWGOrderAbroadPackBean new];
         bean.orderId = dict[@"orderId"];
         bean.goodsId = dict[@"goodsId"];
-
         bean.buyNumber = dict[@"buyNumber"];
         bean.buyPrice = dict[@"buyPrice"];
-
         bean.categoryId = [NSNumber numberWithInt:[_categoryId intValue]];
         if ([_categoryId intValue] == 2) {
             bean.packages = dict[@"packages"];//parkId
@@ -742,7 +714,6 @@
         [array addObject:bean];
         
         _parkBeanList = array;
-        
         SWGOrderPackControllerApi* orderPack = [SWGOrderPackControllerApi new];
         __weak typeof(self)weakSelf = self;
 
@@ -764,34 +735,63 @@
         
     }else
     {
-    [dict setObject:_orderId forKey:@"orderId"];
-    SWGOrderDetailBean* bean = [SWGOrderDetailBean new];
-    bean.orderId = dict[@"orderId"];
-    bean.cubicNumber = dict[@"cubicNumber"];
-    bean.goodsId = dict[@"goodsId"];
-    bean.goodsName = dict[@"goodsName"];
-    bean.status = dict[@"status"];
-    bean.buyNumber = dict[@"buyNumber"];
-    bean.buyPrice = dict[@"buyPrice"];
-    bean.createTime = dict[@"createTime"];
-    SWGOrderDetailControllerApi *apiInstance = [[SWGOrderDetailControllerApi alloc] init];
-    __weak typeof(self)weakSelf = self;
-    [apiInstance insertOrderDetailUsingPOSTWithAuthorization:@"Q" bean:bean completionHandler:^(SWGMessageResult *output, NSError *error) {
-        if (!error) {
-            if ([output.code intValue] == 0) {
-                [weakSelf showAlert:@"添加成功"];
-                [weakSelf.addView removeFromSuperview];
-                [weakSelf.addView.backgroupView removeFromSuperview];
-            }
-        }else
-        {
-            NSData * data = error.userInfo[@"com.alamofire.serialization.response.error.data"];
-            NSString * str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-            NSLog(@"错误原因:%@",str);
-        }
         
-    }];
+        OrderDBTool *noticeDBTool = [OrderDBTool shareInstance];
+        [noticeDBTool createTable];
+        NSMutableDictionary* dict0 = [NSMutableDictionary dictionary];
+        [dict0 setObject:@"" forKey:@"orderDetailId"];
+        [dict0 setObject:dict[@"buyNumber"] forKey:@"buyNumber"];
+        [dict0 setObject:dict[@"buyPrice"] forKey:@"buyPrice"];
+        [dict0 setObject:dict[@"cubicNumber"] forKey:@"unitNum"];
+        [dict0 setObject:dict[@"goodsId"] forKey:@"goodsId"];
+        [dict0 setObject:[NSString stringWithFormat:@"%@",dict[@"stockNum"]] forKey:@"stockNum"];
+        [dict0 setObject:[NSString stringWithFormat:@"%@",dict[@"lockNum"]] forKey:@"lockNum"];
+        [dict0 setObject:dict[@"goodsNuit"] forKey:@"goodsNuit"];
+        [dict0 setObject:@"" forKey:@"packages"];
+//        //片数
+        [dict0 setObject:dict[@"genshu"] forKey:@"genshu"];
+        [dict0 setObject:dict[@"houdu"] forKey:@"houdu"];
+        [dict0 setObject:dict[@"kuandu"] forKey:@"kuandu"];
+        [dict0 setObject:dict[@"changdu"] forKey:@"changdu"];
+        [dict0 setObject:dict[@"shuzhong"] forKey:@"shuzhong"];
+        [dict0 setObject:dict[@"pinpai"] forKey:@"pinpai"];
+        [dict0 setObject:dict[@"dengji"] forKey:@"dengji"];
+        [dict0 setObject:@"NO" forKey:@"isCus"];
+//        [dict0 setObject:@"" forKey:@"goodsName"];
+        [dict0 setObject:@"" forKey:@"cangku"];
         
+        OrderDBModel *noticeModel =[[OrderDBModel alloc]initWithDictionary:dict0];
+        [noticeDBTool insertModel:noticeModel];
+        [self.addView removeFromSuperview];
+        [self.addView.backgroupView removeFromSuperview];
+        
+        
+//        [dict setObject:_orderId forKey:@"orderId"];
+//        SWGOrderDetailBean* bean = [SWGOrderDetailBean new];
+//        bean.orderId = dict[@"orderId"];
+//        bean.cubicNumber = dict[@"cubicNumber"];
+//        bean.goodsId = dict[@"goodsId"];
+//        bean.goodsName = dict[@"goodsName"];
+//        bean.status = dict[@"status"];
+//        bean.buyNumber = dict[@"buyNumber"];
+//        bean.buyPrice = dict[@"buyPrice"];
+//        bean.createTime = dict[@"createTime"];
+//        SWGOrderDetailControllerApi *apiInstance = [[SWGOrderDetailControllerApi alloc] init];
+//        __weak typeof(self)weakSelf = self;
+//        [apiInstance insertOrderDetailUsingPOSTWithAuthorization:@"Q" bean:bean completionHandler:^(SWGMessageResult *output, NSError *error) {
+//            if (!error) {
+//                if ([output.code intValue] == 0) {
+//                    [weakSelf showAlert:@"添加成功"];
+//                    [weakSelf.addView removeFromSuperview];
+//                    [weakSelf.addView.backgroupView removeFromSuperview];
+//                }
+//            }else
+//            {
+//                NSData * data = error.userInfo[@"com.alamofire.serialization.response.error.data"];
+//                NSString * str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+//                NSLog(@"错误原因:%@",str);
+//            }
+//        }];
     }
 }
 
@@ -828,13 +828,13 @@
             [photoView show];
         }else
         {
-        
-        AddOrderView *photoView = [AddOrderView addSureView];
-        photoView.beanModel = _dataArray[indexPath.row];
-        photoView.dict = _lenthArray[indexPath.row];
-        _addView = photoView;
-        photoView.delegate = self;
-        [photoView show];
+            AddOrderView *photoView = [AddOrderView addSureView];
+            photoView.beanModel = _dataArray[indexPath.row];
+            photoView.dict = _lenthArray[indexPath.row];
+            photoView.genshuDict = _piecesNumList[indexPath.row];
+            _addView = photoView;
+            photoView.delegate = self;
+            [photoView show];
         }
     }
 }
@@ -888,6 +888,7 @@
             GoodsBeansListModel* model = _dataArray[indexPath.row];
             cell1.model = model;
             cell1.dict = _lenthArray[indexPath.row];
+            cell1.genshuDict = _piecesNumList[indexPath.row];
         }
     
     return cell1;

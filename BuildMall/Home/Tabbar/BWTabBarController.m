@@ -14,6 +14,8 @@
 #import "MineVC.h"
 #import "BasicNavigationController.h"
 #import "SendCardVC.h"
+#import "NTESContactViewController.h"
+
 
 @interface BWTabBarController ()
 
@@ -30,7 +32,10 @@
     //添加子控制器
     [self setupOneChildViewCOntroller];
     
+    
+    
 }
+
 
 -(void)setupOneChildViewCOntroller
 {

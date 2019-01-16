@@ -46,7 +46,7 @@
 
 - (IBAction)sureAction:(UIButton *)sender {
     
-     [_delegate sureDelete:_orderID];
+     [_delegate sureDelete:_orderID noticeId:_noticeId];
 
 }
 
