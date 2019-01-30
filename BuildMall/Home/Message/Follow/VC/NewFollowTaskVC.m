@@ -16,7 +16,7 @@
 #import "ImageItemCell.h"
 #import <UIImageView+WebCache.h>
 #import "SDPhotoBrowser.h"
-#import <UIView+SDAutoLayout.h>
+#import "UIView+SDAutoLayout.h"
 #import <UIView+SDExtension.h>
 
 

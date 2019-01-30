@@ -230,6 +230,25 @@
         _payNum.userInteractionEnabled = YES;
         _dingjinBtn.userInteractionEnabled = NO;
         
+//        if ([model.payType isEqualToString:@"1"]) {
+//            //定金金额
+//
+//            [_twoRightBtn setTitle:@"定金加尾款" forState:UIControlStateNormal];
+//            NSMutableArray* array = (NSMutableArray *)model.actualMoney;
+//            NSMutableDictionary* dicActual = array[0];
+//            NSLog(@"--%@",dicActual[@"payAmount"]);
+//            _threeLable.text = [NSString stringWithFormat:@"￥%@",dicActual[@"payAmount"]];
+//
+//        }else if ([model.payType isEqualToString:@"2"])
+//        {
+//            [_twoRightBtn setTitle:@"先装车后全款" forState:UIControlStateNormal];
+//            _threeLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];
+//        }else
+//        {
+//            [_twoRightBtn setTitle:@"先全款后装车" forState:UIControlStateNormal];
+//            _threeLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];
+//        }
+        
     }else if ([model.orderStatus isEqualToString:@"2"])
     {
         //卖家审核之后待买家付款
@@ -406,13 +425,13 @@
 
         }else if ([model.payType isEqualToString:@"2"])
         {
-            [_threeBtn setTitle:@"已支付金额" forState:UIControlStateNormal];
+            [_threeBtn setTitle:@"已支付定金" forState:UIControlStateNormal];
 
             [_twoRightBtn setTitle:@"先装车后全款" forState:UIControlStateNormal];
             
         }else
         {
-            [_threeBtn setTitle:@"已支付金额" forState:UIControlStateNormal];
+            [_threeBtn setTitle:@"已支付定金" forState:UIControlStateNormal];
 
             [_twoRightBtn setTitle:@"先全款后装车" forState:UIControlStateNormal];
         }
@@ -463,13 +482,13 @@
             [_twoRightBtn setTitle:@"定金加尾款" forState:UIControlStateNormal];
         }else if ([model.payType isEqualToString:@"2"])
         {
-            [_threeBtn setTitle:@"已支付金额" forState:UIControlStateNormal];
+            [_threeBtn setTitle:@"已支付定金" forState:UIControlStateNormal];
 
             [_twoRightBtn setTitle:@"先装车后全款" forState:UIControlStateNormal];
             _threeLable.text = [NSString stringWithFormat:@"￥%@",@"0"];
         }else
         {
-            [_threeBtn setTitle:@"已支付金额" forState:UIControlStateNormal];
+            [_threeBtn setTitle:@"已支付定金" forState:UIControlStateNormal];
 
             [_twoRightBtn setTitle:@"先全款后装车" forState:UIControlStateNormal];
 //            _threeLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];

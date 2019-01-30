@@ -22,6 +22,8 @@
     _addBtn.layer.masksToBounds = YES;
     _addBtn.layer.cornerRadius = 5;
     _priceTF.delegate = self;
+    
+
  
 }
 
@@ -154,8 +156,12 @@
 {
     _beanModel = beanModel;
     GoodsTableModel* tableModel = beanModel.productTableList[0];
-    int keshouNum = beanModel.stockNum - beanModel.lockNum;
-    _keshouLable.text = [NSString stringWithFormat:@"库存：%d 可售件数：%d",beanModel.stockNum,keshouNum];
+    
+    NSMutableDictionary* goodsListDic = beanModel.goodsList[0];
+    
+    int keshouNum = [goodsListDic[@"stockNum"] intValue] - [goodsListDic[@"lockNum"] intValue];
+    _keshouLable.text = [NSString stringWithFormat:@"库存：%d 可售件数：%d",[goodsListDic[@"stockNum"] intValue],keshouNum];
+    
     
     _priceTF.text = beanModel.unitPrice;
     
@@ -224,6 +230,9 @@
     _lenthLable.text = [NSString stringWithFormat:@"*%@",DBmodel.changdu];
     int num = [DBmodel.stockNum intValue] - [DBmodel.lockNum intValue];
     _keshouLable.text = [NSString stringWithFormat:@"库存：%@  可售：%d",DBmodel.stockNum,num];
+    if ([DBmodel.isCus isEqualToString:@"YES"]) {
+        _keshouLable.hidden = YES;
+    }
     _priceTF.text = DBmodel.buyPrice;
     [_numBtn setTitle:DBmodel.buyNumber forState:UIControlStateNormal];
 }
@@ -394,6 +403,8 @@
             [dict setObject:@"1" forKey:@"status"];
             [dict setObject:_numBtn.titleLabel.text forKey:@"buyNumber"];
             [dict setObject:_priceTF.text forKey:@"buyPrice"];
+            NSMutableDictionary* wareDic = _beanModel.warestoreTableList[0];
+            [dict setObject:[NSString stringWithFormat:@"%@ %@",wareDic[@"address"],wareDic[@"name"]] forKey:@"cangku"];
             
             NSMutableDictionary* modelDict = [NSMutableDictionary dictionary];
             NSMutableArray* array = (NSMutableArray *)tableModel.productAttributeList;
@@ -433,8 +444,10 @@
 
             }
             [dict setObject:_dict[@"specValue"] forKey:@"changdu"];
-            [dict setObject:[NSString stringWithFormat:@"%d",_beanModel.lockNum] forKey:@"lockNum"];
-            [dict setObject:[NSString stringWithFormat:@"%d",_beanModel.stockNum] forKey:@"stockNum"];
+            
+            NSMutableDictionary* goodsListDic = _beanModel.goodsList[0];
+            [dict setObject:[NSString stringWithFormat:@"%d",[goodsListDic[@"lockNum"] intValue]] forKey:@"lockNum"];
+            [dict setObject:[NSString stringWithFormat:@"%d",[goodsListDic[@"stockNum"] intValue]] forKey:@"stockNum"];
             [dict setObject:_beanModel.goodsNuit forKey:@"goodsNuit"];
             if(_genshuDict != nil)
             {

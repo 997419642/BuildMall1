@@ -68,15 +68,30 @@
         _meddleView.hidden = YES;
     }else if ([model.orderStatus isEqualToString:@"1"])
     {
-        _addBtn.hidden = NO;
-        _customBtn.hidden = NO;
-        _meddleView.hidden = NO;
+        if (model.allowModification == 0) {
+            _addBtn.hidden = YES;
+            _customBtn.hidden = YES;
+            _meddleView.hidden = YES;
+        }else
+        {
+            _addBtn.hidden = NO;
+            _customBtn.hidden = NO;
+            _meddleView.hidden = NO;
+        }
+  
         
     }else if ([model.orderStatus isEqualToString:@"2"])
     {
-        _addBtn.hidden = NO;
-        _customBtn.hidden = NO;
-        _meddleView.hidden = NO;
+        if (model.allowModification == 0) {
+            _addBtn.hidden = YES;
+            _customBtn.hidden = YES;
+            _meddleView.hidden = YES;
+        }else
+        {
+            _addBtn.hidden = NO;
+            _customBtn.hidden = NO;
+            _meddleView.hidden = NO;
+        }
 
     }else if ([model.orderStatus isEqualToString:@"3"])
     {
@@ -148,6 +163,8 @@
     {
         _numLable.text = [NSString stringWithFormat:@"共%d件 %d%@",sum,(int)unit,detailModel.goodsNuit];
     }
+    
+    //出货单总价
     _allPriceLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];
 }
 

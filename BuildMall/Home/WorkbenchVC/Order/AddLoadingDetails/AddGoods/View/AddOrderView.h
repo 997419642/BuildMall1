@@ -67,6 +67,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic,assign)BOOL isZhuanghuo;
 
+@property(nonatomic,assign)BOOL isChange;
+
 @end
 
 NS_ASSUME_NONNULL_END

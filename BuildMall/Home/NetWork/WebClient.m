@@ -175,6 +175,18 @@
     }];
 }
 
+//根据用户id获取分组
+-(void)userFriendsGroupGroupByUserId:(NSMutableDictionary *)parames complete:(responseBlock)block
+{
+    [self getThree:@"/userFriendsGroup/groupByUserId" parameters:parames complete:block];
+}
+
+//新增分组
+-(void)userFriendsGroupInsertGroup:(NSMutableDictionary *)parames complete:(responseBlock)block
+{
+    [self getThree:@"/userFriendsGroup/insertGroup" parameters:parames complete:block];
+}
+
 //通过用户id获取imToken
 -(void)getTokenWithUserId:(NSMutableDictionary *)parames complete:(responseBlock)block
 {

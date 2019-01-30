@@ -58,6 +58,7 @@
              @"ndengji":@"dengji",
              @"nisCus":@"isCus",
              @"ncangku":@"cangku",
+             @"ncategoryId":@"categoryId"
              };
 }
 @end

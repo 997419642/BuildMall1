@@ -36,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong , nonatomic) NSString *isCus;
 @property (strong , nonatomic) NSString *cangku;
 
+@property (strong , nonatomic) NSString* categoryId;
 
 -(instancetype)initWithDictionary:(NSDictionary *)dict;
 

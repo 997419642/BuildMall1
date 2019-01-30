@@ -12,7 +12,9 @@
 #import <NSDate+DateTools.h>
 #import <Masonry.h>
 #import <MJRefresh.h>
-#import <SDAutoLayout.h>
+//#import <SDAutoLayout.h>
+#import "UIView+SDAutoLayout.h"
+
 
 @interface BasicVC : UIViewController
 

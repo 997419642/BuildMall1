@@ -30,6 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic,assign)NSInteger categoryId;
 
+@property(nonatomic) NSArray *warestoreTableList;
+@property(nonatomic) NSArray *goodsList;
+
 
 
 

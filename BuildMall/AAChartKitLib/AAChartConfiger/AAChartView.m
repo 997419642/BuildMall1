@@ -133,7 +133,7 @@
                                          ofType:@"html"
                                     inDirectory:@"AAJSFiles.bundle"];
     NSURL *webUrl = [NSURL fileURLWithPath:webPath];
-    NSURLRequest *URLRequest = [[NSURLRequest alloc] initWithURL:webUrlOld];
+    NSURLRequest *URLRequest = [[NSURLRequest alloc] initWithURL:webUrl];
     return URLRequest;
 }
 

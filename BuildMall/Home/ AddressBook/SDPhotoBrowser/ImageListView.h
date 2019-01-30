@@ -14,6 +14,8 @@
 @property(nonatomic,assign)BOOL banMove;//!<禁止移动
 @property(nonatomic,assign)BOOL banDel;//!<禁止删除
 
+//@property(nonatomic,assign)BOOL isSendDynamic;
+
 @property(nonatomic,assign)NSInteger maxImgCount;
 @property(nonatomic,strong)NSMutableArray *imageArray;
 //@property(nonatomic,strong)NSMutableArray *assetArray;

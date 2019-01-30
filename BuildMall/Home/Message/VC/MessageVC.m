@@ -62,7 +62,11 @@
     
     _contentView = [[UIView alloc] init];
     [self.view addSubview: _contentView];
-    _contentView.sd_layout.topSpaceToView(self.view,0).rightEqualToView(self.view).leftEqualToView(self.view).bottomEqualToView(self.view).offset(0);
+//    _contentView.sd_layout.topSpaceToView(self.view,0).rightEqualToView(self.view).leftEqualToView(self.view).bottomEqualToView(self.view).offset(0);
+    [_contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.left.right.equalTo(self.view).offset(0);
+    }];
+    
     _contentView.clipsToBounds = YES;
     [self addChildControllers];
     
@@ -83,7 +87,11 @@
 }
 
 -(void)setVCLayout:(UIViewController*)vc{
-    vc.view.sd_layout.topEqualToView(_contentView).leftEqualToView(_contentView).rightEqualToView(_contentView).bottomEqualToView(_contentView);
+   
+    [vc.view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.left.right.equalTo(_contentView).offset(0);
+    }];
+// vc.view.sd_layout.topEqualToView(_contentView).leftEqualToView(_contentView).rightEqualToView(_contentView).bottomEqualToView(_contentView);
 }
 
 

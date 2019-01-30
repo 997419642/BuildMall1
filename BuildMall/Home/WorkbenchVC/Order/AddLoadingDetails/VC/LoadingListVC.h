@@ -21,6 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,assign)int allNum;
 @property(nonatomic,assign)float allUnit;
 
+@property(nonatomic,assign)NSInteger sectionNum;
+
+@property(nonatomic,copy)NSString *orderSn;
+
+@property(nonatomic,copy)void(^slectBlock)(NSInteger senctionNum,NSString* orderId);
 
 
 @end

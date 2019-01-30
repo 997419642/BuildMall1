@@ -214,10 +214,9 @@
                          //自定义商品dict
                          
                          NSLog(@"--%@",dict[@"packages"]);
-
                          NSMutableDictionary* dataDict = [dict[@"packages"] mj_JSONObject];
 
-                         if (!dataDict[@"houdu"]) {
+                         if ([dataDict[@"categoryId"] isEqualToString:@"1"]) {
                               //原木
                            NSString* number = [NSString stringWithFormat:@"%@",dict[@"buyNumber"]];
                             NSString* price = [NSString stringWithFormat:@"%@",dict[@"buyPrice"]];
@@ -225,7 +224,7 @@
                             numshuliang = [number floatValue];
                             numunitNum = [dataDict[@"lifangshu"] floatValue];
                              
-                         }else
+                         }else if([dataDict[@"categoryId"] isEqualToString:@"2"])
                          {
                               //板材
                              NSString* price = [NSString stringWithFormat:@"%@",dict[@"buyPrice"]];
@@ -362,6 +361,8 @@
     VC.allUnit = _allUnit;
     VC.allNum = _allNum;
     VC.allPrice = _allPrice;
+    VC.sectionNum = _sectionNum;
+    VC.orderSn = _orderId;
     [self.navigationController pushViewController:VC animated:YES];
 }
 
@@ -465,7 +466,7 @@
     }
 }
 
--(void)sureDelete:(NSString *)orderID
+-(void)sureDelete:(NSString *)orderID noticeId:(NSString *)noticeId
 {
     NSMutableArray* array = [NSMutableArray array];
     
@@ -485,6 +486,8 @@
                 [weakSelf.deleteView removeFromSuperview];
                 [weakSelf.deleteView.backgroupView removeFromSuperview];
                 [weakSelf refreshing];
+                [weakSelf refreshingOneSection];
+
             }
         }else
         {

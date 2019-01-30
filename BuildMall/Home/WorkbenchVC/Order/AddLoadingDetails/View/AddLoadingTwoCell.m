@@ -41,13 +41,13 @@
         _unitPriceLable.text = [NSString stringWithFormat:@"￥%@/%@",detailModel.buyPrice,@"m³"];
 
 
-        if (!dict[@"houdu"]) {
+        if ([dict[@"categoryId"] isEqualToString:@"1"]) {
             //原木
             _spactilLable.text = [NSString stringWithFormat:@"%@，%@，%@*%@",dict[@"pinpai"],dict[@"dengji"],dict[@"kuandu"],dict[@"changdu"]];
             
             _numLable.text = [NSString stringWithFormat:@"数量：%@%@*%@件",dict[@"lifangshu"],@"m³",detailModel.buyNumber];
             
-        }else
+        }else if([dict[@"categoryId"] isEqualToString:@"2"])
         {
             //板材
             _spactilLable.text = [NSString stringWithFormat:@"%@,%@,%@*%@*%@",dict[@"pinpai"],dict[@"dengji"],dict[@"houdu"],dict[@"kuandu"],dict[@"changdu"]];
@@ -102,11 +102,11 @@
         
         _nameLable.text = modelDict[@"shuzhong"];
         
-        if (!modelDict[@"houdu"]) {
+        if ([detailModel.categoryId isEqualToString:@"1"]) {
             //原木
             _spactilLable.text = [NSString stringWithFormat:@"%@，%@，%@*%@",tableDic[@"brandName"],modelDict[@"dengji"],modelDict[@"koujin"],lengthAttributesList[0][@"specValue"]];
             _numLable.text = [NSString stringWithFormat:@"数量：%@%@*%@件",detailModel.unitNum,detailModel.goodsNuit,detailModel.buyNumber];
-        }else
+        }else if([detailModel.categoryId isEqualToString:@"2"])
         {
             //板材
             _spactilLable.text = [NSString stringWithFormat:@"%@，%@，%@*%@*%@",tableDic[@"brandName"],modelDict[@"dengji"],modelDict[@"houdu"],modelDict[@"koujin"],lengthAttributesList[0][@"specValue"]];

@@ -114,8 +114,7 @@
 
     [_tableView registerNib:[UINib nibWithNibName:@"CustomerTwoCell" bundle:nil] forCellReuseIdentifier:@"CustomerTwoCell"];
     
-//    [self personRequest];
-
+    [self personRequest];
 
 }
 
@@ -244,7 +243,6 @@
 -(void)loadData
 {
 
-    
     NSArray* arr = self.dataDic[@"info"][@"m_store_item"];
     
     [self.mArray removeAllObjects];

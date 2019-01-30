@@ -35,7 +35,6 @@
 
 @property(nonatomic,assign)NSInteger senctionNum;
 
-@property(nonatomic,assign)BOOL isRefreshOne;
 
 @property(nonatomic,strong)OrderManageModel* addModel;;
 
@@ -63,6 +62,7 @@
     _tableView.dataSource = self;
     _tableView.rowHeight = 90;
     [_tableView registerNib:[UINib nibWithNibName:@"OrderManagemenCell" bundle:nil] forCellReuseIdentifier:@"OrderManagemenCell"];
+    _tableView.tableFooterView = [UIView new];
     
     UIButton *button0 = [UIButton buttonWithType:UIButtonTypeCustom];
 
@@ -226,7 +226,7 @@
 
 }
 
--(void)sureDelete:(NSString *)orderID
+-(void)sureDelete:(NSString *)orderID noticeId:(NSString *)noticeId
 {
     NSMutableDictionary* dict = [NSMutableDictionary dictionary];
     [dict setObject:orderID forKey:@"orderId"];
@@ -260,14 +260,13 @@
 
 -(void)deleteAction:(NSString *)orderID
 {
-    
     _deleteView = [DeleteView addDeleteVView];
     _deleteView.delegate = self;
     _deleteView.orderID = orderID;
+    _deleteView.topLable.text = @"确认取消";
     [_deleteView show];
 
     NSLog(@"%@",orderID);
-    
 }
 
 -(void)goStoreAction:(NSString *)orderID
@@ -292,14 +291,9 @@
     VC.sectionNum = indexPath.section;
     VC.slectBlock = ^(NSInteger senctionNum, NSString * _Nonnull orderId) {
         
-        _isRefreshOne = YES;
         _senctionNum = senctionNum;
-
-        
         [self refreshingNowOneSection:orderId];
-   
     };
-    
     [self.navigationController pushViewController:VC animated:YES];
 }
 

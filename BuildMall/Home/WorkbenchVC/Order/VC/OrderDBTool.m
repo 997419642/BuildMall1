@@ -43,7 +43,7 @@ static id _instance;
 
 - (void)createTable
 {
-    NSString *sql = @"CREATE TABLE 'OrderDBModel' ('Id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, 'norderDetailId' TEXT, 'nbuyNumber' TEXT, 'nbuyPrice' TEXT, 'nunitNum' TEXT, 'ngoodsId' TEXT, 'nstockNum' TEXT, 'nlockNum' TEXT, 'ngoodsNuit' TEXT, 'npackages' TEXT, 'ngenshu' TEXT, 'nhoudu' TEXT, 'nkuandu' TEXT, 'nchangdu' TEXT, 'nshuzhong' TEXT, 'npinpai' TEXT, 'ndengji' TEXT, 'nisCus' TEXT, 'ncangku' TEXT);";
+    NSString *sql = @"CREATE TABLE 'OrderDBModel' ('Id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, 'norderDetailId' TEXT, 'nbuyNumber' TEXT, 'nbuyPrice' TEXT, 'nunitNum' TEXT, 'ngoodsId' TEXT, 'nstockNum' TEXT, 'nlockNum' TEXT, 'ngoodsNuit' TEXT, 'npackages' TEXT, 'ngenshu' TEXT, 'nhoudu' TEXT, 'nkuandu' TEXT, 'nchangdu' TEXT, 'nshuzhong' TEXT, 'npinpai' TEXT, 'ndengji' TEXT, 'nisCus' TEXT, 'ncangku' TEXT, 'ncategoryId' TEXT);";
     if (![_dbTool tableExists:@"OrderDBModel"]) {
         [_dbTool executeUpdate:sql param:nil];
     }
@@ -57,8 +57,8 @@ static id _instance;
 
 - (void)insertModel:(OrderDBModel *)noticeModel
 {
-    NSString *sql = @"insert into OrderDBModel( norderDetailId, nbuyNumber, nbuyPrice, nunitNum, ngoodsId, nstockNum, nlockNum, ngoodsNuit, npackages, ngenshu, nhoudu, nkuandu, nchangdu, nshuzhong, npinpai, ndengji, nisCus, ncangku) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    NSArray *param = @[noticeModel.orderDetailId,noticeModel.buyNumber,noticeModel.buyPrice,noticeModel.unitNum,noticeModel.goodsId,noticeModel.stockNum,noticeModel.lockNum,noticeModel.goodsNuit,noticeModel.packages,noticeModel.genshu,noticeModel.houdu,noticeModel.kuandu,noticeModel.changdu,noticeModel.shuzhong,noticeModel.pinpai,noticeModel.dengji,noticeModel.isCus,noticeModel.cangku];
+    NSString *sql = @"insert into OrderDBModel( norderDetailId, nbuyNumber, nbuyPrice, nunitNum, ngoodsId, nstockNum, nlockNum, ngoodsNuit, npackages, ngenshu, nhoudu, nkuandu, nchangdu, nshuzhong, npinpai, ndengji, nisCus, ncangku, ncategoryId) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    NSArray *param = @[noticeModel.orderDetailId,noticeModel.buyNumber,noticeModel.buyPrice,noticeModel.unitNum,noticeModel.goodsId,noticeModel.stockNum,noticeModel.lockNum,noticeModel.goodsNuit,noticeModel.packages,noticeModel.genshu,noticeModel.houdu,noticeModel.kuandu,noticeModel.changdu,noticeModel.shuzhong,noticeModel.pinpai,noticeModel.dengji,noticeModel.isCus,noticeModel.cangku,noticeModel.categoryId];
     if([_dbTool executeUpdate:sql param:param]){
         NSLog(@"插入数据成功");
     }
@@ -120,6 +120,7 @@ static id _instance;
     model.dengji = [dict valueForKey:@"dengji"];
     model.isCus = [dict valueForKey:@"isCus"];
     model.cangku = [dict valueForKey:@"cangku"];
+    model.categoryId = [dict valueForKey:@"categoryId"];
 
     return model;
 }

@@ -7,7 +7,7 @@
 //
 
 #import "ImageItemCell.h"
-#import <UIView+SDAutoLayout.h>
+#import "UIView+SDAutoLayout.h"
 
 @implementation ImageItemCell
 

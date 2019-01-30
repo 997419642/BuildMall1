@@ -10,4 +10,6 @@
 
 @interface MoveGroupVC : BasicVC
 
+@property (nonatomic,strong) NIMUser                 *user;
+
 @end

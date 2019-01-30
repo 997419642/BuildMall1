@@ -21,17 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic,copy)NSString* orderStatus;
 
-
-
 @property(nonatomic,assign)NSInteger sectionNum;
 
 @property(nonatomic,copy)void(^slectBlock)(NSInteger senctionNum,NSString* orderId);
-
-
-
-
-
-
 
 @end
 

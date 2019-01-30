@@ -123,6 +123,8 @@
 
     _numLable.text = [NSString stringWithFormat:@"数量：%ld件，%ld%@",(long)keshouNum,(long)model.unitNum,model.goodsNuit];
     
+    NSMutableDictionary* wareDic = model.warestoreTableList[0];
+        
     
     NSMutableDictionary* modelDict = [NSMutableDictionary dictionary];
     

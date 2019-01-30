@@ -31,6 +31,12 @@
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="转移到" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oZT-IW-JeH">
+                    <rect key="frame" x="130.5" y="70" width="43" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UHp-Tr-1sz">
                     <rect key="frame" x="0.0" y="111.5" width="304" height="1"/>
                     <color key="backgroundColor" red="0.90980392156862744" green="0.90980392156862744" blue="0.90980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -68,9 +74,11 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="oZT-IW-JeH" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="70" id="0s3-4L-61Z"/>
                 <constraint firstItem="UHp-Tr-1sz" firstAttribute="top" secondItem="wns-lK-Q3M" secondAttribute="bottom" constant="15" id="4WG-wy-B0g"/>
                 <constraint firstItem="yVs-YC-rap" firstAttribute="top" secondItem="UHp-Tr-1sz" secondAttribute="bottom" id="6La-rd-VHJ"/>
                 <constraint firstItem="yVs-YC-rap" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="8FN-C1-Ly5"/>
+                <constraint firstItem="oZT-IW-JeH" firstAttribute="centerX" secondItem="u44-I8-A1c" secondAttribute="centerX" id="Aeg-wE-g9i"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="ndJ-Go-62T" secondAttribute="bottom" id="F46-1s-Qx5"/>
                 <constraint firstItem="wns-lK-Q3M" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="I3z-NO-m7c"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="yVs-YC-rap" secondAttribute="bottom" id="ONY-Fu-Hq9"/>
@@ -92,6 +100,7 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="addTF" destination="wns-lK-Q3M" id="hzg-uA-hya"/>
+                <outlet property="moveLable" destination="oZT-IW-JeH" id="QBU-fm-CwS"/>
                 <outlet property="toptitle" destination="u44-I8-A1c" id="pec-fw-JZ6"/>
             </connections>
             <point key="canvasLocation" x="35" y="110.5"/>

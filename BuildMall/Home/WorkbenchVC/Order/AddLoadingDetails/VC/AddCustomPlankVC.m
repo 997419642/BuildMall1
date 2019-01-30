@@ -133,7 +133,7 @@
         }
         _shuzhongLable.text = dict[@"shuzhong"];
         
-        //应该可以注释
+    
         _brandlable.text = [NSString stringWithFormat:@"%@， %@， %@*%@",tableDic[@"brandName"],modelDict[@"dengji"],modelDict[@"koujin"],lengthAttributesList[0][@"specValue"]];
         
         if (!dict[@"houdu"]) {
@@ -183,6 +183,7 @@
         NSMutableDictionary* dict = [NSMutableDictionary dictionary];
 
         [dict addEntriesFromDictionary:dictCus];
+        [dict setObject:_categoryId forKey:@"categoryId"];
         bean.packages = [dict mj_JSONString];
         [array addObject:bean];
     }else

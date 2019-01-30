@@ -116,7 +116,7 @@
                         if ([dict[@"goodsId"] intValue] == 0) {
                             //自定义的商品添加的包号
                             NSMutableDictionary* dictCus = [dict[@"packages"] mj_JSONObject];
-                            model.packetNumber = dictCus[@"packages"];
+                            model.packetNumber = dictCus[@"packetNum"];
                             model.packetId = dict[@"id"];
                             [_hasAddArray addObject:model];
                             
@@ -397,23 +397,7 @@
         SWGOrderAbroadPackBean* bean = [SWGOrderAbroadPackBean new];
         
         if (_detailModel.packages != nil && ![_detailModel.packages isEqualToString:@""]) {
-        //库存商品
-            bean.buyPrice = _detailModel.buyPrice;
-            NSNumber *goodsId = [NSNumber numberWithInt:[_detailModel.goodsId intValue]];
-            bean.goodsId = goodsId;
-            NSNumber *orderId = [NSNumber numberWithInt:[_model.orderId intValue]];
-            bean.orderId = orderId;
-            NSNumber *Number = [NSNumber numberWithInt:[_detailModel.buyNumber intValue]];
-            bean.buyNumber = Number;
-            NSNumber *categoryId = [NSNumber numberWithInt:[_categoryId intValue]];
-            bean.categoryId = categoryId;
-            bean.packages = packages.packetNumber;
-            bean.orderPackId = [NSNumber numberWithInt:[packages.packetId intValue]];
-            bean.orderDetailId = [NSNumber numberWithInt:[_detailModel.orderDetailId intValue]];
-            [array addObject:bean];
-            
-        }else
-        {
+        
             
             NSMutableDictionary* dictCus = [_detailModel.packages mj_JSONObject];
             bean.buyPrice = _detailModel.buyPrice;
@@ -429,11 +413,35 @@
             bean.orderDetailId = [NSNumber numberWithInt:[_detailModel.orderDetailId intValue]];
             NSMutableDictionary* dict = [NSMutableDictionary dictionary];
             [dict addEntriesFromDictionary:dictCus];
-            [dict setObject:packages.packetNumber forKey:@"packages"];
+            [dict setObject:packages.packetNumber forKey:@"packetNum"];
+            [dict setObject:_categoryId forKey:@"categoryId"];
             bean.packages = [dict mj_JSONString];
             [array addObject:bean];
             
+            
+            
+        }else
+        {
+            //库存商品
+            bean.buyPrice = _detailModel.buyPrice;
+            NSNumber *goodsId = [NSNumber numberWithInt:[_detailModel.goodsId intValue]];
+            bean.goodsId = goodsId;
+            NSNumber *orderId = [NSNumber numberWithInt:[_model.orderId intValue]];
+            bean.orderId = orderId;
+            NSNumber *Number = [NSNumber numberWithInt:[_detailModel.buyNumber intValue]];
+            bean.buyNumber = Number;
+            NSNumber *categoryId = [NSNumber numberWithInt:[_categoryId intValue]];
+            bean.categoryId = categoryId;
+            bean.packages = packages.packetNumber;
+            bean.orderPackId = [NSNumber numberWithInt:[packages.packetId intValue]];
+            bean.orderDetailId = [NSNumber numberWithInt:[_detailModel.orderDetailId intValue]];
+            [array addObject:bean];
+            
         }
+    }
+    if (_packBeanArray.count > [_detailModel.buyNumber intValue]) {
+        [self showAlert:@"最多添加个包"];
+        return;
     }
     
     _packBeanArray = array;

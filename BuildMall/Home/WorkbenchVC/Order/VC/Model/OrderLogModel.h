@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic,copy)NSString* isOne;
 
+@property(nonatomic,copy)NSString* content;
+
 
 
 

@@ -9,10 +9,15 @@
 #import "MoveGroupVC.h"
 #import "MoveGroupCell.h"
 #import "AddGroupView.h"
+#import "SVProgressHUD.h"
 
 @interface MoveGroupVC ()<UITableViewDelegate,UITableViewDataSource,AddGroupViewDelegate>
 
 @property(nonatomic,strong)UITableView* tableView;
+
+@property(nonatomic,strong)AddGroupView* addView;
+
+@property(nonatomic,strong)NSMutableArray* dataArray;
 
 
 @end
@@ -23,6 +28,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.navigationItem.title = @"转移分组";
+
+    _dataArray = [NSMutableArray array];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenW, screenH) style:UITableViewStylePlain];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
@@ -46,8 +53,109 @@
     //    UIView *headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, screenW, 160)];
     //    [headView addSubview:self.headView];
     
-    //    [self refreshing];
+        [self refreshing];
     
+}
+
+-(void)refreshing
+{
+    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+    AMUserAccountInfo *userInfo = [AMUserAccountInfo shareInfo];
+    [dict setObject:userInfo.storeId forKey:@"userId"];
+    
+    
+    [_tableView.mj_footer endRefreshing];
+    [_tableView.mj_footer resetNoMoreData];
+    
+    __weak typeof(self)weakSelf = self;
+    
+    [[WebClient sharedClient]userFriendsGroupGroupByUserId:dict complete:^(ResponseMode *result, NSError *error) {
+        
+        if (weakSelf.tableView.mj_header.isRefreshing) {
+            [weakSelf.tableView.mj_header endRefreshing];
+        }
+        
+        if (!error) {
+            if (result.code == 0) {
+                
+                weakSelf.dataArray = [NSMutableArray arrayWithArray:result.data];
+    
+                [weakSelf.tableView reloadData];
+            }else
+            {
+                
+            }
+        }else
+        {
+            
+        }
+        
+    }];
+}
+
+-(void)addGroupView:(AddGroupView *)addView selectBtn:(NSString *)str groupID:(NSString *)groupID
+{
+    __weak typeof(self) weakSelf = self;
+
+    if ([addView.toptitle.text isEqualToString:@"转移分组"]) {
+        [self.view endEditing:YES];
+    
+        [SVProgressHUD show];
+        
+        NSString* str;
+        if (self.user.alias == nil) {
+            str = [NSString stringWithFormat:@"%@+%@",self.user.userId,groupID];
+
+        }else
+        {
+            
+            if ([self.user.alias containsString:@"+"]) {
+                NSArray *array = [self.user.alias componentsSeparatedByString:@"+"]; //从字符A中分隔成2个元素的数组
+                NSString* str0 = [NSString stringWithFormat:@"%@",groupID];
+                str = [self.user.alias stringByReplacingOccurrencesOfString:array[1] withString:str0];//替换字符
+
+            }else
+            {
+                str = [NSString stringWithFormat:@"%@+%@",self.user.alias,groupID];
+
+            }
+
+            self.user.alias = str;
+
+        }
+        [[NIMSDK sharedSDK].userManager updateUser:self.user completion:^(NSError *error) {
+            [SVProgressHUD dismiss];
+            if (!error) {
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+                
+                [weakSelf.addView removeFromSuperview];
+                [weakSelf.addView.backgroupView removeFromSuperview];
+            }else{
+          
+            }
+        }];
+        
+    }else
+    {
+        NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+        AMUserAccountInfo *userInfo = [AMUserAccountInfo shareInfo];
+        [dict setObject:userInfo.userId forKey:@"userId"];
+        [dict setObject:str forKey:@"name"];
+        
+        [[WebClient sharedClient] userFriendsGroupInsertGroup:dict complete:^(ResponseMode *result, NSError *error) {
+            if (!error) {
+                if (result.code == 0) {
+                    [weakSelf.addView removeFromSuperview];
+                    [weakSelf.addView.backgroupView removeFromSuperview];
+                }
+                
+            }else
+            {
+                
+            }
+        }];
+    }
+
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -61,7 +169,7 @@
 
     }else
     {
-         return 5;
+         return _dataArray.count;
     }
     
 }
@@ -82,28 +190,27 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
+    
+    
     if (indexPath.section == 0) {
     
-        
-        AddGroupView *photoView = [AddGroupView addGroupView];
-        photoView.delegate = self;
-        [photoView show];
+        _addView = [AddGroupView addGroupView];
+        _addView.delegate = self;
+        _addView.moveLable.hidden = YES;
+
+        [_addView show];
         
     }else
     {
-        
-    
-    
-//    MoveGroupCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        _addView = [AddGroupView addGroupView];
+        _addView.delegate = self;
+        _addView.toptitle.text = @"转移分组";
+        NSMutableDictionary* dict = _dataArray[indexPath.row];
+        _addView.groupID = dict[@"id"];
 
-//    DOPPackageListModel *model0 = self.dataArray[indexPath.row];
-//
-//    for (DOPPackageListModel* model in _dataArray) {
-//
-//        model.isSelect = NO;
-//    }
-//
-//    model0.isSelect = YES;
+        _addView.addTF.hidden = YES;
+        _addView.moveLable.hidden = NO;
+        [_addView show];
         
     }
     
@@ -139,22 +246,13 @@
     }else
     {
         cell1.imgView.hidden = YES;
-//        DOPPackageListModel* model = _dataArray[indexPath.row];
-//        if (model.isSelect == YES) {
-//
-//            cell1.imageView0.image = [UIImage imageNamed:@"选中"];
-//            self.priceLable.text = [NSString stringWithFormat:@"%@元",model.price];
-//            _selectID = model.id;
-//
-//        }else
-//        {
-//            cell1.imageView0.image = [UIImage imageNamed:@"取消选中"];
-//        }
+
+        NSMutableDictionary* dict = _dataArray[indexPath.row];
         
+        cell1.nameLable.text = dict[@"groupName"];
     }
     
-//    cell1.nameLable.text = dataArray[indexPath.row];
-//    cell1.delegate = self;
+
     
     return cell1;
     

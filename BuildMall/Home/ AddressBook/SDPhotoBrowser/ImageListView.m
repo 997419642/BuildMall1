@@ -9,15 +9,16 @@
 #import "ImageListView.h"
 #import <TZImagePickerController.h>
 #import "ImageItemCell.h"
-#import <UIView+SDAutoLayout.h>
+#import "UIView+SDAutoLayout.h"
 #import <UIView+SDExtension.h>
 #import "SDPhotoBrowser.h"
 #import <UIImageView+WebCache.h>
 #import "SVProgressHUD.h"
+#import "DOPPhotoView.h"
+#import "DOPImagePickerViewController.h"
+#import "DOPImageCropperViewController.h"
 
-
-
-@interface ImageListView()<UICollectionViewDataSource, UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,SDPhotoBrowserDelegate>
+@interface ImageListView()<UICollectionViewDataSource, UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,SDPhotoBrowserDelegate,PhotoViewDelegate>
 
 
 @property (strong, nonatomic, readonly) UIViewController *rootViewController;
@@ -131,30 +132,14 @@
 }
 
 -(BOOL)judgeStr:(NSString *)str1 with:(NSString *)str2
-
 {
-    
-       
     int a=[str1 intValue];
-    
-       
     double s1=[str2 doubleValue];
-    
-      
     int s2=[str2 intValue];
-    
-        
      if (s1/a-s2/a>0) {
-        
-        
-          return NO;
-        
-           
+         return NO;
     }
-    
-       
     return YES;
-    
 }
 
 
@@ -176,7 +161,6 @@
             obj = [NSString stringWithFormat:@"%@%@",webUrlOld,obj];
             [cell.imageView sd_setImageWithURL:[NSURL URLWithString:obj] placeholderImage:[UIImage imageNamed:@"placeholder"]];
         }
-//        cell.imageView.image = [self.imageArray objectAtIndex:indexPath.row];
         cell.delBtn.tag = indexPath.row;
         cell.delBtn.hidden = self.banDel;
         
@@ -190,6 +174,47 @@
     return cell;
 }
 
+- (void)photoView:(DOPPhotoView *)photoView selectBtn:(UIButton *)btn
+{
+    [photoView.superview removeFromSuperview];
+    if ([btn.titleLabel.text isEqualToString:@"相册"]) {
+        [self pushImagePickerController];
+    }else
+    {
+        [self openCamera];
+        
+    }
+}
+
+-(void)openCamera{
+    
+    UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
+    DOPImagePickerViewController *picker = [[DOPImagePickerViewController alloc] init];//初始化
+    picker.allowsEditing = NO;//设置可编辑
+    picker.sourceType = sourceType;
+    [self.rootViewController presentViewController:picker animated:YES completion:nil];
+    __weak typeof(self)weakSelf = self;
+    picker.didFinishPickingMedia=^(UIImage *image){
+        
+        [weakSelf imageCropping:image];
+        
+    };
+}
+-(void)imageCropping:(UIImage *)image{
+    __weak typeof(self)weakSelf = self;
+    DOPImageCropperViewController *imgEditorVC = [[DOPImageCropperViewController alloc] initWithImage:image cropFrame:CGRectMake(15, 100.0f, screenW - 30, screenW) limitScaleRatio:3.0];
+    imgEditorVC.hidesBottomBarWhenPushed = YES;
+    [weakSelf.rootViewController.navigationController pushViewController:imgEditorVC animated:NO];
+    
+    imgEditorVC.didFinishedBlock=^(UIImage *image){
+        
+//        weakSelf.imgData = UIImageJPEGRepresentation(image, 1.0);
+//        weakSelf.releaseImg = image;
+        [weakSelf.imageArray addObject:image];
+        [weakSelf.collectionView reloadData];
+
+    };
+}
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == self.imageArray.count) {
@@ -198,7 +223,11 @@
             [SVProgressHUD showInfoWithStatus:count];
             return;
         }
-        [self pushImagePickerController];
+        
+        DOPPhotoView *photoView = [DOPPhotoView photoView];
+        photoView.delegate = self;
+        [photoView show];
+ 
         
     } else {
         
@@ -297,7 +326,7 @@
     
     // 1.如果你需要将拍照按钮放在外面，不要传这个参数
 //    imagePickerVc.selectedAssets = _assetArray; // optional, 可选的
-    //    imagePickerVc.allowTakePicture = self.showTakePhotoBtnSwitch.isOn; // 在内部显示拍照按钮
+//    imagePickerVc.allowTakePicture = self.showTakePhotoBtnSwitch.isOn; // 在内部显示拍照按钮
     
     // 2. Set the appearance
     // 2. 在这里设置imagePickerVc的外观

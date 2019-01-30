@@ -172,8 +172,10 @@
             [dataDict setObject:_changDuTF.text forKey:@"changdu"];
             [dataDict setObject:_liFanfshuTF.text forKey:@"lifangshu"];
             [dataDict setObject:_cangKuStr forKey:@"cangku"];
+            [dataDict setObject:_categoryId forKey:@"categoryId"];
+            [dataDict setObject:_genShuTF.text forKey:@"genshu"];
 
-        }else
+        }else if([_categoryId intValue] == 2)
         {
             //板材
             [dataDict setObject:_pinmingLable.text forKey:@"shuzhong"];
@@ -185,6 +187,10 @@
             [dataDict setObject:_liFanfshuTF.text forKey:@"lifangshu"];
             [dataDict setObject:_baoHaoTF.text forKey:@"packetNum"];
             [dataDict setObject:_cangKuStr forKey:@"cangku"];
+            [dataDict setObject:_categoryId forKey:@"categoryId"];
+            [dataDict setObject:_genShuTF.text forKey:@"genshu"];
+
+
         }
 
         NSString* packages = [dataDict mj_JSONString];
@@ -217,30 +223,6 @@
     }else
     {
         //审核时添加
-        NSMutableDictionary* dataDict =[NSMutableDictionary new];
-//        if ([_categoryId intValue] == 1) {
-//            [dataDict setObject:_pinmingLable.text forKey:@"shuzhong"];
-//            [dataDict setObject:_pingpaiLable.text forKey:@"pinpai"];
-//            [dataDict setObject:_dengjiLable.text forKey:@"dengji"];
-//            [dataDict setObject:_kuanDuTF.text forKey:@"kuandu"];
-//            [dataDict setObject:_changDuTF.text forKey:@"changdu"];
-//            [dataDict setObject:_liFanfshuTF.text forKey:@"lifangshu"];
-//            [dataDict setObject:_cangKuStr forKey:@"cangku"];
-//
-//        }else
-//        {
-//            [dataDict setObject:_pinmingLable.text forKey:@"shuzhong"];
-//            [dataDict setObject:_pingpaiLable.text forKey:@"pinpai"];
-//            [dataDict setObject:_dengjiLable.text forKey:@"dengji"];
-//            [dataDict setObject:_houDuTF.text forKey:@"houdu"];
-//            [dataDict setObject:_kuanDuTF.text forKey:@"kuandu"];
-//            [dataDict setObject:_changDuTF.text forKey:@"changdu"];
-//            [dataDict setObject:_liFanfshuTF.text forKey:@"lifangshu"];
-//            [dataDict setObject:_baoHaoTF.text forKey:@"packetNum"];
-//            [dataDict setObject:_cangKuStr forKey:@"cangku"];
-//            [dataDict setObject:_genShuTF.text forKey:@"genshu"];
-//        }
-        
         OrderDBTool *noticeDBTool = [OrderDBTool shareInstance];
         [noticeDBTool createTable];
         NSMutableDictionary* dict0 = [NSMutableDictionary dictionary];
@@ -272,10 +254,9 @@
             [dict0 setObject:_baoHaoTF.text forKey:@"packages"];
         }
         [dict0 setObject:_cangKuStr forKey:@"cangku"];
-//        NSString* packages = [dict0 mj_JSONString];
-//        [dict0 setObject:packages forKey:@"packages"];
         [dict0 setObject:@"YES" forKey:@"isCus"];
-        
+        [dict0 setObject:_categoryId forKey:@"categoryId"];
+
         
         NSMutableDictionary* dict2 = [NSMutableDictionary dictionary];
         [dict2 setObject:@"" forKey:@"orderDetailId"];
@@ -309,7 +290,7 @@
             [dict2 setObject:_baoHaoTF.text forKey:@"packages"];
         }
         [dict2 setObject:_cangKuStr forKey:@"cangku"];
-        
+        [dict2 setObject:_categoryId forKey:@"categoryId"];
         NSString* packages = [dict2 mj_JSONString];
         [dict0 setObject:packages forKey:@"packages"];
         

@@ -12,6 +12,7 @@
 #import "OrderManagementVC.h"
 #import "MyAIDataVC.h"
 #import "SalesReportsVC.h"
+#import "DynamicVC.h"
 
 @interface WorkbenchVC ()
 
@@ -29,8 +30,8 @@
     
 }
 - (IBAction)dynamicAction:(UIButton *)sender {
-    
-    
+    DynamicVC* VC = [DynamicVC new];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 
 - (IBAction)ERPAction:(UIButton *)sender {

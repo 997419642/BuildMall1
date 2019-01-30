@@ -15,7 +15,7 @@
 
 @optional
 
-- (void)addGroupView:(AddGroupView *)photoView selectBtn:(UIButton *)btn;
+- (void)addGroupView:(AddGroupView *)addView selectBtn:(NSString *)str groupID:(NSString *)groupID;
 
 @end
 
@@ -26,8 +26,14 @@
 @property (weak, nonatomic) IBOutlet UITextField *addTF;
 
 @property (weak, nonatomic) IBOutlet UILabel *toptitle;
+@property (weak, nonatomic) IBOutlet UILabel *moveLable;
+
+@property(nonatomic,copy)NSString* groupID;
 
 + (instancetype)addGroupView;
+
+@property(nonatomic,strong)UIView *backgroupView;
+
 
 - (void)show;
 

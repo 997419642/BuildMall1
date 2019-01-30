@@ -11,7 +11,7 @@ pod 'MJExtension'
 
 pod 'TZImagePickerController'
 pod 'DateTools'
-pod 'SDAutoLayout'
+#pod 'SDAutoLayout'
 pod 'SDCycleScrollView'
 #pod 'NIMKit'
 pod 'NIMSDK'

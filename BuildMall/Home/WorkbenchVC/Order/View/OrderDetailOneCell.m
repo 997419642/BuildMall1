@@ -18,8 +18,7 @@
 -(void)setModel:(OrderLogModel *)model
 {
     _model = model;
-    _statelable.text = _model.logType;
-//    _timeLable.text = model.createTime;
+    _statelable.text = model.logType;
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];

@@ -9,7 +9,7 @@
 #import "ChoosePersonListView.h"
 #import <TZImagePickerController.h>
 #import "ImageItemCell.h"
-#import <UIView+SDAutoLayout.h>
+#import "UIView+SDAutoLayout.h"
 #import <UIView+SDExtension.h>
 #import "SDPhotoBrowser.h"
 #import <UIImageView+WebCache.h>

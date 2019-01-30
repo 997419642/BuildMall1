@@ -216,14 +216,17 @@
         model.dengji = [dict valueForKey:@"dengji"];
         model.isCus = [dict valueForKey:@"isCus"];
         model.cangku = [dict valueForKey:@"cangku"];
-//        model.goodsName = [dict valueForKey:@"goodsName"];
+        model.categoryId = [dict valueForKey:@"categoryId"];
         
         [_dataList addObject:model];
     }
-    [self.tableView reloadData];
+    
+    [_tableView reloadData];
+//    NSIndexSet *indexSet = [[NSIndexSet alloc]initWithIndex:2];
+//    [_tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+    
 }
 -(void)viewDidAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
     //从详情页返回时刷新页面
     [self requestData];
 }
@@ -318,6 +321,7 @@
                             [dict setObject:modelDict[@"shuzhong"] forKey:@"shuzhong"];
                             [dict setObject:tableDic[@"brandName"] forKey:@"pinpai"];
                             [dict setObject:modelDict[@"dengji"] forKey:@"dengji"];
+                            [dict setObject:_categoryId forKey:@"categoryId"];
 
                         }else
                         {
@@ -345,6 +349,8 @@
                             [dict setObject:cusDict[@"genshu"] forKey:@"genshu"];
                             [dict setObject:@"NO" forKey:@"isCus"];
                             [dict setObject:cusDict[@"cangku"] forKey:@"cangku"];
+                            [dict setObject:_categoryId forKey:@"categoryId"];
+
                         }
                         
                         OrderDBModel *noticeModel =[[OrderDBModel alloc]initWithDictionary:dict];
@@ -369,9 +375,9 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:NO];
-    [self refreshing];
-    [self requestPayAccout];
-    [self requestLogInfo];
+//    [self refreshing];
+//    [self requestPayAccout];
+//    [self requestLogInfo];
 }
 
 //获取第二区数据
@@ -699,10 +705,9 @@
             NSData * data = error.userInfo[@"com.alamofire.serialization.response.error.data"];
             NSString * str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
             NSLog(@"错误原因:%@",str);
-            
-            weakSelf.fourStateStr = @"待买家提货";
-            [weakSelf.tableView reloadData];
-            weakSelf.stateLable.text = @"待买家提货";
+//            weakSelf.fourStateStr = @"待买家提货";
+//            [weakSelf.tableView reloadData];
+//            weakSelf.stateLable.text = @"待买家提货";
         }
     }];
 }
@@ -975,9 +980,24 @@
             }else if ([model.orderStatus isEqualToString:@"3"] || [model.orderStatus isEqualToString:@"4"] ||[model.orderStatus isEqualToString:@"12"] ||[model.orderStatus isEqualToString:@"5"] ||[model.orderStatus isEqualToString:@"6"] || [model.orderStatus isEqualToString:@"7"])
             {
                 return 70;
-            }else
+            }else if([model.orderStatus isEqualToString:@"1"])
             {
+                if (model.allowModification == 0) {
+                    return 60;
+                }else
+                {
+                    return 120;
+                }
                 
+            }else if([model.orderStatus isEqualToString:@"2"])
+            {
+                if (model.allowModification == 0) {
+                    return 60;
+                }else
+                {
+                    return 120;
+                }
+
             }
         }
        return 120;
@@ -1056,7 +1076,18 @@
 
             OrderManageModel* model = _dataArray[0];
             NSMutableDictionary* dict = model.actualMoney[0];
-            float priceNum = [model.realityPrice floatValue] - [dict[@"actualMoney"] floatValue];
+            NSLog(@"++%@",dict[@"actualMoney"]);
+            
+            float priceNum;
+            if ([model.payType isEqualToString:@"1"]) {
+                priceNum = [model.realityPrice floatValue] - [dict[@"actualMoney"] floatValue];
+
+            }else
+            {
+                priceNum = [model.realityPrice floatValue];
+
+            }
+            
             float num  = priceNum - [_cell1.actualTF.text floatValue];
                 //没有优惠
             _cell1.daifuLable.text = [NSString stringWithFormat:@"%.2f",num];
@@ -1065,19 +1096,35 @@
         {
             OrderManageModel* model = _dataArray[0];
             NSMutableDictionary* dict = model.actualMoney[0];
-            float priceNum = [model.realityPrice floatValue] - [dict[@"actualMoney"] floatValue];
+            
+            float priceNum;
+            if ([model.payType isEqualToString:@"1"]) {
+                
+                priceNum = [model.realityPrice floatValue] - [dict[@"actualMoney"] floatValue];
+            }else
+            {
+                priceNum = [model.realityPrice floatValue];
+
+            }
+            
+         
             float num  = priceNum - [_cell1.actualTF.text floatValue] - [_cell1.huiyouTwoTF.text floatValue];
 
             _cell1.daifuLable.text = [NSString stringWithFormat:@"%.2f",num];
-                
-            
         }
     }else
     {
         OrderManageModel* model = _dataArray[0];
         NSMutableDictionary* dict = model.actualMoney[0];
+        
+        float priceNum;
+        if ([model.payType isEqualToString:@"1"]) {
+            priceNum = [model.realityPrice floatValue] - [dict[@"actualMoney"] floatValue];
 
-        float priceNum = [model.realityPrice floatValue] - [dict[@"actualMoney"] floatValue];
+        }else
+        {
+            priceNum = [model.realityPrice floatValue];
+        }
         
         //计算待付金额
         float daifuPrice = priceNum - [model.discountPrice floatValue];
@@ -1103,6 +1150,7 @@
         AddLoadingDetails* VC = [AddLoadingDetails new];
         OrderManageModel* model = _dataArray[0];
         VC.orderIdTrue = model.orderId;
+        VC.sectionNum = _sectionNum;
         //订单编号
         VC.orderId = _orderId;
         VC.categoryId = _categoryId;
@@ -1126,7 +1174,14 @@
             NSMutableDictionary* dict = [NSMutableDictionary dictionary];
             //付款id 第一条数据
             NSMutableArray* arr = (NSMutableArray *)model.actualMoney;
-            NSMutableDictionary* actualDict = arr[1];
+            NSMutableDictionary* actualDict;
+            if ([model.payType isEqualToString:@"2"] || [model.payType isEqualToString:@"3"]) {
+                actualDict = arr[0];
+
+            }else
+            {
+                actualDict = arr[1];
+            }
             [dict setObject:actualDict[@"id"] forKey:@"orderPaymentId"];
             [dict setObject:model.orderId forKey:@"orderId"];
             AMUserAccountInfo *userInfo = [AMUserAccountInfo shareInfo];
@@ -1214,6 +1269,7 @@
         AddLoadingDetails* VC = [AddLoadingDetails new];
         OrderManageModel* model = _dataArray[0];
         VC.orderIdTrue = model.orderId;
+        VC.sectionNum = _sectionNum;
         //订单编号
         VC.orderId = _orderId;
         VC.categoryId = _categoryId;
@@ -1301,24 +1357,7 @@
     [dict setObject:@(1) forKey:@"collectType"];
     [dict setObject:_orderStatus forKey:@"orderStatus"];
     NSMutableArray* priceArray  = [NSMutableArray array];
-        
-//    for (OrderDetailModel* model in model1.orderDetailList) {
-//        NSMutableDictionary* dict = [NSMutableDictionary dictionary];
-//        [dict setObject:model.buyNumber forKey:@"buyNumber"];
-//        [dict setObject:model.buyPrice forKey:@"buyPrice"];
-//        if (model.packages != nil && ![model.packages isEqualToString:@""]) {
-//            //自定义
-//            NSMutableDictionary* dictCus = [model.packages mj_JSONObject];
-//            [dict setObject:dictCus[@"lifangshu"] forKey:@"cubicNumber"];
-//
-//        }else
-//        {
-//            [dict setObject:model.unitNum forKey:@"cubicNumber"];
-//        }
-//        [priceArray addObject:dict];
-//    }
-        
-    
+
     for (OrderDBModel* model in _dataList) {
         NSMutableDictionary* dataDict = [NSMutableDictionary dictionary];
         
@@ -1335,20 +1374,24 @@
         [dataDict setObject:model.buyPrice forKey:@"buyPrice"];
         [dataDict setObject:model.unitNum forKey:@"cubicNumber"];
         [dataDict setObject:@"1" forKey:@"status"];
-//        if (![model.goodsName isEqualToString:@""] && model.goodsName != nil) {
-//            [dataDict setObject:model.goodsName forKey:@"goodsName"];
-//        }
 
         if ([model.isCus isEqualToString:@"YES"]) {
             //自定义
-            //NSMutableDictionary* dictCus = [model.packages mj_JSONObject];
-            
             [dataDict setObject:model.packages forKey:@"packages"];
             
         }else
         {
             
         }
+        
+        
+        NSString*string =model.cangku;
+        
+        NSArray *array = [string componentsSeparatedByString:@" "]; //从字符d中分隔成2个元素的数组
+        
+        NSLog(@"array:%@",array); //结果是abc和efg
+        [dataDict setObject:array[0] forKey:@"warehouseName"];
+        [dataDict setObject:_orderId forKey:@"orderSn"];
         
         [priceArray addObject:dataDict];
     }
@@ -1385,6 +1428,7 @@
         totalPrice = str;
     }else if ([payType intValue] == 2||[payType intValue] == 3)
     {
+        
         totalPrice = _allOrderPrice;
     }
     NSNumber *paymentAccountId = [NSNumber numberWithInt:[dict[@"paymentAccountId"] intValue]];
@@ -1574,8 +1618,6 @@
 //    CGFloat allPrice = sum+nowNum;
 //    NSString* allStr = [NSString stringWithFormat:@"%.2f",allPrice];
 //    [_modedic setObject:allStr forKey:@"totalPrice"];
-    
-    
 //    [self requestChangeNumAndPrice:_modedic];
 }
 
@@ -1713,6 +1755,8 @@
                     cell1.model = model;
                 }
                 
+    
+                
                 return cell1;
                 
               
@@ -1815,10 +1859,22 @@
            
                 if ([model.orderStatus isEqualToString:@"6"] || [model.orderStatus isEqualToString:@"7"] || ([model.orderStatus isEqualToString:@"10"] && [model.ishaveArrears isEqualToString:@"1"])) {
                     //计算需要支付的尾款
+                    float yifuPrice;
+                    
                     NSMutableDictionary* dict = model.actualMoney[0];
-                    cell1.threeLable.text = [NSString stringWithFormat:@"￥%@",dict[@"actualMoney"]];
+                    if ([model.payType isEqualToString:@"1"]) {
+                        NSLog(@"--%@",dict[@"actualMoney"]);
+                        cell1.threeLable.text = [NSString stringWithFormat:@"￥%@",dict[@"actualMoney"]];
+                        yifuPrice = [dict[@"actualMoney"] floatValue];
+                  
+                    }else{
+                    
+                        cell1.threeLable.text = @"￥0";
+                        yifuPrice = 0;
+                    }
+                    
                     OrderManageModel* model = _dataArray[0];
-                    float priceNum = [model.realityPrice floatValue] - [dict[@"actualMoney"] floatValue];
+                    float priceNum = [model.realityPrice floatValue] - yifuPrice;
                     cell1.weiKuanLable.text = [NSString stringWithFormat:@"￥%.2f",priceNum];
                     
                     if (model.discountPrice) {
@@ -1843,6 +1899,8 @@
                 }
                 
                 if ([model.orderStatus isEqualToString:@"3"] || [model.orderStatus isEqualToString:@"2"] || [model.orderStatus isEqualToString:@"6"] || [model.orderStatus isEqualToString:@"7"] || [model.orderStatus isEqualToString:@"8"] || [model.orderStatus isEqualToString:@"9"]|| [model.orderStatus isEqualToString:@"10"]) {
+                    
+                
                     NSMutableDictionary* dict = model.actualMoney[0];
                     //根据支付账户id取到账户账号
                     for (MoveGroupingModel*model0 in _PayAccoutArray) {
@@ -1951,11 +2009,11 @@
                         if ((int)price != price) {
                             
                             cell1.allPriceLable.text = [NSString stringWithFormat:@"￥%.2f",price];
-                            _allOrderPrice = [NSString stringWithFormat:@"￥%.2f",price];
+                            _allOrderPrice = [NSString stringWithFormat:@"%.2f",price];
                         }else
                         {
                             cell1.allPriceLable.text = [NSString stringWithFormat:@"￥%d",(int)price];
-                            _allOrderPrice = [NSString stringWithFormat:@"￥%d",(int)price];
+                            _allOrderPrice = [NSString stringWithFormat:@"%d",(int)price];
 
                         }
                         
@@ -1966,6 +2024,21 @@
                             cell1.numLable.text = [NSString stringWithFormat:@"共%d件 %d%@",sum,(int)unit,detailModel.goodsNuit];
                         }
                     }
+                    if (model.allowModification == 0) {
+                        
+                        cell1.addBtn.hidden = YES;
+                        cell1.customBtn.hidden = YES;
+
+                        cell1.meddleView.hidden = YES;
+
+                    }else
+                    {
+                        cell1.addBtn.hidden = NO;
+                        cell1.customBtn.hidden = NO;
+                        cell1.meddleView.hidden = NO;
+
+                    }
+                    
                 }else{
                     if (_dataArray.count) {
                         OrderManageModel* model = _dataArray[0];
@@ -1983,6 +2056,8 @@
                 cell1.selectionStyle = UITableViewCellSelectionStyleNone;
                 cell1.delegate = self;
                 cell1.actualTF.delegate = self;
+                
+            
                 if (_dataArray.count) {
                     OrderManageModel* model = _dataArray[0];
                     if ([model.orderStatus isEqualToString:@"4"]) {
@@ -2028,6 +2103,12 @@
                         }
                     }
                     cell1.model = model;
+                    
+                    if (_allOrderPrice) {
+                        if ([model.payType isEqualToString:@"2"] || [model.payType isEqualToString:@"3"]) {
+                            cell1.threeLable.text = [NSString stringWithFormat:@"￥%@",_allOrderPrice];
+                        }
+                    }
                 }
                 return cell1;
             }
@@ -2114,6 +2195,11 @@
 //                addView.dict = lengthAttributesList[0];
 //            }
             
+            if (model.allowModification == 0) {
+                addView.jianBtn.userInteractionEnabled = NO;
+                addView.jiaAction.userInteractionEnabled = NO;
+            }
+            
             OrderDBModel* DBmodel = _dataList[indexPath.row];
             addView.DBmodel = DBmodel;
 
@@ -2161,6 +2247,11 @@
 
             _cell1.threeLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];
             _cell1.threeBtn.userInteractionEnabled = NO;
+            
+            if (_allOrderPrice) {
+                _cell1.threeLable.text = [NSString stringWithFormat:@"￥%@",_allOrderPrice];
+                
+            }
 
 
         }else if (numm == 2)
@@ -2169,13 +2260,21 @@
 
             _payType = 3;
             OrderManageModel* model = _dataArray[0];
+            
             _cell1.threeLable.text = [NSString stringWithFormat:@"￥%@",model.totalPrice];
+
+            if (_allOrderPrice) {
+                _cell1.threeLable.text = [NSString stringWithFormat:@"￥%@",_allOrderPrice];
+
+            }
 
             
         }
     }else if ([_num isEqualToString:@"3"])
     {
         _cell1.threeLable.text = [NSString stringWithFormat:@"￥%@",text];
+        
+     
     }
 }
 

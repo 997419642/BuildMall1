@@ -35,6 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic,weak)id <DeleteViewDelegate>delegate;
 
+@property (weak, nonatomic) IBOutlet UILabel *topLable;
 
 @end
 

@@ -19,6 +19,10 @@ typedef void (^responseBlock)(ResponseMode *result, NSError *error);
 
 + (instancetype)sharedClient;
 
+-(void)userFriendsGroupGroupByUserId:(NSMutableDictionary *)parames complete:(responseBlock)block;
+
+-(void)userFriendsGroupInsertGroup:(NSMutableDictionary *)parames complete:(responseBlock)block;
+
 -(void)getTokenWithUserId:(NSMutableDictionary *)parames complete:(responseBlock)block;
 -(void)orderPackUpdateMoney:(NSMutableDictionary *)parames complete:(responseBlock)block;
 

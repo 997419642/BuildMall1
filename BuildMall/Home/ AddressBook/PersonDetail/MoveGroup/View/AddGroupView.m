@@ -10,7 +10,6 @@
 
 @interface AddGroupView ()
 
-@property(nonatomic,strong)UIView *backgroupView;
 
 
 @end
@@ -51,6 +50,8 @@
     [self.backgroupView removeFromSuperview];
 }
 - (IBAction)sureAction:(UIButton *)sender {
+    
+    [_delegate addGroupView:self selectBtn:_addTF.text groupID:_groupID];
 }
 
 @end

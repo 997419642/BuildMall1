@@ -165,9 +165,15 @@
         if ([dict[@"goodsId"] intValue] != 0) {
             
             bean = [SWGConfirmLoadingBean new];
-            bean.buyNumber = [NSNumber numberWithInt:1];
+            if ([dict[@"categoryId"] intValue] == 1) {
+                bean.buyNumber = [NSNumber numberWithInt:[dict[@"buyNumber"] intValue]];
+
+            }else if([dict[@"categoryId"] intValue] == 2)
+            {
+                bean.buyNumber = [NSNumber numberWithInt:1];
+
+            }
             bean.buyPrice = dict[@"buyPrice"];
-         
             bean.cubicNum = [NSNumber numberWithInt:[dict[@"unitNum"] intValue]];
             bean.orderId = [NSNumber numberWithInt:[model0.orderId intValue]];
             bean.orderStatus = [NSNumber numberWithInt:[model.orderStatus intValue]];
@@ -178,7 +184,13 @@
         {
             NSMutableDictionary* datadict = [dict[@"packages"] mj_JSONObject];
             bean = [SWGConfirmLoadingBean new];
-            bean.buyNumber = [NSNumber numberWithInt:1];
+            if ([datadict[@"categoryId"] isEqualToString:@"1"]) {
+                bean.buyNumber = [NSNumber numberWithInt:[dict[@"buyNumber"] intValue]];
+
+            }else if ([datadict[@"categoryId"] isEqualToString:@"1"])
+            {
+                bean.buyNumber = [NSNumber numberWithInt:1];
+            }
             bean.buyPrice = [NSString stringWithFormat:@"%@",dict[@"buyPrice"]];
             bean.cubicNum = [NSNumber numberWithInt:[datadict[@"lifangshu"] intValue]];
             bean.orderId = [NSNumber numberWithInt:[model0.orderId intValue]];
@@ -206,6 +218,7 @@
 
                 if ([model.orderStatus isEqualToString:@"4"]) {
                     [weakSelf.navigationController popToViewController:weakSelf.navigationController.childViewControllers[1] animated:YES];
+                    weakSelf.slectBlock(_sectionNum,_orderSn);
 
                 }else
                 {

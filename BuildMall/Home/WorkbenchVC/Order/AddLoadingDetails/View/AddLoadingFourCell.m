@@ -98,7 +98,7 @@
         _priceTF.text = [NSString stringWithFormat:@"%@",dict[@"buyPrice"]];
         _priceLable.text = [NSString stringWithFormat:@"￥%@/%@",dict[@"buyPrice"],@"m³"];
 
-        if (!datadict[@"houdu"]) {
+        if ([datadict[@"categoryId"] isEqualToString:@"1"]) {
             //自定义原木
             _detailLable.text = [NSString stringWithFormat:@"%@，%@，%@*%@",datadict[@"pinpai"],datadict[@"dengji"],datadict[@"kuandu"],datadict[@"changdu"]];
             _volumeLable.text = [NSString stringWithFormat:@"数量：%@%@*%@根",datadict[@"lifangshu"],@"m³",dict[@"buyNumber"]];
@@ -109,12 +109,12 @@
                 make.top.equalTo(_nameLable.mas_bottom).offset(10);
             }];
             
-        }else
+        }else if([datadict[@"categoryId"] isEqualToString:@"2"])
         {
             //自定义商品板材
             _detailLable.text = [NSString stringWithFormat:@"%@，%@，%@*%@*%@",datadict[@"pinpai"],datadict[@"dengji"],datadict[@"houdu"],datadict[@"kuandu"],datadict[@"changdu"]];
             _volumeLable.text = [NSString stringWithFormat:@"数量：%@%@  %@支",datadict[@"lifangshu"],@"m³",datadict[@"genshu"]];
-            _numLable.text = datadict[@"packages"];
+            _numLable.text = datadict[@"packetNum"];
 
         }
     

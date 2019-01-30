@@ -12,9 +12,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AddLoadingDetails : BasicVC
 
+//订单编号
 @property(nonatomic,copy)NSString *orderId;
 @property(nonatomic,copy)NSString *categoryId;
+
+//订单ID
 @property(nonatomic,copy)NSString *orderIdTrue;
+
+@property(nonatomic,assign)NSInteger sectionNum;
 
 
 

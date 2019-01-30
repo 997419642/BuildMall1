@@ -141,14 +141,14 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 3;
+    return 6;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     SpecificationsViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SpecificationsViewCell" forIndexPath:indexPath];
     
-        cell.titleLable.text = @"太仓龙打的地方不是";
+        cell.titleLable.text = @"太仓龙";
     
     //    DOPPositionModel *model = self.dataArray[indexPath.section];
     
@@ -189,8 +189,10 @@
 //    return CGSizeMake((screenW - 30*3-10*2) / 4,25);
     
     //宽度适应文字
-    
-    NSString * string = @"太仓龙打的地方不是";
+    NSArray* array = @[@"稳重",@"靠谱谱",@"非常热情",@"大方很大方非常大方的",@"货源充足充足"];
+
+    NSString* obj = array[arc4random_uniform([array count])];
+    NSString * string = obj;
     CGFloat width = (string.length + 2) * 12;
     return CGSizeMake(width, 25);
 

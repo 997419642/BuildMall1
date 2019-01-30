@@ -29,7 +29,13 @@
     self.navigationItem.title = @"BOSS报表";
     _contentView = [[UIView alloc] init];
     [self.view addSubview: _contentView];
-    _contentView.sd_layout.topEqualToView(self.view).offset(228).rightEqualToView(self.view).leftEqualToView(self.view).bottomEqualToView(self.view).offset(0);
+//    _contentView.sd_layout.topEqualToView(self.view).offset(228).rightEqualToView(self.view).leftEqualToView(self.view).bottomEqualToView(self.view).offset(0);
+    
+    [_contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(228);
+        make.left.right.bottom.equalTo(self.view).offset(0);
+    }];
+    
     _contentView.clipsToBounds = YES;
     [self addChildControllers];
     
@@ -90,7 +96,12 @@
     
 }
 -(void)setVCLayout:(UIViewController*)vc{
-    vc.view.sd_layout.topEqualToView(_contentView).leftEqualToView(_contentView).rightEqualToView(_contentView).bottomEqualToView(_contentView);
+  vc.view.sd_layout.topEqualToView(_contentView).leftEqualToView(_contentView).rightEqualToView(_contentView).bottomEqualToView(_contentView);
+    
+//    [vc.view mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(_contentView).offset(0);
+//        make.left.right.bottom.equalTo(_contentView).offset(0);
+//    }];
 }
 
 //切换视图View

@@ -10,4 +10,6 @@
 
 @interface RightDetailVC : BasicVC
 
+@property(nonatomic,copy)NSString *userId;
+
 @end

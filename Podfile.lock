@@ -34,7 +34,6 @@ PODS:
   - NELivePlayer (1.7.0)
   - NIMSDK (5.9.0)
   - Reachability (3.2)
-  - SDAutoLayout (2.2.1)
   - SDCycleScrollView (1.75):
     - SDWebImage (>= 4.0.0)
   - SDWebImage (4.4.2):
@@ -59,7 +58,6 @@ DEPENDENCIES:
   - NELivePlayer (~> 1.7.0)
   - NIMSDK
   - Reachability (~> 3.2)
-  - SDAutoLayout
   - SDCycleScrollView
   - SDWebImage
   - SSZipArchive (~> 1.8.1)
@@ -82,7 +80,6 @@ SPEC REPOS:
     - NELivePlayer
     - NIMSDK
     - Reachability
-    - SDAutoLayout
     - SDCycleScrollView
     - SDWebImage
     - SSZipArchive
@@ -104,13 +101,12 @@ SPEC CHECKSUMS:
   NELivePlayer: b48dbed884391fbd878e780b0863a68e8ca166fa
   NIMSDK: 8cf6b0e2d71cbf8be8e1cc697e3baa5cf5b683f7
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  SDAutoLayout: 8bf6b3bbc8b01f775d4defbb4fda2ace805461be
   SDCycleScrollView: 884b88f0266dd4708a0e1934975c69cb971707b1
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SSZipArchive: 04547dfa448be5ed7ecbaf7eaf8a6e9eb9b42997
   Toast: 14a93686d6c8bfe2727afd342414e35660a8a1f3
   TZImagePickerController: c9584b67b97d5a20b4dbbb58505fa0b6be590255
 
-PODFILE CHECKSUM: cab7485ae194692cb522f93876701db56724108c
+PODFILE CHECKSUM: 17b8bf2dc0f3a456683671bcc2c7229fc675f603
 
 COCOAPODS: 1.5.3

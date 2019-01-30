@@ -34,7 +34,13 @@
     self.navigationItem.title = @"BOSS报表";
     _contentView = [[UIView alloc] init];
     [self.view addSubview: _contentView];
-    _contentView.sd_layout.topEqualToView(self.view).offset(109.5).rightEqualToView(self.view).leftEqualToView(self.view).bottomEqualToView(self.view).offset(0);
+   
+    [_contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(109.5);
+        make.bottom.left.right.equalTo(self.view).offset(0);
+        
+    }];
+//  _contentView.sd_layout.topEqualToView(self.view).offset(109.5).rightEqualToView(self.view).leftEqualToView(self.view).bottomEqualToView(self.view).offset(0);
     _contentView.clipsToBounds = YES;
     [self addChildControllers];
     

@@ -33,12 +33,12 @@
 {
     _DBModel = DBModel;
     
-    if ([DBModel.houdu isEqualToString:@""]) {
+    if ([DBModel.categoryId isEqualToString:@"1"]) {
         //原木
         _namelable.text = [NSString stringWithFormat:@"%@，%@，%@，%@*%@",DBModel.shuzhong,DBModel.pinpai,DBModel.dengji,DBModel.kuandu,DBModel.changdu];
         _numLable.text = [NSString stringWithFormat:@"数量：%@%@",DBModel.unitNum,DBModel.goodsNuit];
         
-    }else
+    }else if([DBModel.categoryId isEqualToString:@"2"])
     {
         //板材
         _namelable.text = [NSString stringWithFormat:@"%@，%@，%@，%@*%@*%@",DBModel.shuzhong,DBModel.pinpai,DBModel.dengji,DBModel.houdu,DBModel.kuandu,DBModel.changdu];
@@ -51,6 +51,9 @@
     int keshouNum = [DBModel.stockNum intValue] - [DBModel.lockNum intValue];
     NSString* keshouStr = [NSString stringWithFormat:@"%d",keshouNum];
     _keshouLable.text = [NSString stringWithFormat:@"可售%@",keshouStr];
+    if ([DBModel.isCus isEqualToString:@"YES"]) {
+        _keshouLable.hidden = YES;
+    }
     _adressLable.text = DBModel.cangku;
     
 }
@@ -193,18 +196,19 @@
     _model = model;
     if (_model.packages != nil && ![_model.packages isEqualToString:@""]) {
          //如果数据是自定义添加的商品，赋值
+        _keshouLable.hidden = YES;
         NSMutableDictionary* dict = [_model.packages mj_JSONObject];
         _rightLable.text = [NSString stringWithFormat:@"￥%@/%@",model.buyPrice,@"m³"];
         _priceTF.text = model.buyPrice;
         [_addNumBtn setTitle:model.buyNumber forState:UIControlStateNormal];
 
-        if (!dict[@"houdu"]) {
+        if ([dict[@"categoryId"] isEqualToString:@"1"]) {
             //原木
             _namelable.text = [NSString stringWithFormat:@"%@，%@，%@，%@*%@",dict[@"shuzhong"],dict[@"pinpai"],dict[@"dengji"],dict[@"kuandu"],dict[@"changdu"]];
             
             NSMutableDictionary* dict = [model.packages mj_JSONObject];
             _numLable.text = [NSString stringWithFormat:@"数量：%@%@*%@",dict[@"lifangshu"],@"m³",model.buyNumber];
-        }else
+        }else if([dict[@"categoryId"] isEqualToString:@"2"])
         {
             //板材
             _namelable.text = [NSString stringWithFormat:@"%@，%@，%@，%@*%@*%@",dict[@"shuzhong"],dict[@"pinpai"],dict[@"dengji"],dict[@"houdu"],dict[@"kuandu"],dict[@"changdu"]];
@@ -258,12 +262,12 @@
             }
         }
         
-        if (!modelDict[@"houdu"]) {
+        if ([model.categoryId isEqualToString:@"1"]) {
             //原木
             _namelable.text = [NSString stringWithFormat:@"%@，%@，%@，%@*%@",modelDict[@"shuzhong"],tableDic[@"brandName"],modelDict[@"dengji"],modelDict[@"koujin"],lengthAttributesList[0][@"specValue"]];
             
             _numLable.text = [NSString stringWithFormat:@"数量：%@ %@*%@",model.unitNum,model.goodsNuit,model.buyNumber];
-        }else
+        }else if([model.categoryId isEqualToString:@"2"])
         {
             //板材
             _namelable.text = [NSString stringWithFormat:@"%@，%@，%@，%@*%@*%@",modelDict[@"shuzhong"],tableDic[@"brandName"],modelDict[@"dengji"],modelDict[@"houdu"],modelDict[@"koujin"],lengthAttributesList[0][@"specValue"]];
@@ -271,7 +275,6 @@
             NSMutableDictionary* dict = model.numAttributes[0];
             _numLable.text = [NSString stringWithFormat:@"数量：%@ %@*%@支",model.unitNum,model.goodsNuit,dict[@"specValue"]];
         }
-        
         
         _priceTF.text = model.buyPrice;
         NSLog(@"==%@",model.buyPrice);
@@ -291,7 +294,7 @@
 
 - (IBAction)deleteAction:(UIButton *)sender {
     
-    [_delegate deleteAction:_model.orderDetailId noticeId:_DBModel.noticeId];
+    [_delegate deleteAction:_DBModel.orderDetailId noticeId:_DBModel.noticeId];
 }
 
 @end

@@ -473,12 +473,9 @@
 
                 }
             }
-        
-        
         if (dataArr.count) {
             _attributeList = dataArr;
             goods.attributeList = _attributeList;
-       
         }
        
     }else
@@ -757,8 +754,9 @@
         [dict0 setObject:dict[@"pinpai"] forKey:@"pinpai"];
         [dict0 setObject:dict[@"dengji"] forKey:@"dengji"];
         [dict0 setObject:@"NO" forKey:@"isCus"];
-//        [dict0 setObject:@"" forKey:@"goodsName"];
-        [dict0 setObject:@"" forKey:@"cangku"];
+        [dict0 setObject:dict[@"cangku"] forKey:@"cangku"];
+        [dict0 setObject:_categoryId forKey:@"categoryId"];
+
         
         OrderDBModel *noticeModel =[[OrderDBModel alloc]initWithDictionary:dict0];
         [noticeDBTool insertModel:noticeModel];
